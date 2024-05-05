@@ -1,0 +1,17 @@
+{
+  "numeroPedido": "123456BS",
+  "nomeComprador": "Netoo",
+  "contatoComprador": "557998048282",
+  "produtos": [
+    "Hamburguer",
+    "Batata Frita",
+    "Refrigerante"
+  ],
+  "extras": {
+    "Hamburguer": "Queijo, Alface, Tomate",
+    "Batata Frita": "Molho Especial",
+    "Refrigerante": "Gelo"
+  },
+  "valor": "15,00",
+  "status": "recusado"
+}

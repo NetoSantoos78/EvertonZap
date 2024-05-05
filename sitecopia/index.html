@@ -1,0 +1,1945 @@
+<html lang="pt-BR">
+
+<head>
+    <style type="text/css">
+        :root,
+        :host {
+            --fa-font-solid: normal 900 1em/1 "Font Awesome 6 Solid";
+            --fa-font-regular: normal 400 1em/1 "Font Awesome 6 Regular";
+            --fa-font-light: normal 300 1em/1 "Font Awesome 6 Light";
+            --fa-font-thin: normal 100 1em/1 "Font Awesome 6 Thin";
+            --fa-font-duotone: normal 900 1em/1 "Font Awesome 6 Duotone";
+            --fa-font-sharp-solid: normal 900 1em/1 "Font Awesome 6 Sharp";
+            --fa-font-sharp-regular: normal 400 1em/1 "Font Awesome 6 Sharp";
+            --fa-font-sharp-light: normal 300 1em/1 "Font Awesome 6 Sharp";
+            --fa-font-sharp-thin: normal 100 1em/1 "Font Awesome 6 Sharp";
+            --fa-font-brands: normal 400 1em/1 "Font Awesome 6 Brands";
+        }
+
+        svg:not(:root).svg-inline--fa,
+        svg:not(:host).svg-inline--fa {
+            overflow: visible;
+            box-sizing: content-box;
+        }
+
+        .svg-inline--fa {
+            display: var(--fa-display, inline-block);
+            height: 1em;
+            overflow: visible;
+            vertical-align: -0.125em;
+        }
+
+        .svg-inline--fa.fa-2xs {
+            vertical-align: 0.1em;
+        }
+
+        .svg-inline--fa.fa-xs {
+            vertical-align: 0em;
+        }
+
+        .svg-inline--fa.fa-sm {
+            vertical-align: -0.0714285705em;
+        }
+
+        .svg-inline--fa.fa-lg {
+            vertical-align: -0.2em;
+        }
+
+        .svg-inline--fa.fa-xl {
+            vertical-align: -0.25em;
+        }
+
+        .svg-inline--fa.fa-2xl {
+            vertical-align: -0.3125em;
+        }
+
+        .svg-inline--fa.fa-pull-left {
+            margin-right: var(--fa-pull-margin, 0.3em);
+            width: auto;
+        }
+
+        .svg-inline--fa.fa-pull-right {
+            margin-left: var(--fa-pull-margin, 0.3em);
+            width: auto;
+        }
+
+        .svg-inline--fa.fa-li {
+            width: var(--fa-li-width, 2em);
+            top: 0.25em;
+        }
+
+        .svg-inline--fa.fa-fw {
+            width: var(--fa-fw-width, 1.25em);
+        }
+
+        .fa-layers svg.svg-inline--fa {
+            bottom: 0;
+            left: 0;
+            margin: auto;
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+
+        .fa-layers-counter,
+        .fa-layers-text {
+            display: inline-block;
+            position: absolute;
+            text-align: center;
+        }
+
+        .fa-layers {
+            display: inline-block;
+            height: 1em;
+            position: relative;
+            text-align: center;
+            vertical-align: -0.125em;
+            width: 1em;
+        }
+
+        .fa-layers svg.svg-inline--fa {
+            -webkit-transform-origin: center center;
+            transform-origin: center center;
+        }
+
+        .fa-layers-text {
+            left: 50%;
+            top: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            -webkit-transform-origin: center center;
+            transform-origin: center center;
+        }
+
+        .fa-layers-counter {
+            background-color: var(--fa-counter-background-color, #ff253a);
+            border-radius: var(--fa-counter-border-radius, 1em);
+            box-sizing: border-box;
+            color: var(--fa-inverse, #fff);
+            line-height: var(--fa-counter-line-height, 1);
+            max-width: var(--fa-counter-max-width, 5em);
+            min-width: var(--fa-counter-min-width, 1.5em);
+            overflow: hidden;
+            padding: var(--fa-counter-padding, 0.25em 0.5em);
+            right: var(--fa-right, 0);
+            text-overflow: ellipsis;
+            top: var(--fa-top, 0);
+            -webkit-transform: scale(var(--fa-counter-scale, 0.25));
+            transform: scale(var(--fa-counter-scale, 0.25));
+            -webkit-transform-origin: top right;
+            transform-origin: top right;
+        }
+
+        .fa-layers-bottom-right {
+            bottom: var(--fa-bottom, 0);
+            right: var(--fa-right, 0);
+            top: auto;
+            -webkit-transform: scale(var(--fa-layers-scale, 0.25));
+            transform: scale(var(--fa-layers-scale, 0.25));
+            -webkit-transform-origin: bottom right;
+            transform-origin: bottom right;
+        }
+
+        .fa-layers-bottom-left {
+            bottom: var(--fa-bottom, 0);
+            left: var(--fa-left, 0);
+            right: auto;
+            top: auto;
+            -webkit-transform: scale(var(--fa-layers-scale, 0.25));
+            transform: scale(var(--fa-layers-scale, 0.25));
+            -webkit-transform-origin: bottom left;
+            transform-origin: bottom left;
+        }
+
+        .fa-layers-top-right {
+            top: var(--fa-top, 0);
+            right: var(--fa-right, 0);
+            -webkit-transform: scale(var(--fa-layers-scale, 0.25));
+            transform: scale(var(--fa-layers-scale, 0.25));
+            -webkit-transform-origin: top right;
+            transform-origin: top right;
+        }
+
+        .fa-layers-top-left {
+            left: var(--fa-left, 0);
+            right: auto;
+            top: var(--fa-top, 0);
+            -webkit-transform: scale(var(--fa-layers-scale, 0.25));
+            transform: scale(var(--fa-layers-scale, 0.25));
+            -webkit-transform-origin: top left;
+            transform-origin: top left;
+        }
+
+        .fa-1x {
+            font-size: 1em;
+        }
+
+        .fa-2x {
+            font-size: 2em;
+        }
+
+        .fa-3x {
+            font-size: 3em;
+        }
+
+        .fa-4x {
+            font-size: 4em;
+        }
+
+        .fa-5x {
+            font-size: 5em;
+        }
+
+        .fa-6x {
+            font-size: 6em;
+        }
+
+        .fa-7x {
+            font-size: 7em;
+        }
+
+        .fa-8x {
+            font-size: 8em;
+        }
+
+        .fa-9x {
+            font-size: 9em;
+        }
+
+        .fa-10x {
+            font-size: 10em;
+        }
+
+        .fa-2xs {
+            font-size: 0.625em;
+            line-height: 0.1em;
+            vertical-align: 0.225em;
+        }
+
+        .fa-xs {
+            font-size: 0.75em;
+            line-height: 0.0833333337em;
+            vertical-align: 0.125em;
+        }
+
+        .fa-sm {
+            font-size: 0.875em;
+            line-height: 0.0714285718em;
+            vertical-align: 0.0535714295em;
+        }
+
+        .fa-lg {
+            font-size: 1.25em;
+            line-height: 0.05em;
+            vertical-align: -0.075em;
+        }
+
+        .fa-xl {
+            font-size: 1.5em;
+            line-height: 0.0416666682em;
+            vertical-align: -0.125em;
+        }
+
+        .fa-2xl {
+            font-size: 2em;
+            line-height: 0.03125em;
+            vertical-align: -0.1875em;
+        }
+
+        .fa-fw {
+            text-align: center;
+            width: 1.25em;
+        }
+
+        .fa-ul {
+            list-style-type: none;
+            margin-left: var(--fa-li-margin, 2.5em);
+            padding-left: 0;
+        }
+
+        .fa-ul>li {
+            position: relative;
+        }
+
+        .fa-li {
+            left: calc(var(--fa-li-width, 2em) * -1);
+            position: absolute;
+            text-align: center;
+            width: var(--fa-li-width, 2em);
+            line-height: inherit;
+        }
+
+        .fa-border {
+            border-color: var(--fa-border-color, #eee);
+            border-radius: var(--fa-border-radius, 0.1em);
+            border-style: var(--fa-border-style, solid);
+            border-width: var(--fa-border-width, 0.08em);
+            padding: var(--fa-border-padding, 0.2em 0.25em 0.15em);
+        }
+
+        .fa-pull-left {
+            float: left;
+            margin-right: var(--fa-pull-margin, 0.3em);
+        }
+
+        .fa-pull-right {
+            float: right;
+            margin-left: var(--fa-pull-margin, 0.3em);
+        }
+
+        .fa-beat {
+            -webkit-animation-name: fa-beat;
+            animation-name: fa-beat;
+            -webkit-animation-delay: var(--fa-animation-delay, 0s);
+            animation-delay: var(--fa-animation-delay, 0s);
+            -webkit-animation-direction: var(--fa-animation-direction, normal);
+            animation-direction: var(--fa-animation-direction, normal);
+            -webkit-animation-duration: var(--fa-animation-duration, 1s);
+            animation-duration: var(--fa-animation-duration, 1s);
+            -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            -webkit-animation-timing-function: var(--fa-animation-timing, ease-in-out);
+            animation-timing-function: var(--fa-animation-timing, ease-in-out);
+        }
+
+        .fa-bounce {
+            -webkit-animation-name: fa-bounce;
+            animation-name: fa-bounce;
+            -webkit-animation-delay: var(--fa-animation-delay, 0s);
+            animation-delay: var(--fa-animation-delay, 0s);
+            -webkit-animation-direction: var(--fa-animation-direction, normal);
+            animation-direction: var(--fa-animation-direction, normal);
+            -webkit-animation-duration: var(--fa-animation-duration, 1s);
+            animation-duration: var(--fa-animation-duration, 1s);
+            -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            -webkit-animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.28, 0.84, 0.42, 1));
+            animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.28, 0.84, 0.42, 1));
+        }
+
+        .fa-fade {
+            -webkit-animation-name: fa-fade;
+            animation-name: fa-fade;
+            -webkit-animation-delay: var(--fa-animation-delay, 0s);
+            animation-delay: var(--fa-animation-delay, 0s);
+            -webkit-animation-direction: var(--fa-animation-direction, normal);
+            animation-direction: var(--fa-animation-direction, normal);
+            -webkit-animation-duration: var(--fa-animation-duration, 1s);
+            animation-duration: var(--fa-animation-duration, 1s);
+            -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            -webkit-animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.4, 0, 0.6, 1));
+            animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.4, 0, 0.6, 1));
+        }
+
+        .fa-beat-fade {
+            -webkit-animation-name: fa-beat-fade;
+            animation-name: fa-beat-fade;
+            -webkit-animation-delay: var(--fa-animation-delay, 0s);
+            animation-delay: var(--fa-animation-delay, 0s);
+            -webkit-animation-direction: var(--fa-animation-direction, normal);
+            animation-direction: var(--fa-animation-direction, normal);
+            -webkit-animation-duration: var(--fa-animation-duration, 1s);
+            animation-duration: var(--fa-animation-duration, 1s);
+            -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            -webkit-animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.4, 0, 0.6, 1));
+            animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.4, 0, 0.6, 1));
+        }
+
+        .fa-flip {
+            -webkit-animation-name: fa-flip;
+            animation-name: fa-flip;
+            -webkit-animation-delay: var(--fa-animation-delay, 0s);
+            animation-delay: var(--fa-animation-delay, 0s);
+            -webkit-animation-direction: var(--fa-animation-direction, normal);
+            animation-direction: var(--fa-animation-direction, normal);
+            -webkit-animation-duration: var(--fa-animation-duration, 1s);
+            animation-duration: var(--fa-animation-duration, 1s);
+            -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            -webkit-animation-timing-function: var(--fa-animation-timing, ease-in-out);
+            animation-timing-function: var(--fa-animation-timing, ease-in-out);
+        }
+
+        .fa-shake {
+            -webkit-animation-name: fa-shake;
+            animation-name: fa-shake;
+            -webkit-animation-delay: var(--fa-animation-delay, 0s);
+            animation-delay: var(--fa-animation-delay, 0s);
+            -webkit-animation-direction: var(--fa-animation-direction, normal);
+            animation-direction: var(--fa-animation-direction, normal);
+            -webkit-animation-duration: var(--fa-animation-duration, 1s);
+            animation-duration: var(--fa-animation-duration, 1s);
+            -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            -webkit-animation-timing-function: var(--fa-animation-timing, linear);
+            animation-timing-function: var(--fa-animation-timing, linear);
+        }
+
+        .fa-spin {
+            -webkit-animation-name: fa-spin;
+            animation-name: fa-spin;
+            -webkit-animation-delay: var(--fa-animation-delay, 0s);
+            animation-delay: var(--fa-animation-delay, 0s);
+            -webkit-animation-direction: var(--fa-animation-direction, normal);
+            animation-direction: var(--fa-animation-direction, normal);
+            -webkit-animation-duration: var(--fa-animation-duration, 2s);
+            animation-duration: var(--fa-animation-duration, 2s);
+            -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            -webkit-animation-timing-function: var(--fa-animation-timing, linear);
+            animation-timing-function: var(--fa-animation-timing, linear);
+        }
+
+        .fa-spin-reverse {
+            --fa-animation-direction: reverse;
+        }
+
+        .fa-pulse,
+        .fa-spin-pulse {
+            -webkit-animation-name: fa-spin;
+            animation-name: fa-spin;
+            -webkit-animation-direction: var(--fa-animation-direction, normal);
+            animation-direction: var(--fa-animation-direction, normal);
+            -webkit-animation-duration: var(--fa-animation-duration, 1s);
+            animation-duration: var(--fa-animation-duration, 1s);
+            -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            -webkit-animation-timing-function: var(--fa-animation-timing, steps(8));
+            animation-timing-function: var(--fa-animation-timing, steps(8));
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .fa-beat,
+            .fa-bounce,
+            .fa-fade,
+            .fa-beat-fade,
+            .fa-flip,
+            .fa-pulse,
+            .fa-shake,
+            .fa-spin,
+            .fa-spin-pulse {
+                -webkit-animation-delay: -1ms;
+                animation-delay: -1ms;
+                -webkit-animation-duration: 1ms;
+                animation-duration: 1ms;
+                -webkit-animation-iteration-count: 1;
+                animation-iteration-count: 1;
+                -webkit-transition-delay: 0s;
+                transition-delay: 0s;
+                -webkit-transition-duration: 0s;
+                transition-duration: 0s;
+            }
+        }
+
+        @-webkit-keyframes fa-beat {
+
+            0%,
+            90% {
+                -webkit-transform: scale(1);
+                transform: scale(1);
+            }
+
+            45% {
+                -webkit-transform: scale(var(--fa-beat-scale, 1.25));
+                transform: scale(var(--fa-beat-scale, 1.25));
+            }
+        }
+
+        @keyframes fa-beat {
+
+            0%,
+            90% {
+                -webkit-transform: scale(1);
+                transform: scale(1);
+            }
+
+            45% {
+                -webkit-transform: scale(var(--fa-beat-scale, 1.25));
+                transform: scale(var(--fa-beat-scale, 1.25));
+            }
+        }
+
+        @-webkit-keyframes fa-bounce {
+            0% {
+                -webkit-transform: scale(1, 1) translateY(0);
+                transform: scale(1, 1) translateY(0);
+            }
+
+            10% {
+                -webkit-transform: scale(var(--fa-bounce-start-scale-x, 1.1), var(--fa-bounce-start-scale-y, 0.9)) translateY(0);
+                transform: scale(var(--fa-bounce-start-scale-x, 1.1), var(--fa-bounce-start-scale-y, 0.9)) translateY(0);
+            }
+
+            30% {
+                -webkit-transform: scale(var(--fa-bounce-jump-scale-x, 0.9), var(--fa-bounce-jump-scale-y, 1.1)) translateY(var(--fa-bounce-height, -0.5em));
+                transform: scale(var(--fa-bounce-jump-scale-x, 0.9), var(--fa-bounce-jump-scale-y, 1.1)) translateY(var(--fa-bounce-height, -0.5em));
+            }
+
+            50% {
+                -webkit-transform: scale(var(--fa-bounce-land-scale-x, 1.05), var(--fa-bounce-land-scale-y, 0.95)) translateY(0);
+                transform: scale(var(--fa-bounce-land-scale-x, 1.05), var(--fa-bounce-land-scale-y, 0.95)) translateY(0);
+            }
+
+            57% {
+                -webkit-transform: scale(1, 1) translateY(var(--fa-bounce-rebound, -0.125em));
+                transform: scale(1, 1) translateY(var(--fa-bounce-rebound, -0.125em));
+            }
+
+            64% {
+                -webkit-transform: scale(1, 1) translateY(0);
+                transform: scale(1, 1) translateY(0);
+            }
+
+            100% {
+                -webkit-transform: scale(1, 1) translateY(0);
+                transform: scale(1, 1) translateY(0);
+            }
+        }
+
+        @keyframes fa-bounce {
+            0% {
+                -webkit-transform: scale(1, 1) translateY(0);
+                transform: scale(1, 1) translateY(0);
+            }
+
+            10% {
+                -webkit-transform: scale(var(--fa-bounce-start-scale-x, 1.1), var(--fa-bounce-start-scale-y, 0.9)) translateY(0);
+                transform: scale(var(--fa-bounce-start-scale-x, 1.1), var(--fa-bounce-start-scale-y, 0.9)) translateY(0);
+            }
+
+            30% {
+                -webkit-transform: scale(var(--fa-bounce-jump-scale-x, 0.9), var(--fa-bounce-jump-scale-y, 1.1)) translateY(var(--fa-bounce-height, -0.5em));
+                transform: scale(var(--fa-bounce-jump-scale-x, 0.9), var(--fa-bounce-jump-scale-y, 1.1)) translateY(var(--fa-bounce-height, -0.5em));
+            }
+
+            50% {
+                -webkit-transform: scale(var(--fa-bounce-land-scale-x, 1.05), var(--fa-bounce-land-scale-y, 0.95)) translateY(0);
+                transform: scale(var(--fa-bounce-land-scale-x, 1.05), var(--fa-bounce-land-scale-y, 0.95)) translateY(0);
+            }
+
+            57% {
+                -webkit-transform: scale(1, 1) translateY(var(--fa-bounce-rebound, -0.125em));
+                transform: scale(1, 1) translateY(var(--fa-bounce-rebound, -0.125em));
+            }
+
+            64% {
+                -webkit-transform: scale(1, 1) translateY(0);
+                transform: scale(1, 1) translateY(0);
+            }
+
+            100% {
+                -webkit-transform: scale(1, 1) translateY(0);
+                transform: scale(1, 1) translateY(0);
+            }
+        }
+
+        @-webkit-keyframes fa-fade {
+            50% {
+                opacity: var(--fa-fade-opacity, 0.4);
+            }
+        }
+
+        @keyframes fa-fade {
+            50% {
+                opacity: var(--fa-fade-opacity, 0.4);
+            }
+        }
+
+        @-webkit-keyframes fa-beat-fade {
+
+            0%,
+            100% {
+                opacity: var(--fa-beat-fade-opacity, 0.4);
+                -webkit-transform: scale(1);
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 1;
+                -webkit-transform: scale(var(--fa-beat-fade-scale, 1.125));
+                transform: scale(var(--fa-beat-fade-scale, 1.125));
+            }
+        }
+
+        @keyframes fa-beat-fade {
+
+            0%,
+            100% {
+                opacity: var(--fa-beat-fade-opacity, 0.4);
+                -webkit-transform: scale(1);
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 1;
+                -webkit-transform: scale(var(--fa-beat-fade-scale, 1.125));
+                transform: scale(var(--fa-beat-fade-scale, 1.125));
+            }
+        }
+
+        @-webkit-keyframes fa-flip {
+            50% {
+                -webkit-transform: rotate3d(var(--fa-flip-x, 0), var(--fa-flip-y, 1), var(--fa-flip-z, 0), var(--fa-flip-angle, -180deg));
+                transform: rotate3d(var(--fa-flip-x, 0), var(--fa-flip-y, 1), var(--fa-flip-z, 0), var(--fa-flip-angle, -180deg));
+            }
+        }
+
+        @keyframes fa-flip {
+            50% {
+                -webkit-transform: rotate3d(var(--fa-flip-x, 0), var(--fa-flip-y, 1), var(--fa-flip-z, 0), var(--fa-flip-angle, -180deg));
+                transform: rotate3d(var(--fa-flip-x, 0), var(--fa-flip-y, 1), var(--fa-flip-z, 0), var(--fa-flip-angle, -180deg));
+            }
+        }
+
+        @-webkit-keyframes fa-shake {
+            0% {
+                -webkit-transform: rotate(-15deg);
+                transform: rotate(-15deg);
+            }
+
+            4% {
+                -webkit-transform: rotate(15deg);
+                transform: rotate(15deg);
+            }
+
+            8%,
+            24% {
+                -webkit-transform: rotate(-18deg);
+                transform: rotate(-18deg);
+            }
+
+            12%,
+            28% {
+                -webkit-transform: rotate(18deg);
+                transform: rotate(18deg);
+            }
+
+            16% {
+                -webkit-transform: rotate(-22deg);
+                transform: rotate(-22deg);
+            }
+
+            20% {
+                -webkit-transform: rotate(22deg);
+                transform: rotate(22deg);
+            }
+
+            32% {
+                -webkit-transform: rotate(-12deg);
+                transform: rotate(-12deg);
+            }
+
+            36% {
+                -webkit-transform: rotate(12deg);
+                transform: rotate(12deg);
+            }
+
+            40%,
+            100% {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+        }
+
+        @keyframes fa-shake {
+            0% {
+                -webkit-transform: rotate(-15deg);
+                transform: rotate(-15deg);
+            }
+
+            4% {
+                -webkit-transform: rotate(15deg);
+                transform: rotate(15deg);
+            }
+
+            8%,
+            24% {
+                -webkit-transform: rotate(-18deg);
+                transform: rotate(-18deg);
+            }
+
+            12%,
+            28% {
+                -webkit-transform: rotate(18deg);
+                transform: rotate(18deg);
+            }
+
+            16% {
+                -webkit-transform: rotate(-22deg);
+                transform: rotate(-22deg);
+            }
+
+            20% {
+                -webkit-transform: rotate(22deg);
+                transform: rotate(22deg);
+            }
+
+            32% {
+                -webkit-transform: rotate(-12deg);
+                transform: rotate(-12deg);
+            }
+
+            36% {
+                -webkit-transform: rotate(12deg);
+                transform: rotate(12deg);
+            }
+
+            40%,
+            100% {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+        }
+
+        @-webkit-keyframes fa-spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes fa-spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        .fa-rotate-90 {
+            -webkit-transform: rotate(90deg);
+            transform: rotate(90deg);
+        }
+
+        .fa-rotate-180 {
+            -webkit-transform: rotate(180deg);
+            transform: rotate(180deg);
+        }
+
+        .fa-rotate-270 {
+            -webkit-transform: rotate(270deg);
+            transform: rotate(270deg);
+        }
+
+        .fa-flip-horizontal {
+            -webkit-transform: scale(-1, 1);
+            transform: scale(-1, 1);
+        }
+
+        .fa-flip-vertical {
+            -webkit-transform: scale(1, -1);
+            transform: scale(1, -1);
+        }
+
+        .fa-flip-both,
+        .fa-flip-horizontal.fa-flip-vertical {
+            -webkit-transform: scale(-1, -1);
+            transform: scale(-1, -1);
+        }
+
+        .fa-rotate-by {
+            -webkit-transform: rotate(var(--fa-rotate-angle, 0));
+            transform: rotate(var(--fa-rotate-angle, 0));
+        }
+
+        .fa-stack {
+            display: inline-block;
+            vertical-align: middle;
+            height: 2em;
+            position: relative;
+            width: 2.5em;
+        }
+
+        .fa-stack-1x,
+        .fa-stack-2x {
+            bottom: 0;
+            left: 0;
+            margin: auto;
+            position: absolute;
+            right: 0;
+            top: 0;
+            z-index: var(--fa-stack-z-index, auto);
+        }
+
+        .svg-inline--fa.fa-stack-1x {
+            height: 1em;
+            width: 1.25em;
+        }
+
+        .svg-inline--fa.fa-stack-2x {
+            height: 2em;
+            width: 2.5em;
+        }
+
+        .fa-inverse {
+            color: var(--fa-inverse, #fff);
+        }
+
+        .sr-only,
+        .fa-sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        .sr-only-focusable:not(:focus),
+        .fa-sr-only-focusable:not(:focus) {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        .svg-inline--fa .fa-primary {
+            fill: var(--fa-primary-color, currentColor);
+            opacity: var(--fa-primary-opacity, 1);
+        }
+
+        .svg-inline--fa .fa-secondary {
+            fill: var(--fa-secondary-color, currentColor);
+            opacity: var(--fa-secondary-opacity, 0.4);
+        }
+
+        .svg-inline--fa.fa-swap-opacity .fa-primary {
+            opacity: var(--fa-secondary-opacity, 0.4);
+        }
+
+        .svg-inline--fa.fa-swap-opacity .fa-secondary {
+            opacity: var(--fa-primary-opacity, 1);
+        }
+
+        .svg-inline--fa mask .fa-primary,
+        .svg-inline--fa mask .fa-secondary {
+            fill: black;
+        }
+
+        .fad.fa-inverse,
+        .fa-duotone.fa-inverse {
+            color: var(--fa-inverse, #fff);
+        }
+    </style>
+    <style data-emotion="css-global" data-s=""></style>
+    <style data-emotion="css-global" data-s=""></style>
+    <style data-emotion="css-global" data-s=""></style>
+    <style data-emotion="css-global" data-s=""></style>
+    <style data-emotion="css-global" data-s=""></style>
+    <style data-emotion="css-global" data-s=""></style>
+    <style data-emotion="css-global" data-s=""></style>
+    <style data-emotion="css-global" data-s=""></style>
+    <style data-emotion="css-global" data-s=""></style>
+    <style data-emotion="css-global" data-s=""></style>
+    <style data-emotion="css-global" data-s=""></style>
+    <style data-emotion="css-global" data-s=""></style>
+    <style data-emotion="css-global" data-s=""></style>
+    <style data-emotion="css-global" data-s=""></style>
+    <style data-emotion="css-global" data-s=""></style>
+    <style data-emotion="css-global" data-s=""></style>
+    <style data-emotion="css-global" data-s=""></style>
+    <style data-emotion="css-global" data-s=""></style>
+    <style data-emotion="css" data-s=""></style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, width=device-width">
+    <meta name="next-head-count" content="2">
+    <link rel="shortcut icon" sizes="180x180"
+        href="https://storage.googleapis.com/disk.clkdmg.site/clients/9b3db88d-9590-4010-a962-3870d85cd2de/images/account/9b49f39b-1463-4118-94a0-8832ff44ce37.png"
+        type="image/x-icon">
+    <link rel="preload" href="/subscribe/_next/static/css/e76a6292e04d43db.css" as="style">
+    <link rel="stylesheet" href="/subscribe/_next/static/css/e76a6292e04d43db.css" data-n-g="">
+    <link rel="preload" href="/subscribe/_next/static/css/36e3ce14b1c652b5.css" as="style">
+    <link rel="stylesheet" href="/subscribe/_next/static/css/36e3ce14b1c652b5.css" data-n-p=""><noscript
+        data-n-css=""></noscript>
+    <script type="text/javascript" async=""
+        src="https://www.gstatic.com/recaptcha/releases/V6_85qpc2Xf2sbe3xTnRte7m/recaptcha__pt_br.js"
+        crossorigin="anonymous"
+        integrity="sha384-d4xKS5Mo/hjWYlKN4sv5eLrg/kXLfzEQxzz36VZ3iRECKksk8+o0eocX5K7vcKY8"></script>
+    <script type="text/javascript" async="" src="https://www.google-analytics.com/plugins/ua/ec.js"></script>
+    <script async="" src="https://www.google-analytics.com/analytics.js"></script>
+    <script async="" src="https://connect.facebook.net/en_US/fbevents.js"></script>
+    <script defer="" nomodule="" src="/subscribe/_next/static/chunks/polyfills-78c92fac7aa8fdd8.js"></script>
+    <script src="/subscribe/_next/static/chunks/webpack-13ab7b1377f378e7.js" defer=""></script>
+    <script src="/subscribe/_next/static/chunks/framework-44516c3a1b14dd70.js" defer=""></script>
+    <script src="/subscribe/_next/static/chunks/main-3335dedc023b2e67.js" defer=""></script>
+    <script src="/subscribe/_next/static/chunks/pages/_app-8e9656ebfc942af2.js" defer=""></script>
+    <script src="/subscribe/_next/static/chunks/a447bf24-e037711bd938362f.js" defer=""></script>
+    <script src="/subscribe/_next/static/chunks/681-bfea21c7af5e1a78.js" defer=""></script>
+    <script src="/subscribe/_next/static/chunks/306-d6e5ecb0b7cf7a96.js" defer=""></script>
+    <script src="/subscribe/_next/static/chunks/pages/%5Bid%5D-8a848cd12a2a01e9.js" defer=""></script>
+    <script src="/subscribe/_next/static/ScmDrYVCiIOFAUm78JkuN/_buildManifest.js" defer=""></script>
+    <script src="/subscribe/_next/static/ScmDrYVCiIOFAUm78JkuN/_ssgManifest.js" defer=""></script>
+    <style type="text/css" id="operaUserStyle"></style>
+    <style id="_goober">
+        .go1475592160 {
+            height: 0;
+        }
+
+        .go1671063245 {
+            height: auto;
+        }
+
+        .go1888806478 {
+            display: flex;
+            flex-wrap: wrap;
+            flex-grow: 1;
+        }
+
+        @media (min-width:600px) {
+            .go1888806478 {
+                flex-grow: initial;
+                min-width: 288px;
+            }
+        }
+
+        .go167266335 {
+            background-color: #313131;
+            font-size: 0.875rem;
+            line-height: 1.43;
+            letter-spacing: 0.01071em;
+            color: #fff;
+            align-items: center;
+            padding: 6px 16px;
+            border-radius: 4px;
+            box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+        }
+
+        .go3162094071 {
+            padding-left: 20px;
+        }
+
+        .go3844575157 {
+            background-color: #313131;
+        }
+
+        .go1725278324 {
+            background-color: #43a047;
+        }
+
+        .go3651055292 {
+            background-color: #d32f2f;
+        }
+
+        .go4215275574 {
+            background-color: #ff9800;
+        }
+
+        .go1930647212 {
+            background-color: #2196f3;
+        }
+
+        .go946087465 {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+        }
+
+        .go703367398 {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+            padding-left: 16px;
+            margin-right: -8px;
+        }
+
+        .go3963613292 {
+            width: 100%;
+            position: relative;
+            transform: translateX(0);
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            min-width: 288px;
+        }
+
+        .go1141946668 {
+            box-sizing: border-box;
+            display: flex;
+            max-height: 100%;
+            position: fixed;
+            z-index: 1400;
+            height: auto;
+            width: auto;
+            transition: top 300ms ease 0ms, right 300ms ease 0ms, bottom 300ms ease 0ms, left 300ms ease 0ms, max-width 300ms ease 0ms;
+            pointer-events: none;
+            max-width: calc(100% - 40px);
+        }
+
+        .go1141946668 .notistack-CollapseWrapper {
+            padding: 6px 0px;
+            transition: padding 300ms ease 0ms;
+        }
+
+        @media (max-width:599.95px) {
+            .go1141946668 {
+                width: 100%;
+                max-width: calc(100% - 32px);
+            }
+        }
+
+        .go3868796639 .notistack-CollapseWrapper {
+            padding: 2px 0px;
+        }
+
+        .go3118922589 {
+            top: 14px;
+            flex-direction: column;
+        }
+
+        .go1453831412 {
+            bottom: 14px;
+            flex-direction: column-reverse;
+        }
+
+        .go4027089540 {
+            left: 20px;
+        }
+
+        @media (min-width:600px) {
+            .go4027089540 {
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width:599.95px) {
+            .go4027089540 {
+                left: 16px;
+            }
+        }
+
+        .go2989568495 {
+            right: 20px;
+        }
+
+        @media (min-width:600px) {
+            .go2989568495 {
+                align-items: flex-end;
+            }
+        }
+
+        @media (max-width:599.95px) {
+            .go2989568495 {
+                right: 16px;
+            }
+        }
+
+        .go4034260886 {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        @media (min-width:600px) {
+            .go4034260886 {
+                align-items: center;
+            }
+        }
+    </style>
+    <style data-emotion="css-global" data-s="">
+        html {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            box-sizing: border-box;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: inherit;
+        }
+
+        strong,
+        b {
+            font-weight: 700;
+        }
+
+        body {
+            margin: 0;
+            color: rgba(0, 0, 0, 0.87);
+            font-family: Nunito, Lato, Arial, Helvetica, sans-serif;
+            font-weight: 400;
+            font-size: 1rem;
+            line-height: 1.5;
+            background-color: #fff;
+        }
+
+        @media print {
+            body {
+                background-color: #fff;
+            }
+        }
+
+        body::backdrop {
+            background-color: #fff;
+        }
+    </style>
+    <title>Grupo Robin Hood - Katus School</title>
+</head>
+
+<body id="app" style="background-color: rgb(237, 240, 252);">
+    <div id="__next">
+        <div></div>
+        <div><span><span class="styles_oval-right__r_PrP" style="background-color: rgb(31, 188, 156);"></span><span
+                    class="styles_oval-left__vZ59j" style="background-color: rgb(31, 188, 156);"></span></span>
+            <div class="mx-auto flex flex-col justify-start">
+                <header class="flex w-full px-0">
+                    <div class="styles_order-details-background__npQTQ flex flex-auto flex-col justify-center"
+                        style="background-image: linear-gradient(231deg, rgb(28, 160, 133), rgb(46, 204, 112));">
+                        <div class="flex w-full flex-col pb-10">
+                            <div class="mb-lg-0 styles_secure-payment__B1qXa styles_secure-payment--background__CaR9U  mb-3 !py-4 text-center"
+                                style="color: rgb(255, 255, 255);"><svg aria-hidden="true" focusable="false"
+                                    data-prefix="fal" data-icon="lock-keyhole" class="svg-inline--fa fa-lock-keyhole "
+                                    role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                    <path fill="currentColor"
+                                        d="M224 32c53 0 96 43 96 96v64H128V128c0-53 43-96 96-96zM96 128v64H80c-44.2 0-80 35.8-80 80V432c0 44.2 35.8 80 80 80H368c44.2 0 80-35.8 80-80V272c0-44.2-35.8-80-80-80H352V128C352 57.3 294.7 0 224 0S96 57.3 96 128zM80 224H368c26.5 0 48 21.5 48 48V432c0 26.5-21.5 48-48 48H80c-26.5 0-48-21.5-48-48V272c0-26.5 21.5-48 48-48zm160 88c0-8.8-7.2-16-16-16s-16 7.2-16 16v80c0 8.8 7.2 16 16 16s16-7.2 16-16V312z">
+                                    </path>
+                                </svg>&nbsp;Compra Segura</div>
+                            <div class="product-section flex w-full flex-col justify-center self-center px-4 py-4">
+                                <div class="flex flex-col self-center"><img alt="product-image" loading="lazy"
+                                        width="150" height="150" decoding="async" data-nimg="1"
+                                        class="styles_product-image__CsPQ8 styles_product-image-mobile__ze03b my-auto"
+                                        srcset="/subscribe/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fdisk.clkdmg.site%2Fclients%2F9b3db88d-9590-4010-a962-3870d85cd2de%2Fimages%2Fproducts%2F9bc4eea9-9c14-48dd-aa12-f23b1a48fa8e.png&amp;w=256&amp;q=75 1x, /subscribe/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fdisk.clkdmg.site%2Fclients%2F9b3db88d-9590-4010-a962-3870d85cd2de%2Fimages%2Fproducts%2F9bc4eea9-9c14-48dd-aa12-f23b1a48fa8e.png&amp;w=384&amp;q=75 2x"
+                                        src="https://checkout.katus.school/subscribe/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fdisk.clkdmg.site%2Fclients%2F9b3db88d-9590-4010-a962-3870d85cd2de%2Fimages%2Fproducts%2F9bc4eea9-9c14-48dd-aa12-f23b1a48fa8e.png&amp;w=384&amp;q=75"
+                                        style="color: transparent; border: 2px solid rgb(46, 204, 112); background-color: rgb(28, 160, 133);">
+                                </div>
+                                <div class="styles_product-title__Gb1js self-center pb-2 pl-0 pt-3"
+                                    style="color: rgb(255, 255, 255);">Grupo Robin Hood</div>
+                                <div>
+                                    <div
+                                        class="styles_subtitle-elements--title__1wPbT flex flex-col justify-between pt-0">
+                                        <span class="styles_total-price-label__VxKCo "
+                                            style="color: rgb(255, 255, 255);">Total</span><span
+                                            class="styles_total-price-value__Adtj7 flex justify-center pt-2"
+                                            style="color: rgb(255, 255, 255);">R$117,00</span>
+                                        <div class="flex flex-col self-center"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="styles_order-detail-collapse__Ij9S_ pb-2"><span>Detalhe da Compra</span><svg
+                                    aria-hidden="true" focusable="false" data-prefix="fal" data-icon="angle-down"
+                                    class="svg-inline--fa fa-angle-down " role="img" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 448 512">
+                                    <path fill="currentColor"
+                                        d="M212.7 363.3c6.2 6.2 16.4 6.2 22.6 0l160-160c6.2-6.2 6.2-16.4 0-22.6s-16.4-6.2-22.6 0L224 329.4 75.3 180.7c-6.2-6.2-16.4-6.2-22.6 0s-6.2 16.4 0 22.6l160 160z">
+                                    </path>
+                                </svg></div>
+                        </div>
+                    </div>
+                </header>
+                <div class="relative flex flex-auto flex-col pl-0 pr-0">
+                    <div class="px-0 pt-1">
+                        <div class="px-0">
+                            <div class="background-clip"
+                                style="height: 40px; margin-top: -40px; background: rgb(255, 255, 255); clip-path: ellipse(55% 90% at 50% 90%);">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="-mt-[1px] flex flex-auto flex-col pb-6" style="background-color: rgb(255, 255, 255);">
+                        <div class="flex w-full justify-center sm:justify-end  MuiBox-root css-0">
+                            <div class="flex items-center gap-2 MuiBox-root css-0"><img alt="🇧🇷" draggable="false"
+                                    loading="eager" width="40" height="28" decoding="async" data-nimg="1"
+                                    src="https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f1e7-1f1f7.svg"
+                                    style="color: transparent;">
+                                <div
+                                    class="MuiAutocomplete-root MuiAutocomplete-hasPopupIcon styles_autocomplete__pGxLg css-2dvya8">
+                                    <div
+                                        class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root styles_textField__u_n78 css-1m4vfgd">
+                                        <div
+                                            class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-adornedEnd MuiAutocomplete-inputRoot css-1j3c7x3">
+                                            <input aria-invalid="false" autocomplete="off" id=":r39:"
+                                                placeholder="Alterar País" type="text"
+                                                class="MuiInputBase-input MuiInput-input MuiInputBase-inputAdornedEnd MuiAutocomplete-input MuiAutocomplete-inputFocused css-mnn31"
+                                                aria-autocomplete="list" aria-expanded="false" autocapitalize="none"
+                                                spellcheck="false" role="combobox" value="">
+                                            <div class="MuiAutocomplete-endAdornment css-mxlkbn"><button
+                                                    class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium MuiAutocomplete-popupIndicator css-uge3vf"
+                                                    tabindex="-1" type="button" aria-label="Open" title="Open"><svg
+                                                        class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-vubbuv"
+                                                        focusable="false" aria-hidden="true" viewBox="0 0 24 24"
+                                                        data-testid="ArrowDropDownIcon">
+                                                        <path d="M7 10l5 5 5-5z"></path>
+                                                    </svg><span class="MuiTouchRipple-root css-w0pj6f"></span></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <form class="p-4 pb-0">
+                                <div class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-2 css-isbt42">
+                                    <div
+                                        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-4 css-17ub365">
+                                        <div class="styles_hasIcon__ahkFY MuiBox-root css-1yp4ln">
+                                            <div class="styles_icon__wKQFL  z-[1]"><svg aria-hidden="true"
+                                                    focusable="false" data-prefix="fal" data-icon="user"
+                                                    class="svg-inline--fa fa-user fa-xl " role="img"
+                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
+                                                    style="color: rgb(39, 175, 96);">
+                                                    <path fill="currentColor"
+                                                        d="M320 128a96 96 0 1 0 -192 0 96 96 0 1 0 192 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM32 480H416c-1.2-79.7-66.2-144-146.3-144H178.3c-80 0-145 64.3-146.3 144zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z">
+                                                    </path>
+                                                </svg></div>
+                                            <div
+                                                class="MuiFormControl-root MuiTextField-root styles_textField__pz9RA  css-1b1ociv">
+                                                <label
+                                                    class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-standard MuiFormLabel-colorWarning Mui-required MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-standard css-kuyuf6"
+                                                    data-shrink="false" for="name" id="name-label">Nome e sobrenome<span
+                                                        aria-hidden="true"
+                                                        class="MuiFormLabel-asterisk MuiInputLabel-asterisk css-6x9nf6">&thinsp;*</span></label>
+                                                <div
+                                                    class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorWarning MuiInputBase-formControl MuiInputBase-adornedEnd css-qn77wy">
+                                                    <input aria-invalid="false" autocomplete="on" id="name"
+                                                        name="contact_name" required="" type="text"
+                                                        class="MuiInputBase-input MuiInput-input MuiInputBase-inputAdornedEnd css-mnn31"
+                                                        value="">
+                                                    <div
+                                                        class="MuiInputAdornment-root MuiInputAdornment-positionEnd MuiInputAdornment-standard MuiInputAdornment-sizeMedium css-1nvf7g0">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-4 css-17ub365">
+                                        <div class="styles_hasIcon__ahkFY MuiBox-root css-1yp4ln">
+                                            <div class="styles_icon__wKQFL  z-[1]"><svg aria-hidden="true"
+                                                    focusable="false" data-prefix="fal" data-icon="envelope"
+                                                    class="svg-inline--fa fa-envelope fa-xl " role="img"
+                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
+                                                    style="color: rgb(39, 175, 96);">
+                                                    <path fill="currentColor"
+                                                        d="M64 96c-17.7 0-32 14.3-32 32v39.9L227.6 311.3c16.9 12.4 39.9 12.4 56.8 0L480 167.9V128c0-17.7-14.3-32-32-32H64zM32 207.6V384c0 17.7 14.3 32 32 32H448c17.7 0 32-14.3 32-32V207.6L303.3 337.1c-28.2 20.6-66.5 20.6-94.6 0L32 207.6zM0 128C0 92.7 28.7 64 64 64H448c35.3 0 64 28.7 64 64V384c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128z">
+                                                    </path>
+                                                </svg></div>
+                                            <div
+                                                class="MuiFormControl-root MuiTextField-root styles_textField__pz9RA  css-1b1ociv">
+                                                <label
+                                                    class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-standard MuiFormLabel-colorWarning Mui-required MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-standard css-kuyuf6"
+                                                    data-shrink="false" for="email" id="email-label">E-mail<span
+                                                        aria-hidden="true"
+                                                        class="MuiFormLabel-asterisk MuiInputLabel-asterisk css-6x9nf6">&thinsp;*</span></label>
+                                                <div
+                                                    class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorWarning MuiInputBase-formControl MuiInputBase-adornedEnd css-qn77wy">
+                                                    <input aria-invalid="false" autocomplete="on" id="email"
+                                                        name="contact_email" required="" type="text"
+                                                        class="MuiInputBase-input MuiInput-input MuiInputBase-inputAdornedEnd css-mnn31"
+                                                        value="">
+                                                    <div
+                                                        class="MuiInputAdornment-root MuiInputAdornment-positionEnd MuiInputAdornment-standard MuiInputAdornment-sizeMedium css-1nvf7g0">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-4 css-17ub365">
+                                        <div class="styles_hasIcon__ahkFY MuiBox-root css-1yp4ln">
+                                            <div class="styles_icon__wKQFL  z-[1]"><svg aria-hidden="true"
+                                                    focusable="false" data-prefix="fal" data-icon="envelope"
+                                                    class="svg-inline--fa fa-envelope fa-xl " role="img"
+                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
+                                                    style="color: rgb(39, 175, 96);">
+                                                    <path fill="currentColor"
+                                                        d="M64 96c-17.7 0-32 14.3-32 32v39.9L227.6 311.3c16.9 12.4 39.9 12.4 56.8 0L480 167.9V128c0-17.7-14.3-32-32-32H64zM32 207.6V384c0 17.7 14.3 32 32 32H448c17.7 0 32-14.3 32-32V207.6L303.3 337.1c-28.2 20.6-66.5 20.6-94.6 0L32 207.6zM0 128C0 92.7 28.7 64 64 64H448c35.3 0 64 28.7 64 64V384c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128z">
+                                                    </path>
+                                                </svg></div>
+                                            <div
+                                                class="MuiFormControl-root MuiTextField-root styles_textField__pz9RA  css-1b1ociv">
+                                                <label
+                                                    class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-standard MuiFormLabel-colorWarning Mui-required MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-standard css-kuyuf6"
+                                                    data-shrink="false" for="email_confirmation"
+                                                    id="email_confirmation-label">Confirme o E-mail<span
+                                                        aria-hidden="true"
+                                                        class="MuiFormLabel-asterisk MuiInputLabel-asterisk css-6x9nf6">&thinsp;*</span></label>
+                                                <div
+                                                    class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorWarning MuiInputBase-formControl MuiInputBase-adornedEnd css-qn77wy">
+                                                    <input aria-invalid="false" autocomplete="on"
+                                                        id="email_confirmation" name="contact_email_confirmation"
+                                                        required="" type="text"
+                                                        class="MuiInputBase-input MuiInput-input MuiInputBase-inputAdornedEnd css-mnn31"
+                                                        value="">
+                                                    <div
+                                                        class="MuiInputAdornment-root MuiInputAdornment-positionEnd MuiInputAdornment-standard MuiInputAdornment-sizeMedium css-1nvf7g0">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6 css-1m6lu2z">
+                                        <div class="styles_phonefield__Ibxwp MuiBox-root css-0">
+                                            <div>
+                                                <div
+                                                    class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-sizeSmall styles_countries__pAcPQ css-2mhdln">
+                                                    <div tabindex="0" role="combobox" aria-controls=":r49:"
+                                                        aria-expanded="false" aria-haspopup="listbox"
+                                                        class="MuiSelect-select MuiSelect-standard MuiInputBase-input MuiInput-input MuiInputBase-inputSizeSmall css-qq14pi">
+                                                        <img alt="br" draggable="false" loading="eager" width="40"
+                                                            height="28" decoding="async" data-nimg="1"
+                                                            src="https://cdn.jsdelivr.net/npm/twemoji@11.3.0/2/svg/1f1e7-1f1f7.svg"
+                                                            style="color: transparent;"><span>Brazil (Brasil) +55</span>
+                                                    </div><input aria-invalid="false" aria-hidden="true" tabindex="-1"
+                                                        class="MuiSelect-nativeInput css-1k3x8v3" value="br"><svg
+                                                        class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiSelect-icon MuiSelect-iconStandard css-1utq5rl"
+                                                        focusable="false" aria-hidden="true" viewBox="0 0 24 24"
+                                                        data-testid="ArrowDropDownIcon">
+                                                        <path d="M7 10l5 5 5-5z"></path>
+                                                    </svg>
+                                                </div>
+                                                <div
+                                                    class="MuiFormControl-root MuiTextField-root styles_textField__pz9RA css-lfghmc">
+                                                    <label
+                                                        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-standard MuiFormLabel-colorPrimary Mui-required MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-standard css-avbkcd"
+                                                        data-shrink="false" for="phone_number"
+                                                        id="phone_number-label">Celular<span aria-hidden="true"
+                                                            class="MuiFormLabel-asterisk MuiInputLabel-asterisk css-6x9nf6">&thinsp;*</span></label>
+                                                    <div
+                                                        class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-formControl MuiInputBase-adornedEnd css-yszagp">
+                                                        <input aria-invalid="false" id="phone_number"
+                                                            placeholder="99 999 999 999" required="" type="tel"
+                                                            class="MuiInputBase-input MuiInput-input MuiInputBase-inputAdornedEnd css-mnn31"
+                                                            value="">
+                                                        <div
+                                                            class="MuiInputAdornment-root MuiInputAdornment-positionEnd MuiInputAdornment-standard MuiInputAdornment-sizeMedium css-1nvf7g0">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="styles_error_text__TlN11" style="color: rgb(250, 93, 93);">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6 css-1m6lu2z">
+                                        <div class="styles_hasIcon__ahkFY MuiBox-root css-1yp4ln">
+                                            <div class="styles_icon__wKQFL  z-[1]"><svg aria-hidden="true"
+                                                    focusable="false" data-prefix="fal" data-icon="id-card"
+                                                    class="svg-inline--fa fa-id-card fa-xl " role="img"
+                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"
+                                                    style="color: rgb(39, 175, 96);">
+                                                    <path fill="currentColor"
+                                                        d="M64 64C46.3 64 32 78.3 32 96l512 0c0-17.7-14.3-32-32-32H64zM0 112V96C0 60.7 28.7 32 64 32H512c35.3 0 64 28.7 64 64v16V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V112zm544 16H32V416c0 17.7 14.3 32 32 32H512c17.7 0 32-14.3 32-32V128zM192 256a32 32 0 1 0 0-64 32 32 0 1 0 0 64zm0-96a64 64 0 1 1 0 128 64 64 0 1 1 0-128zM160 352c-26.5 0-48 21.5-48 48c0 8.8-7.2 16-16 16s-16-7.2-16-16c0-44.2 35.8-80 80-80h64c44.2 0 80 35.8 80 80c0 8.8-7.2 16-16 16s-16-7.2-16-16c0-26.5-21.5-48-48-48H160zM336 208c0-8.8 7.2-16 16-16H480c8.8 0 16 7.2 16 16s-7.2 16-16 16H352c-8.8 0-16-7.2-16-16zm0 64c0-8.8 7.2-16 16-16H480c8.8 0 16 7.2 16 16s-7.2 16-16 16H352c-8.8 0-16-7.2-16-16zm0 64c0-8.8 7.2-16 16-16H480c8.8 0 16 7.2 16 16s-7.2 16-16 16H352c-8.8 0-16-7.2-16-16z">
+                                                    </path>
+                                                </svg></div>
+                                            <div
+                                                class="MuiFormControl-root MuiTextField-root styles_textField__pz9RA  css-1b1ociv">
+                                                <label
+                                                    class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-standard MuiFormLabel-colorWarning Mui-required MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-standard css-kuyuf6"
+                                                    data-shrink="false" for="contact_yKfBcvpR61"
+                                                    id="contact_yKfBcvpR61-label">CPF / CNPJ<span aria-hidden="true"
+                                                        class="MuiFormLabel-asterisk MuiInputLabel-asterisk css-6x9nf6">&thinsp;*</span></label>
+                                                <div
+                                                    class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorWarning MuiInputBase-formControl MuiInputBase-adornedEnd css-qn77wy">
+                                                    <input aria-invalid="false" autocomplete="off"
+                                                        id="contact_yKfBcvpR61" required="" type="tel"
+                                                        autocapitalize="off" autocorrect="off" spellcheck="false"
+                                                        class="MuiInputBase-input MuiInput-input MuiInputBase-inputAdornedEnd css-mnn31"
+                                                        value="">
+                                                    <div
+                                                        class="MuiInputAdornment-root MuiInputAdornment-positionEnd MuiInputAdornment-standard MuiInputAdornment-sizeMedium css-1nvf7g0">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="pt-6">
+                            <form class="p-4 pt-0">
+                                <div class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-2 css-isbt42">
+                                    <div
+                                        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-4 css-17ub365">
+                                        <div class="MuiBox-root css-1yp4ln">
+                                            <div
+                                                class="MuiFormControl-root MuiTextField-root styles_textField__pz9RA  css-1b1ociv">
+                                                <label
+                                                    class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-standard MuiFormLabel-colorWarning Mui-required MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-standard css-kuyuf6"
+                                                    data-shrink="false" for="zip_code" id="zip_code-label">CEP<span
+                                                        aria-hidden="true"
+                                                        class="MuiFormLabel-asterisk MuiInputLabel-asterisk css-6x9nf6">&thinsp;*</span></label>
+                                                <div
+                                                    class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorWarning MuiInputBase-formControl MuiInputBase-adornedEnd css-qn77wy">
+                                                    <input aria-invalid="false" autocomplete="on" id="zip_code"
+                                                        required="" type="text" autocapitalize="on" autocorrect="on"
+                                                        spellcheck="true"
+                                                        class="MuiInputBase-input MuiInput-input MuiInputBase-inputAdornedEnd css-mnn31"
+                                                        value="">
+                                                    <div
+                                                        class="MuiInputAdornment-root MuiInputAdornment-positionEnd MuiInputAdornment-standard MuiInputAdornment-sizeMedium css-1nvf7g0">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-8 hidden css-13um2j0">
+                                        <div class="MuiBox-root css-1yp4ln">
+                                            <div
+                                                class="MuiFormControl-root MuiTextField-root styles_textField__pz9RA  css-1b1ociv">
+                                                <label
+                                                    class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-standard MuiFormLabel-colorWarning Mui-disabled Mui-required MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-standard css-kuyuf6"
+                                                    data-shrink="false" for="street" id="street-label">Endereço<span
+                                                        aria-hidden="true"
+                                                        class="MuiFormLabel-asterisk MuiInputLabel-asterisk css-6x9nf6">&thinsp;*</span></label>
+                                                <div
+                                                    class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorWarning Mui-disabled MuiInputBase-formControl MuiInputBase-adornedEnd css-qn77wy">
+                                                    <input aria-invalid="false" autocomplete="on" disabled=""
+                                                        id="street" name="contact_address" required="" type="text"
+                                                        class="MuiInputBase-input MuiInput-input Mui-disabled MuiInputBase-inputAdornedEnd css-mnn31"
+                                                        value="">
+                                                    <div
+                                                        class="MuiInputAdornment-root MuiInputAdornment-positionEnd MuiInputAdornment-standard MuiInputAdornment-sizeMedium css-1nvf7g0">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-3 hidden css-w7ekmr">
+                                        <div class="MuiBox-root css-1yp4ln">
+                                            <div
+                                                class="MuiFormControl-root MuiTextField-root styles_textField__pz9RA  css-1b1ociv">
+                                                <label
+                                                    class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-standard MuiFormLabel-colorWarning Mui-disabled Mui-required MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-standard css-kuyuf6"
+                                                    data-shrink="false" for="number" id="number-label">Número<span
+                                                        aria-hidden="true"
+                                                        class="MuiFormLabel-asterisk MuiInputLabel-asterisk css-6x9nf6">&thinsp;*</span></label>
+                                                <div
+                                                    class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorWarning Mui-disabled MuiInputBase-formControl MuiInputBase-adornedEnd css-qn77wy">
+                                                    <input aria-invalid="false" autocomplete="on" disabled=""
+                                                        id="number" required="" type="text" autocapitalize="on"
+                                                        autocorrect="on" spellcheck="true"
+                                                        class="MuiInputBase-input MuiInput-input Mui-disabled MuiInputBase-inputAdornedEnd css-mnn31"
+                                                        maxlength="10" value="">
+                                                    <div
+                                                        class="MuiInputAdornment-root MuiInputAdornment-positionEnd MuiInputAdornment-standard MuiInputAdornment-sizeMedium css-1nvf7g0">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-5 hidden css-8ladh1">
+                                        <div class="MuiBox-root css-1yp4ln">
+                                            <div
+                                                class="MuiFormControl-root MuiTextField-root styles_textField__pz9RA  css-2og46z">
+                                                <label
+                                                    class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-standard MuiFormLabel-colorPrimary Mui-disabled MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-standard css-avbkcd"
+                                                    data-shrink="false" for="complement"
+                                                    id="complement-label">Compl.</label>
+                                                <div
+                                                    class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary Mui-disabled MuiInputBase-formControl MuiInputBase-adornedEnd css-yszagp">
+                                                    <input aria-invalid="false" autocomplete="on" disabled=""
+                                                        id="complement" name="contact_address_comp" type="text"
+                                                        class="MuiInputBase-input MuiInput-input Mui-disabled MuiInputBase-inputAdornedEnd css-mnn31"
+                                                        value="">
+                                                    <div
+                                                        class="MuiInputAdornment-root MuiInputAdornment-positionEnd MuiInputAdornment-standard MuiInputAdornment-sizeMedium css-1nvf7g0">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-4 hidden css-17ub365">
+                                        <div class="MuiBox-root css-1yp4ln">
+                                            <div
+                                                class="MuiFormControl-root MuiTextField-root styles_textField__pz9RA  css-1b1ociv">
+                                                <label
+                                                    class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-standard MuiFormLabel-colorWarning Mui-disabled Mui-required MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-standard css-kuyuf6"
+                                                    data-shrink="false" for="district" id="district-label">Bairro<span
+                                                        aria-hidden="true"
+                                                        class="MuiFormLabel-asterisk MuiInputLabel-asterisk css-6x9nf6">&thinsp;*</span></label>
+                                                <div
+                                                    class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorWarning Mui-disabled MuiInputBase-formControl MuiInputBase-adornedEnd css-qn77wy">
+                                                    <input aria-invalid="false" autocomplete="on" disabled=""
+                                                        id="district" name="contact_address_district" required=""
+                                                        type="text"
+                                                        class="MuiInputBase-input MuiInput-input Mui-disabled MuiInputBase-inputAdornedEnd css-mnn31"
+                                                        value="">
+                                                    <div
+                                                        class="MuiInputAdornment-root MuiInputAdornment-positionEnd MuiInputAdornment-standard MuiInputAdornment-sizeMedium css-1nvf7g0">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6 hidden css-1m6lu2z">
+                                        <div class="MuiBox-root css-1yp4ln">
+                                            <div
+                                                class="MuiFormControl-root MuiTextField-root styles_textField__pz9RA  css-1b1ociv">
+                                                <label
+                                                    class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-standard MuiFormLabel-colorWarning Mui-disabled Mui-required MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-standard css-kuyuf6"
+                                                    data-shrink="false" for="city" id="city-label">Cidade<span
+                                                        aria-hidden="true"
+                                                        class="MuiFormLabel-asterisk MuiInputLabel-asterisk css-6x9nf6">&thinsp;*</span></label>
+                                                <div
+                                                    class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorWarning Mui-disabled MuiInputBase-formControl MuiInputBase-adornedEnd css-qn77wy">
+                                                    <input aria-invalid="false" autocomplete="on" disabled="" id="city"
+                                                        name="contact_address_city" required="" type="text"
+                                                        class="MuiInputBase-input MuiInput-input Mui-disabled MuiInputBase-inputAdornedEnd css-mnn31"
+                                                        value="">
+                                                    <div
+                                                        class="MuiInputAdornment-root MuiInputAdornment-positionEnd MuiInputAdornment-standard MuiInputAdornment-sizeMedium css-1nvf7g0">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6 hidden css-1m6lu2z">
+                                        <div class="MuiAutocomplete-root MuiAutocomplete-hasPopupIcon styles_autocomplete__jMvsV undefined required css-2dvya8"
+                                            name="contact_address_state">
+                                            <div class="MuiBox-root css-15uo4zv">
+                                                <div
+                                                    class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root styles_textField__pz9RA styles_textField__qKDc3 Mui-required  css-2igzaa">
+                                                    <label
+                                                        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-standard MuiFormLabel-colorWarning Mui-disabled MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-standard css-kuyuf6"
+                                                        data-shrink="false" for=":r3n:" id=":r3n:-label">Estado
+                                                        *</label>
+                                                    <div
+                                                        class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorWarning Mui-disabled MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-adornedEnd MuiAutocomplete-inputRoot css-1jmv0ar">
+                                                        <input aria-invalid="false" autocomplete="off" disabled=""
+                                                            id=":r3n:" name="contact_address_state" type="text"
+                                                            class="MuiInputBase-input MuiInput-input Mui-disabled MuiInputBase-inputAdornedEnd MuiAutocomplete-input MuiAutocomplete-inputFocused css-mnn31"
+                                                            aria-autocomplete="list" aria-expanded="false"
+                                                            autocapitalize="none" spellcheck="false" role="combobox"
+                                                            value="">
+                                                        <div class="MuiAutocomplete-endAdornment css-mxlkbn"><button
+                                                                class="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-sizeMedium MuiAutocomplete-popupIndicator css-uge3vf"
+                                                                tabindex="-1" type="button" disabled=""
+                                                                aria-label="Open" title="Open"><svg aria-hidden="true"
+                                                                    focusable="false" data-prefix="fal"
+                                                                    data-icon="chevron-down"
+                                                                    class="svg-inline--fa fa-chevron-down fa-sm "
+                                                                    role="img" xmlns="http://www.w3.org/2000/svg"
+                                                                    viewBox="0 0 512 512">
+                                                                    <path fill="currentColor"
+                                                                        d="M267.3 395.3c-6.2 6.2-16.4 6.2-22.6 0l-192-192c-6.2-6.2-6.2-16.4 0-22.6s16.4-6.2 22.6 0L256 361.4 436.7 180.7c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6l-192 192z">
+                                                                    </path>
+                                                                </svg></button></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="pt-6">
+                            <div class="mb-3 flex flex-row items-center justify-center gap-2"
+                                style="color: rgb(39, 175, 96);"><svg aria-hidden="true" focusable="false"
+                                    data-prefix="fal" data-icon="ticket" class="svg-inline--fa fa-ticket " role="img"
+                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                                    <path fill="currentColor"
+                                        d="M64 64C28.7 64 0 92.7 0 128v66c0 7.3 4.9 13.7 12 15.5c20.7 5.3 36 24.1 36 46.5s-15.3 41.2-36 46.5C4.9 304.3 0 310.7 0 318v66c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V318c0-7.3-4.9-13.7-12-15.5c-20.7-5.3-36-24.1-36-46.5s15.3-41.2 36-46.5c7.1-1.8 12-8.2 12-15.5V128c0-35.3-28.7-64-64-64H64zM32 128c0-17.7 14.3-32 32-32H512c17.7 0 32 14.3 32 32v54.7c-28.2 12.3-48 40.5-48 73.3s19.8 61 48 73.3V384c0 17.7-14.3 32-32 32H64c-17.7 0-32-14.3-32-32V329.3C60.2 317 80 288.8 80 256s-19.8-61-48-73.3V128zm128 64H416V320H160V192zm-32 0V320c0 17.7 14.3 32 32 32H416c17.7 0 32-14.3 32-32V192c0-17.7-14.3-32-32-32H160c-17.7 0-32 14.3-32 32z">
+                                    </path>
+                                </svg><a class="flex cursor-pointer" style="color: rgb(39, 175, 96);">Adicionar Cupom de
+                                    Desconto</a></div>
+                            <div class="pb-4">
+                                <div class="flex w-full items-center justify-center gap-1 px-4 mobile:flex-col"><button
+                                        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary styles_btn__x_Jhk mx-2 my-2  styles_selected__a6npu  lg:w-1/4 mobile:w-full desktop:w-auto css-1btaynj"
+                                        tabindex="0" type="button"
+                                        style="background-image: linear-gradient(rgb(255, 255, 255), rgb(255, 255, 255)), radial-gradient(circle at left top, rgb(31, 188, 156), rgb(46, 204, 112));"><span
+                                            class="flex items-center justify-center px-2"
+                                            style="color: rgb(31, 188, 156);"><span class="mr-2"><svg aria-hidden="true"
+                                                    focusable="false" data-prefix="fal" data-icon="credit-card"
+                                                    class="svg-inline--fa fa-credit-card fa-2x " role="img"
+                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                                                    <path fill="currentColor"
+                                                        d="M64 64C46.3 64 32 78.3 32 96v32H544V96c0-17.7-14.3-32-32-32H64zM32 160v64H544V160H32zm0 96V416c0 17.7 14.3 32 32 32H512c17.7 0 32-14.3 32-32V256H32zM0 96C0 60.7 28.7 32 64 32H512c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96zM96 368c0-8.8 7.2-16 16-16h64c8.8 0 16 7.2 16 16s-7.2 16-16 16H112c-8.8 0-16-7.2-16-16zm128 0c0-8.8 7.2-16 16-16H368c8.8 0 16 7.2 16 16s-7.2 16-16 16H240c-8.8 0-16-7.2-16-16z">
+                                                    </path>
+                                                </svg></span>&nbsp;<span>Cartão de Crédito</span></span><span
+                                            class="MuiTouchRipple-root css-w0pj6f"></span></button><button
+                                        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary styles_btn__x_Jhk mx-2 my-2    lg:w-1/4 mobile:w-full desktop:w-auto css-1btaynj"
+                                        tabindex="0" type="button"
+                                        style="background-image: linear-gradient(rgb(255, 255, 255), rgb(255, 255, 255)), radial-gradient(circle at left top, rgb(28, 160, 133), rgb(46, 204, 112));"><span
+                                            class="flex items-center justify-center px-2"
+                                            style="color: rgb(31, 188, 156);"><span class="mr-2"><svg aria-hidden="true"
+                                                    focusable="false" data-prefix="fal" data-icon="qrcode"
+                                                    class="svg-inline--fa fa-qrcode fa-2x " role="img"
+                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                                    <path fill="currentColor"
+                                                        d="M144 64H48c-8.8 0-16 7.2-16 16v96c0 8.8 7.2 16 16 16h96c8.8 0 16-7.2 16-16V80c0-8.8-7.2-16-16-16zM48 32h96c26.5 0 48 21.5 48 48v96c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V80C0 53.5 21.5 32 48 32zm96 288H48c-8.8 0-16 7.2-16 16v96c0 8.8 7.2 16 16 16h96c8.8 0 16-7.2 16-16V336c0-8.8-7.2-16-16-16zM48 288h96c26.5 0 48 21.5 48 48v96c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V336c0-26.5 21.5-48 48-48zM304 64c-8.8 0-16 7.2-16 16v96c0 8.8 7.2 16 16 16h96c8.8 0 16-7.2 16-16V80c0-8.8-7.2-16-16-16H304zM256 80c0-26.5 21.5-48 48-48h96c26.5 0 48 21.5 48 48v96c0 26.5-21.5 48-48 48H304c-26.5 0-48-21.5-48-48V80zm0 224c0-8.8 7.2-16 16-16h64c8.8 0 16 7.2 16 16v68h64V304c0-8.8 7.2-16 16-16s16 7.2 16 16v84c0 8.8-7.2 16-16 16H336c-8.8 0-16-7.2-16-16V320H288V472c0 8.8-7.2 16-16 16s-16-7.2-16-16V304zM88 104h16c8.8 0 16 7.2 16 16v16c0 8.8-7.2 16-16 16H88c-8.8 0-16-7.2-16-16V120c0-8.8 7.2-16 16-16zM72 376c0-8.8 7.2-16 16-16h16c8.8 0 16 7.2 16 16v16c0 8.8-7.2 16-16 16H88c-8.8 0-16-7.2-16-16V376zM344 104h16c8.8 0 16 7.2 16 16v16c0 8.8-7.2 16-16 16H344c-8.8 0-16-7.2-16-16V120c0-8.8 7.2-16 16-16zM320 448c0-8.8 7.2-16 16-16h16c8.8 0 16 7.2 16 16v16c0 8.8-7.2 16-16 16H336c-8.8 0-16-7.2-16-16V448zm96-16h16c8.8 0 16 7.2 16 16v16c0 8.8-7.2 16-16 16H416c-8.8 0-16-7.2-16-16V448c0-8.8 7.2-16 16-16z">
+                                                    </path>
+                                                </svg></span>&nbsp;<span>PIX</span></span><span
+                                            class="MuiTouchRipple-root css-w0pj6f"></span></button></div>
+                                <div>
+                                    <div class="pb-4">
+                                        <div class="mt-10 px-4">
+                                            <form id="payment-form" class="p-4 undefined">
+                                                <div
+                                                    class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-2 css-isbt42">
+                                                    <div
+                                                        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6 css-1m6lu2z">
+                                                        <div class="styles_number_input__uJF6a">
+                                                            <div class="styles_hasIcon__ahkFY MuiBox-root css-1yp4ln">
+                                                                <div class="styles_icon__wKQFL  z-[1]"><svg
+                                                                        aria-hidden="true" focusable="false"
+                                                                        data-prefix="fal" data-icon="credit-card-front"
+                                                                        class="svg-inline--fa fa-credit-card-front fa-xl "
+                                                                        role="img" xmlns="http://www.w3.org/2000/svg"
+                                                                        viewBox="0 0 576 512"
+                                                                        style="color: rgb(39, 175, 96);">
+                                                                        <path fill="currentColor"
+                                                                            d="M512 64c17.7 0 32 14.3 32 32V416c0 17.7-14.3 32-32 32H64c-17.7 0-32-14.3-32-32V96c0-17.7 14.3-32 32-32H512zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zM96 304c0 8.8 7.2 16 16 16H464c8.8 0 16-7.2 16-16s-7.2-16-16-16H112c-8.8 0-16 7.2-16 16zm0 64c0 8.8 7.2 16 16 16h64c8.8 0 16-7.2 16-16s-7.2-16-16-16H112c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16s7.2 16 16 16H368c8.8 0 16-7.2 16-16s-7.2-16-16-16H240zM400 144h64c4.4 0 8 3.6 8 8v48c0 4.4-3.6 8-8 8H400c-4.4 0-8-3.6-8-8V152c0-4.4 3.6-8 8-8zm-40 8v48c0 22.1 17.9 40 40 40h64c22.1 0 40-17.9 40-40V152c0-22.1-17.9-40-40-40H400c-22.1 0-40 17.9-40 40z">
+                                                                        </path>
+                                                                    </svg></div>
+                                                                <div
+                                                                    class="MuiFormControl-root MuiTextField-root styles_textField__pz9RA  css-1b1ociv">
+                                                                    <label
+                                                                        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-standard MuiFormLabel-colorWarning Mui-required MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-standard css-kuyuf6"
+                                                                        data-shrink="false" for="card-number"
+                                                                        id="card-number-label">Número do Cartão<span
+                                                                            aria-hidden="true"
+                                                                            class="MuiFormLabel-asterisk MuiInputLabel-asterisk css-6x9nf6">&thinsp;*</span></label>
+                                                                    <div
+                                                                        class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorWarning MuiInputBase-formControl MuiInputBase-adornedEnd css-qn77wy">
+                                                                        <input aria-invalid="false" autocomplete="on"
+                                                                            id="card-number" required="" type="tel"
+                                                                            autocapitalize="on" autocorrect="on"
+                                                                            spellcheck="true"
+                                                                            class="MuiInputBase-input MuiInput-input MuiInputBase-inputAdornedEnd css-mnn31"
+                                                                            value="">
+                                                                        <div
+                                                                            class="MuiInputAdornment-root MuiInputAdornment-positionEnd MuiInputAdornment-standard MuiInputAdornment-sizeMedium css-1nvf7g0">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="styles_card-brands__UL_3z flex flex-row pt-2">
+                                                                <img alt="" aria-label="Visa" loading="lazy" width="26"
+                                                                    height="18" decoding="async" data-nimg="1"
+                                                                    class="styles_card_brand__cH833 styles_inactive__1CFg2 mx-1"
+                                                                    src="/subscribe/img/icon-visa.svg"
+                                                                    style="color: transparent;"><img alt=""
+                                                                    aria-label="Mastercard" loading="lazy" width="26"
+                                                                    height="18" decoding="async" data-nimg="1"
+                                                                    class="styles_card_brand__cH833 styles_inactive__1CFg2 mx-1"
+                                                                    src="/subscribe/img/icon-mastercard.svg"
+                                                                    style="color: transparent;"><img alt=""
+                                                                    aria-label="American Express" loading="lazy"
+                                                                    width="26" height="18" decoding="async"
+                                                                    data-nimg="1"
+                                                                    class="styles_card_brand__cH833 styles_inactive__1CFg2 mx-1"
+                                                                    src="/subscribe/img/icon-american-express.svg"
+                                                                    style="color: transparent;"><img alt=""
+                                                                    aria-label="Diners Club" loading="lazy" width="26"
+                                                                    height="18" decoding="async" data-nimg="1"
+                                                                    class="styles_card_brand__cH833 styles_inactive__1CFg2 mx-1"
+                                                                    src="/subscribe/img/icon-diners-club.svg"
+                                                                    style="color: transparent;"><img alt=""
+                                                                    aria-label="Discover" loading="lazy" width="26"
+                                                                    height="18" decoding="async" data-nimg="1"
+                                                                    class="styles_card_brand__cH833 styles_inactive__1CFg2 mx-1"
+                                                                    src="/subscribe/img/icon-discover.svg"
+                                                                    style="color: transparent;"><img alt=""
+                                                                    aria-label="JCB" loading="lazy" width="26"
+                                                                    height="18" decoding="async" data-nimg="1"
+                                                                    class="styles_card_brand__cH833 styles_inactive__1CFg2 mx-1"
+                                                                    src="/subscribe/img/icon-jcb.svg"
+                                                                    style="color: transparent;"><img alt=""
+                                                                    aria-label="Elo" loading="lazy" width="26"
+                                                                    height="18" decoding="async" data-nimg="1"
+                                                                    class="styles_card_brand__cH833 styles_inactive__1CFg2 mx-1"
+                                                                    src="/subscribe/img/icon-elo.svg"
+                                                                    style="color: transparent;"><img alt=""
+                                                                    aria-label="HiperCard" loading="lazy" width="26"
+                                                                    height="18" decoding="async" data-nimg="1"
+                                                                    class="styles_card_brand__cH833 styles_inactive__1CFg2 mx-1"
+                                                                    src="/subscribe/img/icon-hipercard.svg"
+                                                                    style="color: transparent;"><img alt=""
+                                                                    aria-label="Aura" loading="lazy" width="26"
+                                                                    height="18" decoding="async" data-nimg="1"
+                                                                    class="styles_card_brand__cH833 styles_inactive__1CFg2 mx-1"
+                                                                    src="/subscribe/img/icon-aura.svg"
+                                                                    style="color: transparent;"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6 css-1m6lu2z">
+                                                        <div class="styles_hasIcon__ahkFY MuiBox-root css-1yp4ln">
+                                                            <div class="styles_icon__wKQFL  z-[1]"><svg
+                                                                    aria-hidden="true" focusable="false"
+                                                                    data-prefix="fal" data-icon="user"
+                                                                    class="svg-inline--fa fa-user fa-xl " role="img"
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                    viewBox="0 0 448 512"
+                                                                    style="color: rgb(39, 175, 96);">
+                                                                    <path fill="currentColor"
+                                                                        d="M320 128a96 96 0 1 0 -192 0 96 96 0 1 0 192 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM32 480H416c-1.2-79.7-66.2-144-146.3-144H178.3c-80 0-145 64.3-146.3 144zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z">
+                                                                    </path>
+                                                                </svg></div>
+                                                            <div
+                                                                class="MuiFormControl-root MuiTextField-root styles_textField__pz9RA  css-dvmjw7">
+                                                                <label
+                                                                    class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-standard MuiFormLabel-colorWarning Mui-required MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-standard css-kuyuf6"
+                                                                    data-shrink="false" for="card-name"
+                                                                    id="card-name-label">Nome Impresso no Cartão<span
+                                                                        aria-hidden="true"
+                                                                        class="MuiFormLabel-asterisk MuiInputLabel-asterisk css-6x9nf6">&thinsp;*</span></label>
+                                                                <div
+                                                                    class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorWarning MuiInputBase-formControl MuiInputBase-adornedEnd css-qn77wy">
+                                                                    <input aria-invalid="false" autocomplete="on"
+                                                                        id="card-name" name="card_holder_name"
+                                                                        required="" type="text"
+                                                                        class="MuiInputBase-input MuiInput-input MuiInputBase-inputAdornedEnd css-mnn31"
+                                                                        value="">
+                                                                    <div
+                                                                        class="MuiInputAdornment-root MuiInputAdornment-positionEnd MuiInputAdornment-standard MuiInputAdornment-sizeMedium css-1nvf7g0">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6 css-1m6lu2z">
+                                                        <div class="styles_hasIcon__ahkFY MuiBox-root css-1yp4ln">
+                                                            <div class="styles_icon__wKQFL  z-[1]"><svg
+                                                                    aria-hidden="true" focusable="false"
+                                                                    data-prefix="fal" data-icon="calendar-exclamation"
+                                                                    class="svg-inline--fa fa-calendar-exclamation fa-xl "
+                                                                    role="img" xmlns="http://www.w3.org/2000/svg"
+                                                                    viewBox="0 0 448 512"
+                                                                    style="color: rgb(39, 175, 96);">
+                                                                    <path fill="currentColor"
+                                                                        d="M112 0c8.8 0 16 7.2 16 16V64H320V16c0-8.8 7.2-16 16-16s16 7.2 16 16V64h32c35.3 0 64 28.7 64 64v32 32V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V192 160 128C0 92.7 28.7 64 64 64H96V16c0-8.8 7.2-16 16-16zM416 192H32V448c0 17.7 14.3 32 32 32H384c17.7 0 32-14.3 32-32V192zM384 96H64c-17.7 0-32 14.3-32 32v32H416V128c0-17.7-14.3-32-32-32zM200 416a24 24 0 1 1 48 0 24 24 0 1 1 -48 0zm40-160v96c0 8.8-7.2 16-16 16s-16-7.2-16-16V256c0-8.8 7.2-16 16-16s16 7.2 16 16z">
+                                                                    </path>
+                                                                </svg></div>
+                                                            <div
+                                                                class="MuiFormControl-root MuiTextField-root styles_textField__pz9RA  css-1b1ociv">
+                                                                <label
+                                                                    class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-standard MuiFormLabel-colorWarning Mui-required MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-standard css-kuyuf6"
+                                                                    data-shrink="false" for="card-expiration"
+                                                                    id="card-expiration-label">Validade<span
+                                                                        aria-hidden="true"
+                                                                        class="MuiFormLabel-asterisk MuiInputLabel-asterisk css-6x9nf6">&thinsp;*</span></label>
+                                                                <div
+                                                                    class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorWarning MuiInputBase-formControl MuiInputBase-adornedEnd css-qn77wy">
+                                                                    <input aria-invalid="false" autocomplete="on"
+                                                                        id="card-expiration" placeholder="MM/AA"
+                                                                        required="" type="tel" autocapitalize="on"
+                                                                        autocorrect="on" spellcheck="true"
+                                                                        class="MuiInputBase-input MuiInput-input MuiInputBase-inputAdornedEnd css-mnn31"
+                                                                        value="">
+                                                                    <div
+                                                                        class="MuiInputAdornment-root MuiInputAdornment-positionEnd MuiInputAdornment-standard MuiInputAdornment-sizeMedium css-1nvf7g0">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6 css-1m6lu2z">
+                                                        <div class="styles_hasIcon__ahkFY MuiBox-root css-1yp4ln">
+                                                            <div class="styles_icon__wKQFL  z-[1]"><svg
+                                                                    aria-hidden="true" focusable="false"
+                                                                    data-prefix="fal" data-icon="credit-card"
+                                                                    class="svg-inline--fa fa-credit-card fa-xl "
+                                                                    role="img" xmlns="http://www.w3.org/2000/svg"
+                                                                    viewBox="0 0 576 512"
+                                                                    style="color: rgb(39, 175, 96);">
+                                                                    <path fill="currentColor"
+                                                                        d="M64 64C46.3 64 32 78.3 32 96v32H544V96c0-17.7-14.3-32-32-32H64zM32 160v64H544V160H32zm0 96V416c0 17.7 14.3 32 32 32H512c17.7 0 32-14.3 32-32V256H32zM0 96C0 60.7 28.7 32 64 32H512c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96zM96 368c0-8.8 7.2-16 16-16h64c8.8 0 16 7.2 16 16s-7.2 16-16 16H112c-8.8 0-16-7.2-16-16zm128 0c0-8.8 7.2-16 16-16H368c8.8 0 16 7.2 16 16s-7.2 16-16 16H240c-8.8 0-16-7.2-16-16z">
+                                                                    </path>
+                                                                </svg></div>
+                                                            <div
+                                                                class="MuiFormControl-root MuiTextField-root styles_textField__pz9RA  css-1b1ociv">
+                                                                <label
+                                                                    class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-standard MuiFormLabel-colorWarning Mui-required MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-standard css-kuyuf6"
+                                                                    data-shrink="false" for="card-cvv"
+                                                                    id="card-cvv-label">Código Segurança<span
+                                                                        aria-hidden="true"
+                                                                        class="MuiFormLabel-asterisk MuiInputLabel-asterisk css-6x9nf6">&thinsp;*</span></label>
+                                                                <div
+                                                                    class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorWarning MuiInputBase-formControl MuiInputBase-adornedEnd css-qn77wy">
+                                                                    <input aria-invalid="false" autocomplete="on"
+                                                                        id="card-cvv" required="" type="tel"
+                                                                        autocapitalize="on" autocorrect="on"
+                                                                        spellcheck="true"
+                                                                        class="MuiInputBase-input MuiInput-input MuiInputBase-inputAdornedEnd css-mnn31"
+                                                                        value="">
+                                                                    <div
+                                                                        class="MuiInputAdornment-root MuiInputAdornment-positionEnd MuiInputAdornment-standard MuiInputAdornment-sizeMedium css-1nvf7g0">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                            <div
+                                                class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-2 mt-2 css-isbt42">
+                                                <div
+                                                    class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6 css-1m6lu2z">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class=""></div>
+                                            <div class=""></div>
+                                            <div class=""></div>
+                                            <div class=""></div>
+                                            <div class=""></div>
+                                            <div class=""></div>
+                                            <div class=""></div>
+                                            <div class=""></div>
+                                            <div class=""></div>
+                                            <div class=""></div>
+                                            <div class=""></div>
+                                            <div class=""></div>
+                                            <div class=""></div>
+                                            <div class=""></div>
+                                            <div class=""></div>
+                                            <div class=""></div>
+                                            <div class=""></div>
+                                            <div class=""></div>
+                                            <div class=""></div>
+                                            <div class=""></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex flex-col items-center"><small class="styles_disclaimer__cEjP8"
+                                    style="color: rgb(150, 163, 189);">Realize a compra com o número do telegram que irá
+                                    participar do grupo</small>
+                                <div class="mb-3 mt-7 flex w-full flex-col-reverse gap-2 sm:flex-row sm:gap-0">
+                                    <div class="flex w-full flex-col items-center gap-[2px] px-4">
+                                        <div style="display: none;">
+                                            <div>
+                                                <div class="grecaptcha-badge" data-style="bottomright"
+                                                    style="width: 256px; height: 60px; display: block; transition: right 0.3s ease 0s; position: fixed; bottom: 14px; right: -186px; box-shadow: gray 0px 0px 5px; border-radius: 2px; overflow: hidden;">
+                                                    <div class="grecaptcha-logo"><iframe title="reCAPTCHA" width="256"
+                                                            height="60" role="presentation" name="a-4maqr0ppndvn"
+                                                            frameborder="0" scrolling="no"
+                                                            sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox allow-storage-access-by-user-activation"
+                                                            src="https://www.google.com/recaptcha/api2/anchor?ar=1&amp;k=6LcgzK0UAAAAAIIgzAAJ2uuLvWpjLk6BmTzo9CaU&amp;co=aHR0cHM6Ly9jaGVja291dC5rYXR1cy5zY2hvb2w6NDQz&amp;hl=pt-BR&amp;type=image&amp;v=V6_85qpc2Xf2sbe3xTnRte7m&amp;theme=light&amp;size=invisible&amp;badge=bottomright&amp;cb=el2i76xkvjg2"></iframe>
+                                                    </div>
+                                                    <div class="grecaptcha-error"></div><textarea
+                                                        id="g-recaptcha-response-3" name="g-recaptcha-response"
+                                                        class="g-recaptcha-response"
+                                                        style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none; display: none;"></textarea>
+                                                </div><iframe style="display: none;"></iframe>
+                                            </div>
+                                        </div>
+                                        <div class="styles_required-fields-warning__YDcej"
+                                            style="background-color: rgb(250, 93, 93);">*Existem campos inválidos ou não
+                                            preenchidos</div><button
+                                            class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary Mui-disabled MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary styles_button__KYO9K  styles_default__uVfrt styles_elevated__FtFd4 styles_buy-button__wNSB3 w-full !rounded-t-none css-1tkb8j0"
+                                            tabindex="-1" type="button" disabled="">
+                                            <div class="">Assinar Agora</div>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <footer class="flex flex-row px-0 desktop:px-6">
+                        <div class="mr-3 flex flex-auto flex-row justify-between px-0 lg:w-[75%] desktop:w-full">
+                            <div class="flex flex-col py-6 pl-4 md:pl-1">
+                                <div class="flex"><a class=" self-center styles_dmg-logo__Om47y"
+                                        href="//digitalmanager.guru/lead/8bb66648-c606-4414-9e12-34d13cb2f49e?utm_content=pay"
+                                        target="_blank"><img alt="Digital Manager Guru" title="Digital Manager Guru"
+                                            loading="lazy" width="86" height="39" decoding="async" data-nimg="1"
+                                            src="/subscribe/img/logo_v5.svg" style="color: transparent;"></a></div>
+                            </div><a class=" styles_pci-logo__fResR self-center"
+                                href="https://seals.clone-systems.com/report?dn=digitalmanager.guru"
+                                target="_blank"><img alt="PCI" loading="lazy" width="100" height="39" decoding="async"
+                                    data-nimg="1"
+                                    srcset="/subscribe/_next/image?url=%2Fsubscribe%2Fimg%2Fpci-dss-compliant.png&amp;w=128&amp;q=75 1x, /subscribe/_next/image?url=%2Fsubscribe%2Fimg%2Fpci-dss-compliant.png&amp;w=256&amp;q=75 2x"
+                                    src="/subscribe/_next/image?url=%2Fsubscribe%2Fimg%2Fpci-dss-compliant.png&amp;w=256&amp;q=75"
+                                    style="color: transparent;"></a>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script id="__NEXT_DATA__"
+        type="application/json">{"props":{"pageProps":{"__lang":"pt-BR","__namespaces":{"common":{"autocompletes":{"optionsSelected":"Opções Selecionadas","selectAll":"Selecionar Todos","withoutData":"Sem Dados"},"buttons":{"back":"Voltar","buy":"Comprar Agora","cancel":"Cancelar","close":"Fechar","confirm":"Confirmar","next":"Próximo","ok":"Ok","pay":"Pagar Agora","remove":"Remover","send":"Enviar","submitting":"Enviando..."},"dialogs":{"addressError":"Erro ao armazenar o endereço.","cancelingPayment":"A cancelar pagamento...","cancelledTransactionError":"Você deseja reiniciar o processo?","cancelledTransactionTitle":"Pagamento não Autorizado","cardTokenError":"Informe novamente os dados do cartão de crédito","cardTokenTitle":"Erro ao criptografar cartão","error":"Ooops!","expiredError":"Você deseja reiniciar o processo?","expiredTitle":"Venda Expirada","generatingBillet":"Gerando boleto bancário...","no":"Não","paymentFailed":"Pagamento não aprovado!","paymentSuccess":"Pagamento processado com sucesso!","processingPayment":"Processando pagamento...","sendingProvuRequest":"Enviando pedido para a Provu...","serverError":"Erro inesperado ao processar sua solicitação.","withoutQuotes":"Frete não disponível para a sua região","yes":"Sim","zipCodeTitle":"CEP não encontrado!"},"errors":{"card_expiry":"O campo deve conter uma data válida","card_number":"O campo deve conter um número válido","client_has_not_enough_balance":"Checkout temporariamente indisponível!","client_not_found":"Cliente não encontrado!","contact_not_found":"Contacto não encontrado!","domain_not_allowed":"Domínio não autorizado!","e403":{"button":"Home Page","code":"403","description":"Perdão, não tem permissão\u003cbr /\u003epara acessar essa página.","title":"Acesso Negado"},"e404":{"button":"Home Page","code":"404","description":"Perdão, mas a página que você tentou acessar não foi encontrada. Verifique a URL informada e tente novamente.","title":"Página Não Encontrada"},"e500":{"button":"Home Page","code":"Oops","description":"Nosso time de gurus está trabalhando para corrigir o problema.","subtitle":"Ocorreu um erro inesperado. Pedimos desculpa. :(","title":"Erro Inesperado"},"email":"O campo deve conter um email válido","emailMatch":"O email não corresponde","invalid":"O campo é inválido","invoice_already_paid":"A fatura já se encontra paga!","invoice_canceled":"A fatura encontra-se cancelada!","invoice_not_found":"Fatura não encontrada!","invoice_unavailable":"Fatura indisponível para pagamento!","last_invoice_missmatch":"Não é a fatura mais recente!","marketplace_is_not_active":"Processador de pagamento inativo!","max":"O campo não deve ser superior a {{max}}","maxTextLength":"O campo deve ter no máximo {{max}} caracteres","min":"O campo não deve ser inferior a {{min}}","minTextLength":"O campo deve ter no mínimo {{min}} caracteres","noSpecialChar":"O campo só pode conter letras e números","offer_is_not_active":"Oferta não está ativa!","offer_not_found":"Oferta não encontrada!","offer_settings_hash_is_invalid":"Configurações adicionais da oferta inválidas!","offer_settings_not_provided":"Configurações adicionais da oferta não informadas!","phone":"O campo deve conter um número válido","product_not_found":"Produto não encontrado!","product_type_missmatch":"Tipo de produto incompativel!","required":"O campo é obrigatório","subscription_canceled":"A assinatura encontra-se cancelada!","subscription_in_trial":"A assinatura encontra-se em trial!","tries_limit_exceeded":"Limite de tentativas excedido!"},"footer":{"channels":"Canais de Atendimento","customerSupport":"Atendimento","powered":"Powered by","title":"Digital Manager Guru"},"labels":{"addCoupon":"Adicionar Cupom de Desconto","address":{"confirmation":"Confirmação de Endereço","label":{"city":"Cidade","complement":"Compl.","district":"Bairro","locality":"Localidade","number":"Número","state":"Estado","street":"Endereço","zip_code":"CEP"},"placeholder":{"country":"Alterar País","search_here":"Encontrar na lista..."}},"addressData":"Dados do Endereço","automatically":"Automaticamente","buyerData":"Dados do Comprador","changeQtySuccess":"Quantidade alterada com sucesso!","changingCountry":"Alterando País","chargedEvery":"Cobrada a cada {{value}} {{type}}","contact":"Contato","coupon":"Cupom","couponApplied":"Cupom Aplicado!","couponCode":"Código do Cupom","couponContactRequired":"Necessário inserir informação do contato.","couponContactUsageExceeded":"Limite de uso por contato excedido.","couponCycle":"Válido para os primeiros {{count}} ciclos.","couponCycle_0":"Válido para todos os ciclos.","couponCycle_one":"Válido somente no 1º ciclo.","couponEmailNotAllowed":"O email inserido não é permitido para este cupom.","couponExpired":"Cupom expirado.","couponNotActive":"O Cupom não está ativo.","couponNotFound":"Cupom não encontrado.","couponProductNotFound":"Cupom não é válido para este produto.","couponSuccess":"Cupom adicionado com sucesso!","couponSuccessRemoved":"Cupom removido com sucesso!","couponTitle":"Tem um cupom de desconto?","couponUsageExceeded":"Uso de cupom excedido.","days":"Dias","eachCycles":"Por {{cycles}} ciclos","errorMinValue":"Não foi possível adicionar o cupom. Valor da compra abaixo do mínimo permitido!","freeSubscription":"Não é possivel concluir a assinatura com valor 0.","identification":{"label":{"cnpj":"CNPJ","company_name":"Nome da Empresa","cpf":"CPF","cpfcnpj":"CPF / CNPJ","document":"NIF","email":"E-mail","email_confirmation":"Confirme o E-mail","name":"Nome e sobrenome","phone_number":"Celular"}},"incidenceField":{"items":{"products":"Produto","shipping":"Frete","total":"Total"}},"invalidField":"O campo %{variable} é inválido","koinErrorMessages":{"missing_contact_info":"Dados do comprador não informados!","unauthorized":"Financiamento não foi pré-aprovado!"},"loading":"Carregando...","orderBump":{"installments":{"max":"MÁX. %{variable}"}},"payment":{"afterpay":{"header":"Atenção a estes detalhes:","li_1":"Paga em \u003cstrong\u003e4 vezes sem juros\u003c/strong\u003e;","li_2":"Ao finalizar a compra, será direcionado para o Afterpay para concluir o seu pagamento;"},"apple_pay":{"header":"Atenção a estes detalhes:","li_1":"A forma de pagamento Apple Pay só é compatível com os seguintes browsers: Chrome on iOS 16 e Safari."},"baloto":{"header":"Atenção a estes detalhes:","li_1":"Somente à vista;","li_2":"O(s) produto(s) será(ão) liberado(s) somente após recebermos a confirmação de pagamento;","li_3":"Fique atento(a) à data de vencimento. Após a expiração, será necessário refazer seu pedido."},"billet":{"header":"Atenção a estes detalhes:","li_1":"Apenas à vista;","li_2":"Os pagamentos levam até \u003cstrong\u003e3 dias úteis\u003c/strong\u003e para serem compensados e então terem os produtos liberados;","li_3":"Fique atento(a) à data de vencimento. Pode pagar em qualquer banco ou casa lotérica até o vencimento."},"credit_card":{"installment":"Juros de {{value}}% ao mês","label":{"birth_date":"Data de Nascimento","cvc":"CVC","cvv":"Código Segurança","expiration":"Validade","holder":"Nome Impresso no Cartão","holder_doc":"Documento Pessoal","installments":"Parcelamento","name":"Nome Impresso no Cartão","number":"Número do Cartão"},"placeholder":{"birth_date":"DD/MM/AAAA","expiry":"MM/AA","holder":"Nome como impresso no cartão","holder_doc":"000.000.000-00","installments":"Selecione o parcelamento desejado"}},"detail":{"discount":"Desconto","extras":"Extras","increment":"Acréscimo","installments":"Parcelamento","items":"Itens","order":"Detalhe da Compra","product":"Produto","qty":"Qtd","review":"Resumo da Compra","secure_payment":"Compra Segura","service":"Atendimento","shipping":"Frete","subscription":"Assinatura","subtotal":"Subtotal","tax":"Imposto","tax_included":"Imposto Incluído","total":"Total"},"efecty":{"header":"Atenção a estes detalhes:","li_1":"Somente à vista;","li_2":"O(s) produto(s) será(ão) liberado(s) somente após recebermos a confirmação de pagamento;","li_3":"Fique atento(a) à data de vencimento. Após a expiração, será necessário refazer seu pedido."},"exchange":{"conversion_disclaimer_1":"Valor simulado","conversion_disclaimer_2":"O valor original é de "},"google_pay":{"header":"Atenção a estes detalhes:","li_1":"A forma de pagamento Google Pay só é compatível com os seguintes browsers: Chrome, Chrome on iOS 16, Edge, Opera e Safari."},"installments":{"max":"Até {{value}}","selected":"Em {{value}}"},"klarna":{"header":"Atenção a estes detalhes:","li_1":"Paga em \u003cstrong\u003e3 vezes sem juros\u003c/strong\u003e;","li_2":"Ao finalizar a compra, será direcionado para o Klarna para concluir o seu pagamento;"},"koin":{"error":"Disponível apenas para pessoas físicas. É preciso informar um CPF ao invés de CNPJ.","header":"É muito simples comprar com a Koin:","li_1":"Ao escolher o Koin como meio de pagamento, você será direcionado para o nosso site.","li_2":"Confira as parcelas e valores da simulação do boleto parcelado e insira os dados solicitados.","li_3":"Após a análise de crédito aprovada, assine o contrato digitalmente e conclua a compra!","privacyPolicy":{"li_1":"Estou de acordo com a ","li_2":"política de privacidade"},"suffix":" da Koin.","terms":{"li_1":"Estou de acordo com os ","li_2":"termos de uso"}},"mbway":{"header":"Atenção a estes detalhes:","li_1":"Somente à vista;","li_2":"O(s) produto(s) será(ão) liberado(s) somente após recebermos a confirmação de pagamento;","li_3":"Fique atento(a) à data de vencimento. Após a expiração, será necessário refazer seu pedido.","li_4":"A venda será cancelada 4 minutos após o horário do pedido.","phone_number":"MBWAY Celular"},"methods":{"ach-direct":"US Bank Account","afterpay":"Afterpay","apple-pay":"Apple Pay","baloto":"Baloto","boleto-bancario":"Boleto Bancário","cartao-de-credito":"Cartão de Crédito","crypto":"Crypto","debit-card":"Cartão de Débito","debito-bancario":"Débito Bancário","efecty":"Efecty","free":"Grátis","google-pay":"Google Pay","ideal":"iDEAL","klarna":"Klarna","koin":"Boleto Parcelado","mb-way":"MBWay","multibanco":"Multibanco","multicaja":"Multicaja","notAllowed":"Não Permitido","nupay":"Nubank","outro":"Outro","oxxo":"OXXO","oxxo_pay":"OXXO Pay","pagoefectivo":"PagoEfectivo","paypal":"Paypal","personal-credit":"Provu","pix":"PIX","safetypay":"SafetyPay","samsung_pay":"Samsung Pay","sencilito":"Sencillito","sepa":"Débito Direto","servipag":"Servipag","spei":"SPEI","two-credit-cards":"2 Cartões de Crédito","wallet":"Carteira Digital","webpay":"Webpay"},"moip":{"ideal":{"header":"iDEAL","li":"Aguarde, será redirecionado para processar o pagamento."},"sepa":{"header":"SEPA Direct Debit","li":"Aguarde, será redirecionado para processar o pagamento."}},"multibanco":{"header":"Atenção a estes detalhes:","li_1":"Tem até 7 dias para efetuar o pagamento usando a entidade e referência providenciada;","li_2":"Pode pagar em qualquer banco, caixa multibanco ou aplicativo bancário até o vencimento."},"multicaja":{"header":"Atenção a estes detalhes:","li_1":"Somente à vista;","li_2":"O(s) produto(s) será(ão) liberado(s) somente após recebermos a confirmação de pagamento;","li_3":"Fique atento(a) à data de vencimento. Após a expiração, será necessário refazer seu pedido."},"nupay":{"header":"Pague com Nubank","li_1":"Parcela sem juros:","li_2":"Nosso parcelamento é sempre sem juros,com muito mais comodidade para você.","li_3":"Ao finalizar a compra, você será direcionado para a App do Nu.","li_4":"Selecione as parcelas e pronto! Seu pagamento foi confirmado."},"oxxo":{"header":"Atenção a estes detalhes:","li_1":"Pagar em dinheiro em lojas Oxxo;","li_2":"Tem até 3 dias para efetuar o pagamento usando o boleto gerado;","li_3":"O(s) produto(s) será(ão) liberado(s) somente após recebermos a confirmação de pagamento."},"oxxo_pay":{"header":"Atenção a estes detalhes:","li_1":"Ide para a loja mais próxima OXXO;","li_2":"Dê ao caixa o código de barras e mencione que farás um pagamento de serviço OXXOPay;","li_3":"Faça o pagamento em dinheiro. Guarde o ticket para qualquer esclarecimento."},"pagoefectivo":{"header":"Atenção a estes detalhes:","li_1":"Somente à vista;","li_2":"O(s) produto(s) será(ão) liberado(s) somente após recebermos a confirmação de pagamento;","li_3":"Fique atento(a) à data de vencimento. Após a expiração, será necessário refazer seu pedido."},"pagseguro":{"fail":{"3dsecure":"Falha na autenticação do 3DSecure!","AUTH_NOT_SUPPORTED":"Cartão não elegível ao 3DS.","CHANGE_PAYMENT_METHOD":"Por favor troque troque o meio de pagamento, pois o mesmo não será aceito na cobrança."}},"paypal":{"error":{"message":"Ocorreu um erro com o PayPal.","title":"Erro PayPal"},"header":"Atenção a estes detalhes:","li_1":"Apenas à vista;","li_2":"Clique no botão abaixo para ser redirecionado ao PayPal e preste atenção aos detalhes.","process":"A gravar o retorno do PayPal"},"personal_credit":{"error":"Disponível apenas para pessoas físicas. É preciso informar um CPF ao invés de CNPJ.","header":"É muito simples comprar com o Provu Boleto Parcelado:","li_1":"Ao escolher o Provu Parcelado como meio de pagamento, você será direcionado para o nosso site.","li_2":"Confira as parcelas e valores da simulação do boleto parcelado e insira os dados solicitados.","li_3":"Após a análise de crédito aprovada, assine o contrato digitalmente e conclua a compra!"},"pix":{"header":"Atenção a estes detalhes:","li_1":"Somente à vista;","li_2":"O(s) produto(s) será(ão) liberado(s) somente após recebermos a confirmação de pagamento;","li_3":"Fique atento(a) à data de vencimento. Após a expiração, será necessário refazer seu pedido."},"privacyPolicy":"Ao seguir para o processo de pagamento declaro estar de acordo com as \u003ca href=\"{{html}}\" class=\"link\" target=\"_blank\"\u003epolíticas de privacidade\u003c/a\u003e.","safetypay":{"header":"Atenção a estes detalhes:","li_1":"Apenas à vista;","li_2":"Os pagamentos levam até \u003cstrong\u003e3 dias úteis\u003c/strong\u003e para serem compensados e então terem os produtos liberados;","li_3":"Fique atento(a) à data de vencimento. Pode pagar em qualquer banco ou casa lotérica até o vencimento."},"selectCurrency":"Selecione a moeda","sencilito":{"header":"Atenção a estes detalhes:","li_1":"Somente à vista;","li_2":"O(s) produto(s) será(ão) liberado(s) somente após recebermos a confirmação de pagamento;","li_3":"Fique atento(a) à data de vencimento. Após a expiração, será necessário refazer seu pedido."},"servipag":{"header":"Atenção a estes detalhes:","li_1":"Somente à vista;","li_2":"O(s) produto(s) será(ão) liberado(s) somente após recebermos a confirmação de pagamento;","li_3":"Fique atento(a) à data de vencimento. Após a expiração, será necessário refazer seu pedido."},"spei":{"header":"Atenção a estes detalhes:","li_1":"Pagar por transferência no seu banco online;","li_2":"O(s) produto(s) será(ão) liberado(s) somente após recebermos a confirmação de pagamento."},"stripe":{"fail":{"3dsecure":"Falha na autenticação do 3DSecure!","card":"Pagamento negado!","change-card":"Falha na atualização do Cartão de crédito","payment":"Pagamento não aprovado","repeat":"Deseja tentar de novo?"},"sepa":{"header":"Atenção a estes detalhes:","li_1":"Ao informar seu IBAN e confirmando este pagamento, você está autorizando nosso processador de pagamento a enviar instruções para seu banco debitar de sua conta o valor do pedido.","li_2":"Em alguns cenários, você deverá autorizar a solicitação de débito para que o processo seja concluído.","li_3":"Você tem direito de solicitar reembolso de acordo com os termos e condições de seu contrato com o banco.","li_4":"O reembolso deverá ser requerido em até 8 semanas a partir da data que sua conta foi debitada.","li_5":"A confirmação do pagamento demora, em média, até 5 dias úteis, mas pode demorar até 14 dias úteis."},"success":{"payment":"Pagamento processado com sucesso!"}},"terms":"Ao seguir para o processo de pagamento declaro estar de acordo com os \u003ca href=\"{{html}}\" class=\"link\" target=\"_blank\"\u003etermos de uso\u003c/a\u003e.","webpay":{"header":"Atenção a estes detalhes:","li_1":"Somente à vista;","li_2":"O(s) produto(s) será(ão) liberado(s) somente após recebermos a confirmação de pagamento;","li_3":"Fique atento(a) à data de vencimento. Após a expiração, será necessário refazer seu pedido."}},"paymentMethod":"Método de Pagamento","recaptchaError":"Erro na validação de segurança!","recaptchaRepeat":"Deseja tentar de novo?","removeCoupon":"Remover Cupom de Desconto","requiredField":"O campo %{variable} é obrigatório","requiredFieldsNotMet":"Existem campos inválidos ou não preenchidos","searchingAddress":"À Procura do Endereço","searchingZipCode":"À Procura do CEP","shippingTitle":"Escolha o tipo de envio","stepper":{"address":"Endereço","contact":"Contato","payment":"Pagamento"},"subscribe":"Assinar Agora","trial":{"days":"{{value}} dias gratuitos","interval":"Depois {{price}} a cada {{value}} {{type}}","interval_type":{"day":"Dia(s)","month":"Mes(es)","week":"Semana(s)","year":"Ano(s)"},"title":"Iniciar Período de Testes"},"value":"Valor","valueTooLow":"Não é possivel concluir a assinatura com valor inferior a {{minimum}}.","waitingData":{"msg1":"Desculpe, muitas pessoas estão comprando conosco agora.","msg2":"Aguarde um instante que já vamos te atender.","newTryIn":"Nova tentativa em","title":"FALTA POUCO!"},"yourAddress":"O seu endereço","yourData":"Os seus dados"}}},"_sentryTraceData":"a85e132612fd4b5fb004e6599941a6f4-8997a561f0aac09c-1","_sentryBaggage":"sentry-environment=production,sentry-release=ScmDrYVCiIOFAUm78JkuN,sentry-public_key=73264831477848ea18fec5068ddb9fb2,sentry-trace_id=a85e132612fd4b5fb004e6599941a6f4,sentry-sample_rate=1,sentry-transaction=%2F%5Bid%5D,sentry-sampled=true"},"__N_SSP":true},"page":"/[id]","query":{"id":"grupo-robin-hood"},"buildId":"ScmDrYVCiIOFAUm78JkuN","assetPrefix":"/subscribe","isFallback":false,"gssp":true,"locale":"pt-BR","locales":["pt-BR","de-DE","en-US","es-AR","es-CL","es-CO","es-ES","es-MX","es-PA","es-PE","es-UY","fr-FR","pl-PL","pt-PT"],"defaultLocale":"pt-BR","scriptLoader":[]}</script>
+    <next-route-announcer>
+        <p aria-live="assertive" id="__next-route-announcer__" role="alert"
+            style="border: 0px; clip: rect(0px, 0px, 0px, 0px); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; top: 0px; width: 1px; white-space: nowrap; overflow-wrap: normal;">
+        </p>
+    </next-route-announcer>
+    <script src="https://www.google.com/recaptcha/api.js?onload=onloadcallback&amp;render=explicit" async=""></script>
+    <script src="https://www.googletagmanager.com/gtag/js?id=G-T8DW11X6XE&amp;l=dataLayerGa4"></script>
+    <div
+        style="visibility: hidden; position: absolute; width: 100%; top: -10000px; left: 0px; right: 0px; transition: visibility 0s linear 0.3s, opacity 0.3s linear 0s; opacity: 0;">
+        <div
+            style="width: 100%; height: 100%; position: fixed; top: 0px; left: 0px; z-index: 2000000000; background-color: rgb(255, 255, 255); opacity: 0.5;">
+        </div>
+        <div
+            style="margin: 0px auto; top: 0px; left: 0px; right: 0px; position: fixed; border: 1px solid rgb(204, 204, 204); z-index: 2000000000; background-color: rgb(255, 255, 255);">
+            <iframe title="o desafio reCAPTCHA expira em dois minutos" name="c-64lmpqtfpzsl" frameborder="0"
+                scrolling="no"
+                sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox allow-storage-access-by-user-activation"
+                src="https://www.google.com/recaptcha/api2/bframe?hl=pt-BR&amp;v=V6_85qpc2Xf2sbe3xTnRte7m&amp;k=6LcgzK0UAAAAAIIgzAAJ2uuLvWpjLk6BmTzo9CaU"
+                style="width: 100%; height: 100%;"></iframe></div>
+    </div>
+    <div
+        style="visibility: hidden; position: absolute; width: 100%; top: -10000px; left: 0px; right: 0px; transition: visibility 0s linear 0.3s, opacity 0.3s linear 0s; opacity: 0;">
+        <div
+            style="width: 100%; height: 100%; position: fixed; top: 0px; left: 0px; z-index: 2000000000; background-color: rgb(255, 255, 255); opacity: 0.5;">
+        </div>
+        <div
+            style="margin: 0px auto; top: 0px; left: 0px; right: 0px; position: fixed; border: 1px solid rgb(204, 204, 204); z-index: 2000000000; background-color: rgb(255, 255, 255);">
+            <iframe title="o desafio reCAPTCHA expira em dois minutos" name="c-3wdbbhkx29f2" frameborder="0"
+                scrolling="no"
+                sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox allow-storage-access-by-user-activation"
+                src="https://www.google.com/recaptcha/api2/bframe?hl=pt-BR&amp;v=V6_85qpc2Xf2sbe3xTnRte7m&amp;k=6LcgzK0UAAAAAIIgzAAJ2uuLvWpjLk6BmTzo9CaU"
+                style="width: 100%; height: 100%;"></iframe></div>
+    </div>
+    <div
+        style="visibility: hidden; position: absolute; width: 100%; top: -10000px; left: 0px; right: 0px; transition: visibility 0s linear 0.3s, opacity 0.3s linear 0s; opacity: 0;">
+        <div
+            style="width: 100%; height: 100%; position: fixed; top: 0px; left: 0px; z-index: 2000000000; background-color: rgb(255, 255, 255); opacity: 0.5;">
+        </div>
+        <div
+            style="margin: 0px auto; top: 0px; left: 0px; right: 0px; position: fixed; border: 1px solid rgb(204, 204, 204); z-index: 2000000000; background-color: rgb(255, 255, 255);">
+            <iframe title="o desafio reCAPTCHA expira em dois minutos" name="c-kn84bq8hx78s" frameborder="0"
+                scrolling="no"
+                sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox allow-storage-access-by-user-activation"
+                src="https://www.google.com/recaptcha/api2/bframe?hl=pt-BR&amp;v=V6_85qpc2Xf2sbe3xTnRte7m&amp;k=6LcgzK0UAAAAAIIgzAAJ2uuLvWpjLk6BmTzo9CaU"
+                style="width: 100%; height: 100%;"></iframe></div>
+    </div>
+    <div
+        style="visibility: hidden; position: absolute; width: 100%; top: -10000px; left: 0px; right: 0px; transition: visibility 0s linear 0.3s, opacity 0.3s linear 0s; opacity: 0;">
+        <div
+            style="width: 100%; height: 100%; position: fixed; top: 0px; left: 0px; z-index: 2000000000; background-color: rgb(255, 255, 255); opacity: 0.5;">
+        </div>
+        <div
+            style="margin: 0px auto; top: 0px; left: 0px; right: 0px; position: fixed; border: 1px solid rgb(204, 204, 204); z-index: 2000000000; background-color: rgb(255, 255, 255);">
+            <iframe title="o desafio reCAPTCHA expira em dois minutos" name="c-4maqr0ppndvn" frameborder="0"
+                scrolling="no"
+                sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox allow-storage-access-by-user-activation"
+                src="https://www.google.com/recaptcha/api2/bframe?hl=pt-BR&amp;v=V6_85qpc2Xf2sbe3xTnRte7m&amp;k=6LcgzK0UAAAAAIIgzAAJ2uuLvWpjLk6BmTzo9CaU"
+                style="width: 100%; height: 100%;"></iframe></div>
+    </div>
+</body>
+
+</html>

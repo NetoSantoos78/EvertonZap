@@ -1,0 +1,37 @@
+{
+    "atum": {
+        "produto": "Atum",
+        "sabores": ["Molho", "Mussarela", "Atum", "Tomate", "Cebola", "Orégano"],
+        "valor": "Pequena: R$:28,00, Média R$:38,00, Grande: R$:48,00"
+    },
+    "carne": {
+        "produto": "Carne Seca",
+        "sabores": ["Molho", "Mussarela", "Carne Seca", "Cebola", "Azeitona", "Orégano"],
+        "valor": "Pequena: R$:28,00, Média R$:38,00, Grande: R$:48,00"
+        
+    },
+    "strogonoff": {
+        "produto": "Strogonoff",
+        "sabores": ["Molho", "Mussarela", "Frango", "Batata Palha", "Orégano"],
+        "valor": "Pequena: R$:28,00, Média R$:38,00, Grande: R$:48,00"
+        
+    },
+    "franbacon": {
+        "produto": "FranBacon",
+        "sabores": ["Molho", "Mussarela", "Frango", "Bacon", "Azeitona", "Orégano"],
+        "valor": "Pequena: R$:28,00, Média R$:38,00, Grande: R$:48,00"
+        
+    },
+    "baconcheddar": {
+        "produto": "Bacon Cheddar",
+        "sabores": ["Molho", "Mussarela", "Bacon", "Cheddar", "Milho", "Cebola", "Orégano"],
+        "valor": "Pequena: R$:28,00, Média R$:38,00, Grande: R$:48,00"
+        
+    },
+    "calabresacheddar": {
+        "produto": "Calabresa Cheddar",
+        "sabores": ["Molho", "Mussarela", "Calabresa", "Cheddar", "Cebola", "Orégano"],
+        "valor": "Pequena: R$:28,00, Média R$:38,00, Grande: R$:48,00"
+        
+    }
+}

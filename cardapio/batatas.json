@@ -1,0 +1,15 @@
+{
+    "pequena": {
+        "produto": "Batata P",
+        "opcoes": "2",
+        "adicionais": ["Calabresa", "Queijo Cheddar", "Bacon"],
+        "valor": "10,00"
+        
+    },
+    "media": {
+        "produto": "Batata M",
+        "opcoes": "2",
+        "adicionais": ["Calabresa", "Queijo Cheddar", "Bacon"],
+        "valor": "15,00"
+    }
+}

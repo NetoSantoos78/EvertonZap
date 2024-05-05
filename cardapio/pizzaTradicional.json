@@ -1,0 +1,43 @@
+{
+    "calabresa": {
+        "produto": "Calabresa",
+        "sabores": ["Molho", "Mussarela", "Calabresa", "Cebola", "Orégano"],
+        "valor": "Pequena: R$:20,00, Média R$:30,00, Grande: R$:40,00"
+    },
+    "mista": {
+        "produto": "Calabresa",
+        "sabores": ["Molho", "Mussarela", "Presunto", "Orégano"],
+        "valor": "Pequena: R$:20,00, Média R$:30,00, Grande: R$:40,00"
+        
+    },
+    "4queijo": {
+        "produto": "4 Queijo",
+        "sabores": ["Molho", "Mussarela", "Catupiry", "Cheddar", "Azeitona", "Orégano"],
+        "valor": "Pequena: R$:20,00, Média R$:30,00, Grande: R$:40,00"
+        
+    },
+    "bacon": {
+        "produto": "Bacon",
+        "sabores": ["Molho", "Mussarela", "Bacon", "Cebola", "Orégano"],
+        "valor": "Pequena: R$:20,00, Média R$:30,00, Grande: R$:40,00"
+        
+    },
+    "frango": {
+        "produto": "Frango",
+        "sabores": ["Molho", "Mussarela", "Frango", "Orégano"],
+        "valor": "Pequena: R$:20,00, Média R$:30,00, Grande: R$:40,00"
+        
+    },
+    "portuguesa": {
+        "produto": "4 Queijo",
+        "sabores": ["Molho", "Mussarela", "Presunto", "Tomate", "Cebola", "Milho", "Ovo", "Azeitona", "Orégano"],
+        "valor": "Pequena: R$:20,00, Média R$:30,00, Grande: R$:40,00"
+        
+    },
+    "frangocatu": {
+        "produto": "4 Queijo",
+        "sabores": ["Molho", "Mussarela", "Frango", "Catupiry", "Orégano"],
+        "valor": "Pequena: R$:20,00, Média R$:30,00, Grande: R$:40,00"
+        
+    }
+}

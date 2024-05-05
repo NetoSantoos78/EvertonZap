@@ -1,0 +1,38 @@
+{
+    "ligeirinho": {
+        "produto": "Ligeirinho",
+        "opcoes": "2 opções (Banana e leite condensado)",
+        "valor": "5,00"
+        
+    },
+    "pequeno": {
+        "produto": "Açaí P",
+        "opcoes": "3 opções e 1 calda",
+        "complementos": ["Granola", "Granulado", "Jujuba", "Cereal Crocante", "Morango", "Creme de Avelã", "Gotas de Chocolate", "Amendoim", "Leite Condensado", "Coco ralado", "Mariola", "Paçoca", "Canudo de Chocolate", "Bombom", "Kiwi", "Disket", "Biscoito", "Banana", "Uva", "Creme de morango", "Calda de uva", "Calda de morando", "Calda de chocolate", "Leite em pó", "Castanha", "Creme de ninho", "Ovomaltine", "Sorvete", "Doce de leite", "Creme de maracujá"],
+        "valor": "12,00"
+    },
+    "medio": {
+        "produto": "Açaí M",
+        "opcoes": "4 opções e 1 calda",
+        "complementos": ["Granola", "Granulado", "Jujuba", "Cereal Crocante", "Morango", "Creme de Avelã", "Gotas de Chocolate", "Amendoim", "Leite Condensado", "Coco ralado", "Mariola", "Paçoca", "Canudo de Chocolate", "Bombom", "Kiwi", "Disket", "Biscoito", "Banana", "Uva", "Creme de morango", "Calda de uva", "Calda de morando", "Calda de chocolate", "Leite em pó", "Castanha", "Creme de ninho", "Ovomaltine", "Sorvete", "Doce de leite", "Creme de maracujá"],
+        "valor": "16,00"
+    },
+    "grande": {
+        "produto": "Açaí G",
+        "opcoes": "5 opções e 1 calda",
+        "complementos": ["Granola", "Granulado", "Jujuba", "Cereal Crocante", "Morango", "Creme de Avelã", "Gotas de Chocolate", "Amendoim", "Leite Condensado", "Coco ralado", "Mariola", "Paçoca", "Canudo de Chocolate", "Bombom", "Kiwi", "Disket", "Biscoito", "Banana", "Uva", "Creme de morango", "Calda de uva", "Calda de morando", "Calda de chocolate", "Leite em pó", "Castanha", "Creme de ninho", "Ovomaltine", "Sorvete", "Doce de leite", "Creme de maracujá"],
+        "valor": "20,00"
+    },
+    "roleta": {
+        "produto": "Roleta",
+        "opcoes": "5 opções e 1 calda",
+        "complementos": ["Granola", "Granulado", "Jujuba", "Cereal Crocante", "Morango", "Creme de Avelã", "Gotas de Chocolate", "Amendoim", "Leite Condensado", "Coco ralado", "Mariola", "Paçoca", "Canudo de Chocolate", "Bombom", "Kiwi", "Disket", "Biscoito", "Banana", "Uva", "Creme de morango", "Calda de uva", "Calda de morando", "Calda de chocolate", "Leite em pó", "Castanha", "Creme de ninho", "Ovomaltine", "Sorvete", "Doce de leite", "Creme de maracujá"],
+        "valor": "40,00"
+    },
+    "barca": {
+        "produto": "Barca",
+        "opcoes": "8 opções e 1 calda",
+        "complementos": ["Granola", "Granulado", "Jujuba", "Cereal Crocante", "Morango", "Creme de Avelã", "Gotas de Chocolate", "Amendoim", "Leite Condensado", "Coco ralado", "Mariola", "Paçoca", "Canudo de Chocolate", "Bombom", "Kiwi", "Disket", "Biscoito", "Banana", "Uva", "Creme de morango", "Calda de uva", "Calda de morando", "Calda de chocolate", "Leite em pó", "Castanha", "Creme de ninho", "Ovomaltine", "Sorvete", "Doce de leite", "Creme de maracujá"],
+        "valor": "60,00"
+    }
+}

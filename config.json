@@ -1,0 +1,11 @@
+[
+    {
+      "respSemAtendimento": "Fala, meu rei!\nDiz aí Diz aí o que delícias vai querer hoje?\nEscolha algo aí na lista.\n1️⃣. Fazer pedido\n2️⃣. Cardápio\n3️⃣. Atendimento\nEscolha uma opção da lista."
+    },
+    {
+      "tokenMercadoPago": "console.log('opa');"
+    },
+    {
+      "respMenuNaoRevenda": "Fala, meu rei, você precisa ser um revendedor para ter acesso a este comando. ⛔⛔"
+    }
+  ]
