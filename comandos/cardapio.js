@@ -126,6 +126,31 @@ async function valorExtraEspecifico(lanche, indiceExtra) {
     }
 }
 
+async function nomeExtraEspecifico(lanche, indiceExtra) {
+    try {
+        const cardapio = await lerCardapio(caminhoArquivo);
+        if (cardapio) {
+            const produto = cardapio[lanche];
+            if (produto) {
+                const extrasNomes = Object.values(produto.extras); // Obtém os nomes dos extras
+                const nomeItem = produto.produto; // Obtém o nome do item do cardápio
+                const nomeExtra = extrasNomes[indiceExtra - 1]; // Subtrai 1 para obter o índice correto
+                if (nomeExtra) {
+                    return { nomeExtra, nomeItem };
+                } else {
+                    throw new Error(`Extra no índice '${indiceExtra}' não encontrado no lanche ${lanche}.`);
+                }
+            } else {
+                throw new Error("Lanche não encontrado: " + lanche);
+            }
+        } else {
+            throw new Error("Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+
 
 const emojisNumeros = [
     "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", 
@@ -139,5 +164,6 @@ module.exports = {
     cardapioCompleto,
     cardapioExtras,
     valorExtraEspecifico,
-    sandubaCompleto
+    sandubaCompleto,
+    nomeExtraEspecifico
 };
