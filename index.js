@@ -7,7 +7,7 @@ const puppeteer = require('puppeteer');
 const { Client, MessageMedia, Poll, LocalAuth } = require('whatsapp-web.js');
 const { criarPagamento, criarPagamentoRenovacao } = require('./criarCompra.js');
 const { dataFormatada, horaFormatada } = require('./funcoes/pegardata.js');
-const { cardapioIndividual, cardapioCompleto, cardapioExtras, valorExtraEspecifico, sandubaCompleto } = require('./comandos/cardapio.js');
+const { cardapioIndividual, cardapioCompleto, cardapioExtras, valorExtraEspecifico, sandubaCompleto, nomeExtraEspecifico } = require('./comandos/cardapio.js');
 const { addCarrinho, atualizarStatusPedido } = require('./comandos/carrinho.js')
 const { Callback } = require('puppeteer');
 
@@ -188,15 +188,18 @@ async function sandubaIndividual(numeroContato, client, idproduto) {
     const estado = getEstadoIndividual(numeroContato);
     carrinho.idProduto = idFinal;
     cardapioIndividual(idFinal)
+    
         .then(resultado => {
             // Aqui você pode manipular o resultado conforme necessário
             const retorno = `Perfeito, o produto ${resultado.produtoNome} foi adicionado ao seu pedido.`;
+            adicionarValorProdutoAoCarrinho(numeroContato, resultado.valor);
             adicionarProdutoAoCarrinho(numeroContato, resultado.produtoNome);
             client.sendMessage(numeroContato, retorno);
+            estado.resp1 = 3;
+            console.log("Sanduba Indie: " + estado.resp1)
             setTimeout(() => {
-                client.sendMessage(numeroContato, respostas.maisAlgoPedido);
-                estado.resp1 = 3;                
-            }, 1500);
+                client.sendMessage(numeroContato, respostas.maisUmAdicional);
+            }, 1000);
         })
         .catch(error => {
             client.sendMessage(numeroContato, "Erro ao obter o cardápio: " + error.message);
@@ -234,25 +237,29 @@ function adicionarProdutoAoCarrinho(numeroContato, produto) {
 async function adicionarExtraAoCarrinho(numeroContato, produto, extra) {
     try {
         const carrinho = getCardapioIndividual(numeroContato);
-        const lanche = carrinho.idPedido; // Supondo que idPedido seja o identificador do produto
+        const lanche = carrinho.idProduto; // Supondo que idPedido seja o identificador do produto
         const indiceExtra = extra; // Supondo que extra seja o índice do extra no cardápio
         const valorExtra = await valorExtraEspecifico(lanche, indiceExtra);
+        const nomeExtra = await nomeExtraEspecifico(lanche, indiceExtra);
         
-        if (!carrinho.extras.hasOwnProperty(produto)) {
-            carrinho.extras[produto] = [indiceExtra]; // Se não existir, crie um novo array para o produto
+        if (!carrinho.extras.hasOwnProperty(nomeExtra.nomeItem)) {
+            carrinho.extras[nomeExtra.nomeItem] = []; // Inicializa um array vazio para os extras do produto
+            carrinho.extras[nomeExtra.nomeItem].push(nomeExtra.nomeExtra); // Adiciona o nome do extra ao array
             adicionarValorProdutoAoCarrinho(numeroContato, valorExtra);
-            client.sendMessage(numeroContato, `O extra ${indiceExtra} foi adicioano ao seu lanche.`);
+            client.sendMessage(numeroContato, `O extra *${nomeExtra.nomeExtra}* foi adicionado ao seu lanche.`);
         } else {
-            carrinho.extras[produto].push(indiceExtra); // Se já existir, adicione ao array existente
+            carrinho.extras[nomeExtra.nomeItem].push(nomeExtra.nomeExtra); // Se já existir, adicione ao array existente
             adicionarValorProdutoAoCarrinho(numeroContato, valorExtra);
-            client.sendMessage(numeroContato, `O extra ${indiceExtra} foi adicioano ao seu lanche.`);
+            client.sendMessage(numeroContato, `O extra *${nomeExtra.nomeExtra}* foi adicioano ao seu lanche.`);
         }
+
         
-        console.log(`O valor do extra ${indiceExtra} para o produto ${produto} é: ${valorExtra}`);
     } catch (error) {
         console.error("Erro ao adicionar extra ao carrinho:", error);
     }
 }
+
+
 
 // Add o preço
 function adicionarValorProdutoAoCarrinho(numeroContato, valorProdutoNovo) {
@@ -326,7 +333,6 @@ async function avaliarrespx(numeroContato, message) {
         case 0: // Manda o menu do cardápio
             await client.sendMessage(numeroContato, respostas.menu);
             estado.resp1 = 1;
-
             break;
         case 1: // Menu do cardapio de sandubas
             await sandubas(numeroContato, client);
@@ -369,9 +375,9 @@ async function avaliarresp1(numeroContato, message) {
             avaliarrespx(numeroContato, message)
             break
         case 3: // Lista de estra do sanduba escolhido
+            estado.respx = 3;
             message.reply("Escolha abaixo o que deseja adicionar no sanduíche");
             avaliarrespx(numeroContato, message)
-            estado.respx = 3;
             break
         case 4:
             estado.respx = 4;
