@@ -110,7 +110,7 @@ client.on('message_create', message => {
 
 client.on('qr', (qr) => {
     console.log('Escanee o QR code abaixo com o seu celular:');
-    console.log(qr);
+    qrcode.generate(qr, { small: true });
 });
 
 client.on('ready', () => {
