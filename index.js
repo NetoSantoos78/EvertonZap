@@ -247,19 +247,17 @@ async function adicionarExtraAoCarrinho(numeroContato, produto, extra) {
             carrinho.extras[nomeExtra.nomeItem].push(nomeExtra.nomeExtra); // Adiciona o nome do extra ao array
             adicionarValorProdutoAoCarrinho(numeroContato, valorExtra);
             client.sendMessage(numeroContato, `O extra *${nomeExtra.nomeExtra}* foi adicionado ao seu lanche.`);
-        } else {
+        } 
+        if (carrinho.extras.hasOwnProperty(nomeExtra.nomeItem)) {
             carrinho.extras[nomeExtra.nomeItem].push(nomeExtra.nomeExtra); // Se já existir, adicione ao array existente
             adicionarValorProdutoAoCarrinho(numeroContato, valorExtra);
             client.sendMessage(numeroContato, `O extra *${nomeExtra.nomeExtra}* foi adicioano ao seu lanche.`);
         }
 
-        
     } catch (error) {
         console.error("Erro ao adicionar extra ao carrinho:", error);
     }
 }
-
-
 
 // Add o preço
 function adicionarValorProdutoAoCarrinho(numeroContato, valorProdutoNovo) {
