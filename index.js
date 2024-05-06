@@ -1,4 +1,5 @@
 const fs = require('fs').promises;
+const emojiStrip = require('emoji-strip');
 const path = require('path');
 const qrcode = require('qrcode-terminal');
 const axios = require('axios');
@@ -44,10 +45,11 @@ const client = new Client({
 });
 
 const estadosIndividuais = {};
+const carrrinhoIndividuais = {};
 
-function getEstadoIndividual(numeroRemetente) {
-    if (!estadosIndividuais.hasOwnProperty(numeroRemetente)) {
-        estadosIndividuais[numeroRemetente] = {
+function getEstadoIndividual(numeroContato) {
+    if (!estadosIndividuais.hasOwnProperty(numeroContato)) {
+        estadosIndividuais[numeroContato] = {
             atendimento: 0,
             menu: 0,
             mensagemRecebida: false, // Adicionando a propriedade mensagemRecebida ao estado
@@ -64,9 +66,23 @@ function getEstadoIndividual(numeroRemetente) {
             respx: 0,
         };
     }
-    return estadosIndividuais[numeroRemetente];
+    return estadosIndividuais[numeroContato];
 }
 
+function getCardapioIndividual(numeroContato) {
+    if (!carrrinhoIndividuais.hasOwnProperty(numeroContato)) {
+        carrrinhoIndividuais[numeroContato] = {
+            contato: '',
+            comprador: '',
+            idPedido: '',
+            produtos: [],
+            extras: {},
+            preco: '0',
+            idProduto: 0,
+        };
+    }
+    return carrrinhoIndividuais[numeroContato];
+}
 // Função para iniciar o atendimento
 function iniciarAtendimento(numeroContato) {
     const estado = getEstadoIndividual(numeroContato);
@@ -123,9 +139,24 @@ function removerAcentos(str) {
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
+function gerarCodigo() {
+    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let codigo = '';
+    for (let i = 0; i < 8; i++) {
+        const indiceAleatorio = Math.floor(Math.random() * caracteres.length);
+        codigo += caracteres.charAt(indiceAleatorio);
+    }
+    return codigo;
+}
 
+
+function limparNome(nomeUsuario) {
+    // Remover emojis e espaços em branco extras, incluindo espaços em branco no início e no final
+    const nomeLimpo = emojiStrip(nomeUsuario).trim().replace(/(?<=\w)\s+(?=\w)/g, '');
+    return nomeLimpo;
+}
 // Compra dos sanduba
-async function sandubas(numeroContato, client){
+async function sandubas(numeroContato, client) {
     sandubaCompleto((output, error) => {
         if (error) {
             client.sendMessage(numeroContato, "Erro ao obter o cardápio:");
@@ -138,7 +169,7 @@ async function sandubas(numeroContato, client){
     });
 }
 // Ver tudo dos sandubas
-async function tudosandubas(numeroContato, client){
+async function tudosandubas(numeroContato, client) {
     cardapioCompleto((output, error) => {
         if (error) {
             client.sendMessage(numeroContato, "Erro ao obter o cardápio:");
@@ -150,24 +181,115 @@ async function tudosandubas(numeroContato, client){
         }
     });
 }
+// Info do lanche escolhido
+async function sandubaIndividual(numeroContato, client, idproduto) {
+    const idFinal = idproduto;
+    const carrinho = getCardapioIndividual(numeroContato);
+    const estado = getEstadoIndividual(numeroContato);
+    carrinho.idProduto = idFinal;
+    cardapioIndividual(idFinal)
+        .then(resultado => {
+            // Aqui você pode manipular o resultado conforme necessário
+            const retorno = `Perfeito, o produto ${resultado.produtoNome} foi adicionado ao seu pedido.`;
+            adicionarProdutoAoCarrinho(numeroContato, resultado.produtoNome);
+            client.sendMessage(numeroContato, retorno);
+            setTimeout(() => {
+                client.sendMessage(numeroContato, respostas.maisAlgoPedido);
+                estado.resp1 = 3;                
+            }, 1500);
+        })
+        .catch(error => {
+            client.sendMessage(numeroContato, "Erro ao obter o cardápio: " + error.message);
+            // Aqui você pode enviar uma mensagem de erro para o usuário, se necessário
+        });
+}
+// Adicionando ao carrinho
+// Add numero contato
+function adicionarContatoAoCarrinho(numeroContato) {
+    const carrinho = getCardapioIndividual(numeroContato);
+    carrinho.contato = numeroContato;
+    console.log("Contato add ao carro");
+}
+// Add nome do comprador
+function adicionarNomeAoCarrinho(numeroContato,) {
+    const carrinho = getCardapioIndividual(numeroContato);
+    carrinho.comprador = limparNome(respostas.nomeperfil);
 
+    console.log("Nome (" + carrinho.comprador + ") add ao carrinho");
+}
+// Add id do pedido
+function adicionarIdPedidoAoCarrinho(numeroContato,) {
+    const carrinho = getCardapioIndividual(numeroContato);
+    const codigoAleatorio = gerarCodigo();
+    carrinho.idPedido = codigoAleatorio;
+    console.log("ID (" + carrinho.idPedido + ") add ao carrinho");
+}
+// Add os produtos
+function adicionarProdutoAoCarrinho(numeroContato, produto) {
+    const pedido = getCardapioIndividual(numeroContato);
+    pedido.produtos.push(produto);
+    console.log(produto + " Foi adicionado ao carrinho!");
+}
+// Add os extras
+async function adicionarExtraAoCarrinho(numeroContato, produto, extra) {
+    try {
+        const carrinho = getCardapioIndividual(numeroContato);
+        const lanche = carrinho.idPedido; // Supondo que idPedido seja o identificador do produto
+        const indiceExtra = extra; // Supondo que extra seja o índice do extra no cardápio
+        const valorExtra = await valorExtraEspecifico(lanche, indiceExtra);
+        
+        if (!carrinho.extras.hasOwnProperty(produto)) {
+            carrinho.extras[produto] = [indiceExtra]; // Se não existir, crie um novo array para o produto
+            adicionarValorProdutoAoCarrinho(numeroContato, valorExtra);
+            client.sendMessage(numeroContato, `O extra ${indiceExtra} foi adicioano ao seu lanche.`);
+        } else {
+            carrinho.extras[produto].push(indiceExtra); // Se já existir, adicione ao array existente
+            adicionarValorProdutoAoCarrinho(numeroContato, valorExtra);
+            client.sendMessage(numeroContato, `O extra ${indiceExtra} foi adicioano ao seu lanche.`);
+        }
+        
+        console.log(`O valor do extra ${indiceExtra} para o produto ${produto} é: ${valorExtra}`);
+    } catch (error) {
+        console.error("Erro ao adicionar extra ao carrinho:", error);
+    }
+}
+
+// Add o preço
+function adicionarValorProdutoAoCarrinho(numeroContato, valorProdutoNovo) {
+    const carrinho = getCardapioIndividual(numeroContato);
+    carrinho.preco = (parseFloat(carrinho.preco) || 0) + parseFloat(valorProdutoNovo);
+    console.log("Preço add ao carro");
+}
+// Consultar extras disponivel
+async function obterExtrasDoLanche(numeroContato, message) {
+    try {
+        const carrinho = getCardapioIndividual(numeroContato);
+        const estado = getEstadoIndividual(numeroContato);
+        const lanche = carrinho.idProduto;
+        const extras = await cardapioExtras(lanche);
+        client.sendMessage(numeroContato, extras);
+        estado.resp1 = 4
+    } catch (error) {
+        console.error("Erro ao obter os extras do lanche:", error);
+    }
+}
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
-function resetarStatus(numeroContato){
+function resetarStatus(numeroContato) {
     //const numeroContato = message.from;
     const estado = getEstadoIndividual(numeroContato);
-    estado.resp1= 0,
-    estado.resp2= 0,
-    estado.resp3= 0,
-    estado.resp4= 0,
-    estado.resp5= 0,
-    estado.resp6= 0,
-    estado.resp7= 0,
-    estado.resp8= 0,
-    estado.resp9= 0,
-    estado.resp10= 0,
-    estado.respx= 0
+    estado.resp1 = 0,
+        estado.resp2 = 0,
+        estado.resp3 = 0,
+        estado.resp4 = 0,
+        estado.resp5 = 0,
+        estado.resp6 = 0,
+        estado.resp7 = 0,
+        estado.resp8 = 0,
+        estado.resp9 = 0,
+        estado.resp10 = 0,
+        estado.respx = 0
     //console.log("Resetou tudo papai");
 }
 client.on('message', async (message) => {
@@ -198,16 +320,27 @@ client.on('message', async (message) => {
 
 async function avaliarrespx(numeroContato, message) {
     const estado = getEstadoIndividual(numeroContato);
-    console.log("RespX: "+estado.respx)
+    const carrinho = getCardapioIndividual(numeroContato)
+    console.log("RespX: " + estado.respx)
     switch (estado.respx) {
         case 0: // Manda o menu do cardápio
             await client.sendMessage(numeroContato, respostas.menu);
             estado.resp1 = 1;
-            
+
             break;
-        case 1:
+        case 1: // Menu do cardapio de sandubas
             await sandubas(numeroContato, client);
+            estado.resp1 = 2;
             break;
+        case 2:
+            sandubaIndividual(numeroContato, client, 1);
+            break
+        case 3:
+            obterExtrasDoLanche(numeroContato, message);
+            break
+        case 4:
+            adicionarExtraAoCarrinho(numeroContato, carrinho.idProduto, 1)
+            break
         case 6:
             await client.sendMessage(numeroContato, respostas.cardapiover);
             estado.resp1 = 16;
@@ -224,12 +357,26 @@ async function avaliarresp1(numeroContato, message) {
     switch (estado.resp1) {
         case 0: // Manda o menu do cardápio
             await avaliarrespx(numeroContato, message);
+
             break;
-        case 1:
+        case 1: // Mensagem que vai mandar os lanches
             estado.respx = 1;
             await message.reply("Perfeito, vou te enviar nosso cardápio, só escolher o que deseja pedir.");
             await avaliarrespx(numeroContato, message);
             break;
+        case 2: // Chama o lanche com id 1
+            estado.respx = 2;
+            avaliarrespx(numeroContato, message)
+            break
+        case 3: // Lista de estra do sanduba escolhido
+            message.reply("Escolha abaixo o que deseja adicionar no sanduíche");
+            avaliarrespx(numeroContato, message)
+            estado.respx = 3;
+            break
+        case 4:
+            estado.respx = 4;
+            avaliarrespx(numeroContato, message);
+            break
         case 16:
             tudosandubas(numeroContato, client);
             break;
@@ -261,6 +408,8 @@ async function avaliarresp2(numeroContato, message) {
 async function avaliarresp3(numeroContato, message) {
     const estado = getEstadoIndividual(numeroContato);
     estado.resp1 = 15;
+    const carrinho = getCardapioIndividual(numeroContato);
+    console.log(carrinho);
 }
 
 // Função para verificar o estado de atendimento atual

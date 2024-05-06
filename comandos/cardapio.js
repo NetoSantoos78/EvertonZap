@@ -84,9 +84,10 @@ async function cardapioExtras(lanche) {
             const produto = cardapio[lanche];
             if (produto) {
                 let extrasString = '';
-                produto.extras.forEach((extra, index) => {
+                const extrasPrecos = produto.extrasPrecos;
+                Object.keys(extrasPrecos).forEach((extra, index) => {
                     const numeroEmoji = emojisNumeros[index]; // Obter emoji do número
-                    extrasString += `${numeroEmoji} ${extra}\n`;
+                    extrasString += `${numeroEmoji} ${extra}: R$ ${extrasPrecos[extra]}\n`;
                 });
                 return extrasString;
             } else {
@@ -99,6 +100,7 @@ async function cardapioExtras(lanche) {
         throw error;
     }
 }
+
 
 async function valorExtraEspecifico(lanche, indiceExtra) {
     try {
