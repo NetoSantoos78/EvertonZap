@@ -154,7 +154,22 @@ async function tudosandubas(numeroContato, client){
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
-
+function resetarStatus(numeroContato){
+    //const numeroContato = message.from;
+    const estado = getEstadoIndividual(numeroContato);
+    estado.resp1= 0,
+    estado.resp2= 0,
+    estado.resp3= 0,
+    estado.resp4= 0,
+    estado.resp5= 0,
+    estado.resp6= 0,
+    estado.resp7= 0,
+    estado.resp8= 0,
+    estado.resp9= 0,
+    estado.resp10= 0,
+    estado.respx= 0
+    //console.log("Resetou tudo papai");
+}
 client.on('message', async (message) => {
     const numeroContato = message.from;
     const estado = getEstadoIndividual(numeroContato);
@@ -170,10 +185,8 @@ client.on('message', async (message) => {
 
     // Verifica se a mensagem é 'menu' e responde com a mensagem correspondente
     if (mensagemRecebida === 'menu') {
-        estado.menu = 0;
-        estado.resp1 = 0;
-        estado.respx = 0;
-        message.reply(respostas.menu); // Envia a resposta para o contato
+        resetarStatus(numeroContato);
+        avaliarrespx(numeroContato, message);
     } else if (mensagemRecebida === '1') {
         avaliarresp1(numeroContato, message);
     } else if (mensagemRecebida === '2') {
