@@ -75,8 +75,8 @@ function getCardapioIndividual(numeroContato) {
             contato: '',
             comprador: '',
             idPedido: '',
-            produtos: [],
-            extras: {},
+            produtos: {},
+            extras: [],
             preco: '0',
             idProduto: 0,
         };
@@ -177,6 +177,13 @@ async function tudosandubas(numeroContato, client) {
         } else {
             const retorno = output;
             client.sendMessage(numeroContato, retorno);
+            setTimeout(() => {
+                // Enviar a segunda mensagem após 25 segundos
+                client.sendMessage(
+                    numeroContato,
+                    'Este é todo nosso cardápio do sanduíche. Para voltar, envie *"menu"*.'
+                );
+            }, 1000);
             // Aqui você pode enviar o cardápio completo para o usuário
         }
     });
@@ -188,7 +195,7 @@ async function sandubaIndividual(numeroContato, client, idproduto) {
     const estado = getEstadoIndividual(numeroContato);
     carrinho.idProduto = idFinal;
     cardapioIndividual(idFinal)
-    
+
         .then(resultado => {
             // Aqui você pode manipular o resultado conforme necessário
             const retorno = `Perfeito, o produto ${resultado.produtoNome} foi adicionado ao seu pedido.`;
@@ -196,6 +203,7 @@ async function sandubaIndividual(numeroContato, client, idproduto) {
             adicionarProdutoAoCarrinho(numeroContato, resultado.produtoNome);
             client.sendMessage(numeroContato, retorno);
             estado.resp1 = 3;
+            estado.resp2 = 1
             console.log("Sanduba Indie: " + estado.resp1)
             setTimeout(() => {
                 client.sendMessage(numeroContato, respostas.maisUmAdicional);
@@ -230,34 +238,132 @@ function adicionarIdPedidoAoCarrinho(numeroContato,) {
 // Add os produtos
 function adicionarProdutoAoCarrinho(numeroContato, produto) {
     const pedido = getCardapioIndividual(numeroContato);
-    pedido.produtos.push(produto);
-    console.log(produto + " Foi adicionado ao carrinho!");
+
+    // Verifica se já existe um objeto de produtos no carrinho
+    if (!pedido.produtos) {
+        // Se não existir, inicializa o objeto de produtos
+        pedido.produtos = {};
+    }
+
+    // Define o próximo ID como o próximo número após o maior ID existente
+    const proximoId = Object.keys(pedido.produtos).length + 1;
+
+    // Adiciona o produto ao objeto de produtos com o próximo ID
+    pedido.produtos[proximoId.toString()] = produto;
+
+    console.log(produto + " foi adicionado ao carrinho com o ID " + proximoId);
+    pedido.extras.push({
+        item: produto,
+        extras: "Não"
+    });
 }
+
 // Add os extras
 async function adicionarExtraAoCarrinho(numeroContato, produto, extra) {
     try {
         const carrinho = getCardapioIndividual(numeroContato);
+        const estado = getEstadoIndividual(numeroContato);
         const lanche = carrinho.idProduto; // Supondo que idPedido seja o identificador do produto
         const indiceExtra = extra; // Supondo que extra seja o índice do extra no cardápio
         const valorExtra = await valorExtraEspecifico(lanche, indiceExtra);
         const nomeExtra = await nomeExtraEspecifico(lanche, indiceExtra);
-        
-        if (!carrinho.extras.hasOwnProperty(nomeExtra.nomeItem)) {
-            carrinho.extras[nomeExtra.nomeItem] = []; // Inicializa um array vazio para os extras do produto
-            carrinho.extras[nomeExtra.nomeItem].push(nomeExtra.nomeExtra); // Adiciona o nome do extra ao array
-            adicionarValorProdutoAoCarrinho(numeroContato, valorExtra);
-            client.sendMessage(numeroContato, `O extra *${nomeExtra.nomeExtra}* foi adicionado ao seu lanche.`);
-        } 
-        if (carrinho.extras.hasOwnProperty(nomeExtra.nomeItem)) {
-            carrinho.extras[nomeExtra.nomeItem].push(nomeExtra.nomeExtra); // Se já existir, adicione ao array existente
-            adicionarValorProdutoAoCarrinho(numeroContato, valorExtra);
-            client.sendMessage(numeroContato, `O extra *${nomeExtra.nomeExtra}* foi adicioano ao seu lanche.`);
-        }
-
+        const r1 = nomeExtra.nomeItem;
+        const r2 = nomeExtra.nomeExtra;
+        adicionarItem2(r1, r2);
+        estado.resp1 = 5
+        client.sendMessage(numeroContato, respostas.maisUmAdicional);
     } catch (error) {
         console.error("Erro ao adicionar extra ao carrinho:", error);
     }
 }
+
+/////////////
+const carrinhoTemp2 = [];
+
+function adicionarItem2(lanche, ...extras) {
+    // Verifica se já existe um item com o mesmo lanche no carrinho temporário
+    const itemExistente = carrinhoTemp2.find(item => item.lanche === lanche);
+
+    if (itemExistente) {
+        // Atualiza a contagem dos extras no item existente
+        extras.forEach(extra => {
+            if (itemExistente.extraCounts[extra]) {
+                itemExistente.extraCounts[extra]++;
+            } else {
+                itemExistente.extraCounts[extra] = 1;
+            }
+        });
+    } else {
+        // Se o item não existe, cria um novo item no carrinho temporário
+        const extraCounts = {};
+        extras.forEach(extra => {
+            if (extraCounts[extra]) {
+                extraCounts[extra]++;
+            } else {
+                extraCounts[extra] = 1;
+            }
+        });
+
+        carrinhoTemp2.push({
+            lanche: lanche,
+            extraCounts: extraCounts
+        });
+    }
+}
+
+function imprimirCarrinhoTemp2() {
+    carrinhoTemp2.forEach(item => {
+        const extrasString = Object.entries(item.extraCounts).map(([extra, count]) => `${count}x ${extra}`).join(', ');
+        console.log(`${item.lanche}: ${extrasString}`);
+    });
+}
+function adicionarItem(numeroContato) {
+    const carrinho = getCardapioIndividual(numeroContato);
+
+    // Objeto para armazenar a contagem de cada extra
+    const extraCounts = {};
+
+    // Array para armazenar os nomes dos lanches
+    const nomesLanche = [];
+
+    // Adiciona os itens de carrinhoTemp2 a carrinho.extras e atualiza a contagem de extras
+    for (const item of carrinhoTemp2) {
+        // Atualiza a contagem de cada extra
+        for (const extra in item.extraCounts) {
+            if (extraCounts[extra]) {
+                extraCounts[extra] += item.extraCounts[extra];
+            } else {
+                extraCounts[extra] = item.extraCounts[extra];
+            }
+        }
+
+        // Adiciona o nome do lanche ao array de nomes de lanche
+        nomesLanche.push(item.lanche);
+    }
+
+    // Transforma o objeto extraCounts em um array de objetos
+    const extrasArray = [];
+    for (const extra in extraCounts) {
+        extrasArray.push(`${extraCounts[extra]}x ${extra}`);
+    }
+    const nomeLanchinho = nomesLanche.join(', ');
+    // Verifica se tanto o nome do lanche quanto os extras não são vazios
+    if (nomeLanchinho.trim() !== '' && extrasArray.length > 0) {
+        // Transforma o array de extras em uma string
+        const extrasString = extrasArray.join(', ');
+
+        // Adiciona o objeto extras ao carrinho
+        carrinho.extras.push({
+            item: nomeLanchinho,
+            extras: extrasString
+        });
+    }
+
+    // Limpa carrinhoTemp2 para uso futuro
+    carrinhoTemp2.length = 0;
+}
+
+
 
 // Add o preço
 function adicionarValorProdutoAoCarrinho(numeroContato, valorProdutoNovo) {
@@ -320,6 +426,8 @@ client.on('message', async (message) => {
         avaliarresp2(numeroContato, message);
     } else if (mensagemRecebida === '3') {
         avaliarresp3(numeroContato, message);
+    } else if (mensagemRecebida === '4') {
+        imprimirCarrinhoTemp2()
     }
 });
 
@@ -345,9 +453,16 @@ async function avaliarrespx(numeroContato, message) {
         case 4:
             adicionarExtraAoCarrinho(numeroContato, carrinho.idProduto, 1)
             break
-        case 6:
-            await client.sendMessage(numeroContato, respostas.cardapiover);
-            estado.resp1 = 16;
+        case 5: //ADICIONAR MAIS COISAS AO SANDUBA
+            adicionarExtraAoCarrinho(numeroContato, carrinho.idProduto, 1)
+            break
+        case 6: // Cardapio completo para ver dos sanduba
+            estado.resp1 = 20;
+            estado.resp2 = 1
+            avaliarresp1(numeroContato, message);
+            break
+        case 7: // NÃO QUER NADA NO LANCHE
+            adicionarItem(numeroContato)
             break
         default:
             // Lidar com estado desconhecido, se necessário
@@ -381,7 +496,11 @@ async function avaliarresp1(numeroContato, message) {
             estado.respx = 4;
             avaliarrespx(numeroContato, message);
             break
-        case 16:
+        case 5:
+            estado.respx = 3;
+            avaliarrespx(numeroContato, message);
+            break
+        case 20:
             tudosandubas(numeroContato, client);
             break;
         default:
@@ -394,11 +513,10 @@ async function avaliarresp2(numeroContato, message) {
     const estado = getEstadoIndividual(numeroContato);
     switch (estado.resp2) {
         case 0: // Manda o menu do cardápio
-            estado.respx = 6;
-            await avaliarrespx(numeroContato, message);
+            client.sendMessage(numeroContato, respostas.cardapiover);
             break;
-        case 1:
-            estado.respx = 1;
+        case 1: // Não do menu de adicionar coisas ao lanche
+            estado.respx = 7;
             await message.reply("Perfeito, vou te enviar nosso cardápio, só escolher o que deseja pedir.");
             await avaliarrespx(numeroContato, message);
             break;
@@ -414,6 +532,12 @@ async function avaliarresp3(numeroContato, message) {
     estado.resp1 = 15;
     const carrinho = getCardapioIndividual(numeroContato);
     console.log(carrinho);
+    console.log(carrinhoTemp2);
+    for (const key in carrinho.extras) {
+        const value = carrinho.extras[key];
+        //console.log(value);
+    }
+
 }
 
 // Função para verificar o estado de atendimento atual
