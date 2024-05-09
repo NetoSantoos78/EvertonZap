@@ -252,10 +252,7 @@ function adicionarProdutoAoCarrinho(numeroContato, produto) {
     pedido.produtos[proximoId.toString()] = produto;
 
     console.log(produto + " foi adicionado ao carrinho com o ID " + proximoId);
-    pedido.extras.push({
-        item: produto,
-        extras: "Não"
-    });
+    
 }
 
 // Add os extras
@@ -311,10 +308,14 @@ function adicionarItem2(lanche, ...extras) {
     }
 }
 
-function imprimirCarrinhoTemp2() {
+function imprimirCarrinhoTemp2(numeroContato, message) {
+    const carrinho = getCardapioIndividual(numeroContato);
+    console.log(carrinho);
     carrinhoTemp2.forEach(item => {
         const extrasString = Object.entries(item.extraCounts).map(([extra, count]) => `${count}x ${extra}`).join(', ');
         console.log(`${item.lanche}: ${extrasString}`);
+        message.reply(`${item.lanche}: ${extrasString}`)
+        client.sendMessage(numeroContato, carrinho);
     });
 }
 function adicionarItem(numeroContato) {
@@ -427,7 +428,7 @@ client.on('message', async (message) => {
     } else if (mensagemRecebida === '3') {
         avaliarresp3(numeroContato, message);
     } else if (mensagemRecebida === '4') {
-        imprimirCarrinhoTemp2()
+        imprimirCarrinhoTemp2(numeroContato, message)
     }
 });
 
