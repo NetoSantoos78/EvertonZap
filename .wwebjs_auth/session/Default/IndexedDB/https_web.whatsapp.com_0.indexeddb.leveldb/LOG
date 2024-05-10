@@ -1,0 +1,22 @@
+2024/05/09-21:31:55.410 4b94 Reusing MANIFEST C:\Users\kanec\Desktop\Meu Git\EvertonZap\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2024/05/09-21:31:55.411 4b94 Recovering log #586
+2024/05/09-21:31:55.604 4b94 Reusing old log C:\Users\kanec\Desktop\Meu Git\EvertonZap\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000586.log 
+2024/05/09-21:32:11.385 4b94 Level-0 table #596: started
+2024/05/09-21:32:11.475 4b94 Level-0 table #596: 1438851 bytes OK
+2024/05/09-21:32:11.478 4b94 Delete type=0 #586
+2024/05/09-21:32:15.826 4f88 Compacting 1@1 + 6@2 files
+2024/05/09-21:32:15.983 4f88 Generated table #597@1: 83273 keys, 2231499 bytes
+2024/05/09-21:32:16.125 4f88 Generated table #598@1: 98933 keys, 2251863 bytes
+2024/05/09-21:32:16.253 4f88 Generated table #599@1: 48737 keys, 2666423 bytes
+2024/05/09-21:32:16.303 4f88 Generated table #600@1: 4783 keys, 2144918 bytes
+2024/05/09-21:32:16.394 4f88 Generated table #601@1: 26693 keys, 2198908 bytes
+2024/05/09-21:32:16.542 4f88 Generated table #602@1: 88018 keys, 1956307 bytes
+2024/05/09-21:32:16.542 4f88 Compacted 1@1 + 6@2 files => 13449918 bytes
+2024/05/09-21:32:16.542 4f88 compacted to: files[ 0 0 6 0 0 0 0 ]
+2024/05/09-21:32:16.543 4f88 Delete type=2 #588
+2024/05/09-21:32:16.543 4f88 Delete type=2 #589
+2024/05/09-21:32:16.543 4f88 Delete type=2 #590
+2024/05/09-21:32:16.543 4f88 Delete type=2 #591
+2024/05/09-21:32:16.543 4f88 Delete type=2 #592
+2024/05/09-21:32:16.543 4f88 Delete type=2 #593
+2024/05/09-21:32:16.543 4f88 Delete type=2 #596

@@ -1,0 +1,41 @@
+2024/05/09-14:40:52.666 1974 Reusing MANIFEST C:\Users\kanec\Desktop\Meu Git\EvertonZap\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2024/05/09-14:40:52.666 1974 Recovering log #569
+2024/05/09-14:40:52.773 1974 Reusing old log C:\Users\kanec\Desktop\Meu Git\EvertonZap\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000569.log 
+2024/05/09-14:41:27.470 2c80 Level-0 table #579: started
+2024/05/09-14:41:27.503 2c80 Level-0 table #579: 1620785 bytes OK
+2024/05/09-14:41:27.504 2c80 Delete type=0 #569
+2024/05/09-14:41:27.855 4a08 Compacting 1@1 + 6@2 files
+2024/05/09-14:41:27.988 4a08 Generated table #580@1: 83695 keys, 2231906 bytes
+2024/05/09-14:41:28.133 4a08 Generated table #581@1: 99210 keys, 2251535 bytes
+2024/05/09-14:41:28.348 4a08 Generated table #582@1: 43137 keys, 2647826 bytes
+2024/05/09-14:41:28.396 4a08 Generated table #583@1: 2344 keys, 2139895 bytes
+2024/05/09-14:41:28.499 4a08 Generated table #584@1: 29065 keys, 2201345 bytes
+2024/05/09-14:41:28.641 4a08 Generated table #585@1: 83326 keys, 1639415 bytes
+2024/05/09-14:41:28.641 4a08 Compacted 1@1 + 6@2 files => 13111922 bytes
+2024/05/09-14:41:28.641 4a08 compacted to: files[ 0 0 6 0 0 0 0 ]
+2024/05/09-19:16:23.233 3fa0 Level-0 table #587: started
+2024/05/09-19:16:23.270 3fa0 Level-0 table #587: 1441938 bytes OK
+2024/05/09-19:16:23.272 3fa0 Delete type=2 #571
+2024/05/09-19:16:23.272 3fa0 Delete type=2 #572
+2024/05/09-19:16:23.272 3fa0 Delete type=2 #573
+2024/05/09-19:16:23.272 3fa0 Delete type=2 #574
+2024/05/09-19:16:23.272 3fa0 Delete type=2 #575
+2024/05/09-19:16:23.272 3fa0 Delete type=2 #576
+2024/05/09-19:16:23.272 3fa0 Delete type=0 #578
+2024/05/09-19:16:23.273 3fa0 Delete type=2 #579
+2024/05/09-19:21:13.488 1ad4 Compacting 1@1 + 6@2 files
+2024/05/09-19:21:13.609 1ad4 Generated table #588@1: 84268 keys, 2232879 bytes
+2024/05/09-19:21:13.755 1ad4 Generated table #589@1: 99106 keys, 2251170 bytes
+2024/05/09-19:21:13.867 1ad4 Generated table #590@1: 46037 keys, 2657989 bytes
+2024/05/09-19:21:13.911 1ad4 Generated table #591@1: 2480 keys, 2138974 bytes
+2024/05/09-19:21:14.006 1ad4 Generated table #592@1: 26829 keys, 2197851 bytes
+2024/05/09-19:21:14.157 1ad4 Generated table #593@1: 86588 keys, 1785880 bytes
+2024/05/09-19:21:14.157 1ad4 Compacted 1@1 + 6@2 files => 13264743 bytes
+2024/05/09-19:21:14.158 1ad4 compacted to: files[ 0 0 6 0 0 0 0 ]
+2024/05/09-19:21:14.158 1ad4 Delete type=2 #580
+2024/05/09-19:21:14.158 1ad4 Delete type=2 #581
+2024/05/09-19:21:14.159 1ad4 Delete type=2 #582
+2024/05/09-19:21:14.159 1ad4 Delete type=2 #583
+2024/05/09-19:21:14.159 1ad4 Delete type=2 #584
+2024/05/09-19:21:14.159 1ad4 Delete type=2 #585
+2024/05/09-19:21:14.159 1ad4 Delete type=2 #587
