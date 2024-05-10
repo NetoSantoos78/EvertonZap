@@ -18,6 +18,7 @@ const respostas = {
     menu: '',
     semAtendimento: 'Desculpa, não consegui entender o que você falou, por favor mande *"menu"* para iniciar seu pedido.',
     cardapio: 'Por favor, escolha o que deseja pedir.\n1️⃣ Sanduíches\n2️⃣ Pizzas\n3️⃣ Açaí\n4️⃣ Batata Frita\n5️⃣ Bebidas',
+    cardapioAdd: 'Por favor, escolha o que deseja adicionar.\n1️⃣ Sanduíches\n2️⃣ Pizzas\n3️⃣ Açaí\n4️⃣ Batata Frita\n5️⃣ Bebidas',
     cardapiover: 'Por favor, escolha o que deseja ver.\n1️⃣ Sanduíches\n2️⃣ Pizzas\n3️⃣ Açaí\n4️⃣ Batata Frita\n5️⃣ Bebidas',
     adicionais: 'Deseja por algo a mais em seu sanduíche?\n1️⃣ Sim\n2️⃣ Não',
     maisUmAdicional: 'Deseja adicionar mais algo ao seu sanduíche?\n1️⃣ Sim\n2️⃣ Não',
@@ -154,9 +155,10 @@ function gerarCodigo() {
 
 function limparNome(nomeUsuario) {
     // Remover emojis e espaços em branco extras, incluindo espaços em branco no início e no final
-    const nomeLimpo = emojiStrip(nomeUsuario).trim().replace(/(?<=\w)\s+(?=\w)/g, '');
+    const nomeLimpo = emojiStrip(nomeUsuario).replace(/^\s+|\s+$/g, '');
     return nomeLimpo;
 }
+
 // Compra dos sanduba
 async function sandubas(numeroContato, client) {
     sandubaCompleto((output, error) => {
@@ -221,22 +223,22 @@ async function sandubaIndividual(numeroContato, client, idproduto) {
 // Add numero contato
 function adicionarContatoAoCarrinho(numeroContato) {
     const carrinho = getCardapioIndividual(numeroContato);
-    carrinho.contato = numeroContato;
-    console.log("Contato add ao carro");
+    // Remove o "@c.us" e quaisquer caracteres que não sejam números
+    const numeroLimpo = numeroContato.replace(/[@c.us]/g, "").replace(/\D/g, "");
+    carrinho.contato = numeroLimpo;
 }
+
 // Add nome do comprador
-function adicionarNomeAoCarrinho(numeroContato,) {
+function adicionarNomeAoCarrinho(numeroContato) {
     const carrinho = getCardapioIndividual(numeroContato);
     carrinho.comprador = limparNome(respostas.nomeperfil);
-
-    console.log("Nome (" + carrinho.comprador + ") add ao carrinho");
 }
 // Add id do pedido
-function adicionarIdPedidoAoCarrinho(numeroContato,) {
+function adicionarIdPedidoAoCarrinho(numeroContato) {
     const carrinho = getCardapioIndividual(numeroContato);
     const codigoAleatorio = gerarCodigo();
     carrinho.idPedido = codigoAleatorio;
-    console.log("ID (" + carrinho.idPedido + ") add ao carrinho");
+
 }
 // Add os produtos
 function adicionarProdutoAoCarrinho(numeroContato, produto) {
@@ -314,17 +316,7 @@ function adicionarItem2(lanche, ...extras) {
     }
 }
 
-function imprimirCarrinhoTemp2(numeroContato, message) {
-    const carrinho = getCardapioIndividual(numeroContato);
-    console.log(carrinho);
-    carrinhoTemp2.forEach(item => {
-        const extrasString = Object.entries(item.extraCounts).map(([extra, count]) => `${count}x ${extra}`).join(', ');
-        const aaa = extrasString
-        console.log(`${item.lanche}: ${extrasString}`);
-        message.reply(aaa)
-        client.sendMessage(numeroContato, "Itens:" + carrinho.extras + " Valor:" + carrinho.preco);
-    });
-}
+
 function adicionarItem(numeroContato) {
     const carrinho = getCardapioIndividual(numeroContato);
     const estado = getEstadoIndividual(numeroContato);
@@ -346,7 +338,7 @@ function adicionarItem(numeroContato) {
         }
         // Adiciona o nome do lanche ao array de nomes de lanche
         nomesLanche.push(item.lanche);
-    } 
+    }
 
     // Transforma o objeto extraCounts em um array de objetos
     const extrasArray = [];
@@ -367,10 +359,8 @@ function adicionarItem(numeroContato) {
 
     // Limpa carrinhoTemp2 para uso futuro
     carrinhoTemp2.length = 0;
+
 }
-
-
-
 
 // Add o preço
 function adicionarValorProdutoAoCarrinho(numeroContato, valorProdutoNovo) {
@@ -453,7 +443,7 @@ async function avaliarrespx(numeroContato, message) {
     switch (estado.respx) {
         case 0: // Manda o menu do cardápio
             await client.sendMessage(numeroContato, respostas.menu);
-            estado.resp1 = 1;
+            estado.resp1 = 99;
             break;
         case 1: // Menu do cardapio de sandubas
             await sandubas(numeroContato, client);
@@ -477,7 +467,13 @@ async function avaliarrespx(numeroContato, message) {
             avaliarresp1(numeroContato, message);
             break
         case 7: // NÃO QUER NADA NO LANCHE
-            adicionarItem(numeroContato)
+            adicionarIdPedidoAoCarrinho(numeroContato);
+            adicionarNomeAoCarrinho(numeroContato);
+            adicionarContatoAoCarrinho(numeroContato);
+            adicionarItem(numeroContato);
+            message.reply(respostas.maisAlgoPedido);
+            estado.resp1 = 6;
+            estado.resp2 = 2
             break
         default:
             // Lidar com estado desconhecido, se necessário
@@ -515,9 +511,15 @@ async function avaliarresp1(numeroContato, message) {
             estado.respx = 3;
             avaliarrespx(numeroContato, message);
             break
+        case 6: // ADD mais algo ao pedido
+            message.reply(respostas.cardapioAdd);
+            break
         case 20:
             tudosandubas(numeroContato, client);
             break;
+        case 99:
+            message.reply(respostas.cardapio);
+            estado.resp1 = 1;
         default:
             // Lidar com estado desconhecido, se necessário
             break;
@@ -532,9 +534,18 @@ async function avaliarresp2(numeroContato, message) {
             break;
         case 1: // Não do menu de adicionar coisas ao lanche
             estado.respx = 7;
-            await message.reply("Perfeito, vou te enviar nosso cardápio, só escolher o que deseja pedir.");
             await avaliarrespx(numeroContato, message);
             break;
+        case 2:
+            message.reply(respostas.verCarrinho);
+            const carrinho = getCardapioIndividual(numeroContato);
+            const jsonString = JSON.stringify(carrinho, null, 2);
+            const mensagem = `${jsonString}`;
+            setTimeout(() => {
+                // Enviar a segunda mensagem após 0,5 segundos
+                client.sendMessage( numeroContato, mensagem );
+            }, 500);
+            break
         // Outros casos de estado...
         default:
             // Lidar com estado desconhecido, se necessário
