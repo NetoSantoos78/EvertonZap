@@ -12,6 +12,7 @@ const { addCarrinho, atualizarStatusPedido } = require('./comandos/carrinho.js')
 const { Callback } = require('puppeteer');
 const { clear } = require('console');
 
+
 const TIMEOUT_INTERVAL = 300000; // 15 segundos em milissegundos
 
 const respostas = {
@@ -88,6 +89,7 @@ function getCardapioIndividual(numeroContato) {
 }
 // Função para iniciar o atendimento
 function iniciarAtendimento(numeroContato) {
+
     const estado = getEstadoIndividual(numeroContato);
     estado.atendimento = 1; // Altera o estado de atendimento para 1
 
@@ -121,8 +123,10 @@ function iniciarTimerInatividade(numeroContato) {
 
 client.on('message_create', message => {
     if (!message.fromMe) {
+        
         const notifyName = message._data.notifyName;
         respostas.nomeperfil = notifyName;
+        
         respostas.menu = `Fala, ${notifyName}!\nDiz aí quais delícias vai querer hoje?\nEscolha algo na lista.\n1️⃣ Fazer pedido\n2️⃣ Cardápio\n3️⃣ Atendimento\nEscolha uma opção da lista.`
     }
 });
@@ -400,8 +404,10 @@ function resetarStatus(numeroContato) {
         estado.respx = 0
     //console.log("Resetou tudo papai");
 }
+
 client.on('message', async (message) => {
     const numeroContato = message.from;
+    contatinho = numeroContato;
     const estado = getEstadoIndividual(numeroContato);
     estado.mensagemRecebida = true; // Define o indicador de mensagem recebida como verdadeiro
     if (estado.atendimento === 0) {
@@ -417,11 +423,15 @@ client.on('message', async (message) => {
     if (mensagemRecebida === 'menu') {
         resetarStatus(numeroContato);
         avaliarrespx(numeroContato, message);
+    } else if (mensagemRecebida) {
+        const mensagemDoUser = message.body;
+        validacaoDasMsg(numeroContato, message, mensagemDoUser)
     } else if (mensagemRecebida === '1') {
         avaliarresp1(numeroContato, message);
     } else if (mensagemRecebida === '2') {
         avaliarresp2(numeroContato, message);
     } else if (mensagemRecebida === '3') {
+        verificarRegistro(numeroContato);
         avaliarresp3(numeroContato, message);
     } else if (mensagemRecebida === '4') {
         const carrinho = getCardapioIndividual(numeroContato);
@@ -433,7 +443,7 @@ client.on('message', async (message) => {
         //imprimirCarrinhoTemp2(numeroContato, message)
         //message.reply("aaa")
 
-    }
+    } 
 });
 
 async function avaliarrespx(numeroContato, message) {
@@ -443,7 +453,8 @@ async function avaliarrespx(numeroContato, message) {
     switch (estado.respx) {
         case 0: // Manda o menu do cardápio
             await client.sendMessage(numeroContato, respostas.menu);
-            estado.resp1 = 99;
+            estado.menu = 1;
+            estado.resp1 = 100;
             break;
         case 1: // Menu do cardapio de sandubas
             await sandubas(numeroContato, client);
@@ -520,6 +531,11 @@ async function avaliarresp1(numeroContato, message) {
         case 99:
             message.reply(respostas.cardapio);
             estado.resp1 = 1;
+            break
+        case 100:
+            verificarConcluido(numeroContato, message)
+            estado.resp1 = 1;
+            break
         default:
             // Lidar com estado desconhecido, se necessário
             break;
@@ -540,10 +556,25 @@ async function avaliarresp2(numeroContato, message) {
             message.reply(respostas.verCarrinho);
             const carrinho = getCardapioIndividual(numeroContato);
             const jsonString = JSON.stringify(carrinho, null, 2);
-            const mensagem = `${jsonString}`;
+            const carrinhoExtras = JSON.stringify(carrinho.extras, null, 2);
+            let mensagem = 'Seu carrinho\n\n';
+            mensagem += `Pedido           (${carrinho.extras.length} item no carrinho)\n`;
+            carrinho.extras.forEach((extra, index) => {
+                // Dividir a string pelo espaço em branco
+                let aaaa = extra.extras === "1x Não" ? "Não" : extra.extras;
+                mensagem += `*${extra.item}*\n  *↳ ${aaaa}*\n`;
+            });
+            mensagem += '\n*Pagamento*\n';
+            mensagem += `subtotal           *R$ ${carrinho.preco}*\n`;
+            mensagem += `taxa de entrega           *R$ ${carrinho.taxaEntrega}*\n`;
+            mensagem += `total           *R$ ${carrinho.total}*\n`;
+
+            // Agora você pode enviar a mensagem com os detalhes formatados
+
             setTimeout(() => {
                 // Enviar a segunda mensagem após 0,5 segundos
-                client.sendMessage( numeroContato, mensagem );
+                client.sendMessage(numeroContato, mensagem);
+
             }, 500);
             break
         // Outros casos de estado...
@@ -569,10 +600,195 @@ async function avaliarresp3(numeroContato, message) {
 
 }
 
+const jsonFiles = './usuarios.json'; // Substitua pelo caminho do seu arquivo JSON
+
+// Função para carregar o JSON do arquivo
+async function carregarJSON() {
+    try {
+        const jsonString = await fs.readFile(jsonFiles, 'utf8');
+        return JSON.parse(jsonString);
+    } catch (error) {
+        console.error('Erro ao carregar o arquivo JSON:', error.message);
+        return {};
+    }
+}
+
+// Função para salvar o JSON no arquivo
+async function salvarJSON(json) {
+    try {
+        await fs.writeFile(jsonFiles, JSON.stringify(json, null, 2));
+        console.log('JSON salvo com sucesso!');
+    } catch (error) {
+        console.error('Erro ao salvar o arquivo JSON:', error.message);
+    }
+}
+
 // Função para verificar o estado de atendimento atual
 function verificarEstado(numeroContato) {
     const estado = getEstadoIndividual(numeroContato);
     //console.log(`Estado de atendimento para ${numeroContato}:`, estado);
+}
+
+// Função para salvar o JSON no arquivo
+async function salvarJSON(json) {
+    try {
+        await fs.writeFile(jsonFiles, JSON.stringify(json, null, 2));
+        console.log('JSON salvo com sucesso!');
+    } catch (error) {
+        console.error('Erro ao salvar o arquivo JSON:', error.message);
+    }
+}
+async function verificarConcluido(numeroContato, message) {
+    const estado = getEstadoIndividual(numeroContato);
+    const json = await carregarJSON();
+    if (json[numeroContato]) {
+        const registro = json[numeroContato];
+        if (registro.concluido && registro.concluido === "nao") {
+            //estado.resp1 = 101;
+            console.log(estado.resp1);
+            console.log(`O registro de ${numeroContato} está marcado como "não concluído".`);
+            //avaliarresp1(numeroContato, message);
+            cadastroEndereco(numeroContato, message, registro)
+            // Adicione aqui a lógica para lidar com o registro não concluído, se necessário
+        } else {
+            estado.resp1 = 99;
+            console.log(estado.resp1);
+            console.log(`O registro de ${numeroContato} está marcado como "concluído" ou não possui o campo "concluido".`);
+            avaliarresp1(numeroContato, message);
+        }
+    } else {
+        console.log(`Nenhum registro encontrado para ${numeroContato}.`);
+        verificarRegistro(numeroContato);
+        setTimeout(() => {
+            verificarConcluido(numeroContato, message)
+        }, 200);
+    }
+}
+
+// Verificar se um número de contato tem algum registro no JSON
+async function verificarRegistro(numeroContato) {
+    const json = await carregarJSON();
+    if (json[numeroContato]) {
+        verificarConcluido(numeroContato)
+    } else {
+        console.log(`${numeroContato} não possui registros.`);
+        // Criar um registro em branco para o número de contato
+        json[numeroContato] = {
+            "concluido": "nao",
+            "fidelidade": "0",
+            "endereco": "",
+            "bairro": "",
+            "numeroCasa": "",
+            "referencia": "",
+            "complemento": ""
+        };
+        await salvarJSON(json);
+    }
+}
+
+async function editarJSON(numeroContato, campo, novoValor) {
+    const json = await carregarJSON();
+    if (json[numeroContato]) {
+        // Verifica se o campo existe antes de atualizá-lo
+        if (json[numeroContato][campo] !== undefined) {
+            // Verifica se o novo valor é numérico
+            if (!isNaN(novoValor)) {
+                // Se for numérico, converte para número
+                json[numeroContato][campo] = Number(novoValor);
+            } else {
+                // Se não for numérico, mantém como string
+                json[numeroContato][campo] = novoValor.toString();
+            }
+            await salvarJSON(json);
+            console.log(`Campo ${campo} para ${numeroContato} atualizado com sucesso.`);
+        } else {
+            console.log(`O campo ${campo} não existe para ${numeroContato}.`);
+        }
+    } else {
+        console.log(`Nenhum registro encontrado para ${numeroContato}.`);
+    }
+}
+
+async function editarCampoJSON(numeroContato, campo, novoValor) {
+    let json = await carregarJSON();
+    if (json[numeroContato] && json[numeroContato][campo] !== undefined) {
+        json[numeroContato][campo] = novoValor;
+        await salvarJSON(json);
+        console.log(`Campo ${campo} para ${numeroContato} atualizado com sucesso.`);
+    } else {
+        console.log(`O campo ${campo} não existe para ${numeroContato}.`);
+    }
+}
+
+
+async function cadastroEndereco(numeroContato, mensagemRecebida) {
+    const json = await carregarJSON();
+    const registro = json[numeroContato];
+    switch (registro.estado) {
+        
+        case 0:
+            client.sendMessage(numeroContato, `Qual é o seu endereço? *"Nome da rua"*?`);
+            editarJSON(numeroContato, "estado", 1);
+            editarCampoJSON(numeroContato, "estado", 1);
+            break;
+        case 1:
+            editarCampoJSON(numeroContato, "estado", 2);
+            client.sendMessage(numeroContato, "Qual é o seu bairro / povoado?");
+            
+            const enderecoRecebido = mensagemRecebida || "AAA";
+            editarJSON(numeroContato, "endereco", enderecoRecebido);
+            break;
+        case 2:
+            editarCampoJSON(numeroContato, "estado", 3);
+            client.sendMessage(numeroContato, "Qual é o número da sua casa?");
+            const bairroRecebido = mensagemRecebida || "BBB";
+            editarJSON(numeroContato, "bairro", bairroRecebido);
+            
+            break;
+        case 3:
+            editarCampoJSON(numeroContato, "estado", 4);
+            client.sendMessage(numeroContato, "Algum ponto de referência para adicionar? Ex. Final da rua, Casa com portão branco.");
+            const numeroCasaRecebido = mensagemRecebida || "CCC";
+            editarJSON(numeroContato, "numeroCasa", numeroCasaRecebido);
+            
+            break;
+        case 4:
+            editarCampoJSON(numeroContato, "estado", 5);
+            client.sendMessage(numeroContato, `Algum complemento? Ex. Casa de andar.`);
+            const referenciaRecebido = mensagemRecebida || "DDD";
+            editarJSON(numeroContato, "referencia", referenciaRecebido);
+            
+            break;
+        case 5:
+            editarJSON(numeroContato, "concluido", "sim");
+            const complementoRecebido = mensagemRecebida || "EEE";
+            client.sendMessage(numeroContato, "Pronto, seu endereço foi cadastrado!");
+            editarJSON(numeroContato, "complemento", complementoRecebido);
+            
+            
+            // Realiza alguma ação após o cadastro do endereço, se necessário
+            break;
+        default:
+            // Lidar com estado desconhecido, se necessário
+            break;
+    }
+}
+
+async function validacaoDasMsg(numeroContato, message, mensagemDoUser) {
+    const json = await carregarJSON();
+    const registro = json[numeroContato];
+    const mensagemRecebida = mensagemDoUser; // Aqui você obtém a mensagem enviada pelo usuário
+    switch (getEstadoIndividual(numeroContato).menu) {
+        case 1:
+            cadastroEndereco(numeroContato, mensagemRecebida); // Passa a mensagem recebida para a função cadastroEndereco
+            console.log(registro);
+            //console.log(`${registro.estado} | Status do ID do estado do cadastro do endereço`);
+            break;
+        default:
+            message.reply(respostas.semAtendimento);
+            console.log("Mensagem de validação enviada com sucesso.");
+            break;
+    }
 }
 
 
