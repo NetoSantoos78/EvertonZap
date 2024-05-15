@@ -107,7 +107,6 @@ function verificarInatividade(numeroContato) {
         estado.atendimento = 0;
         estado.menu = 0; // Reinicia o estado do menu
         client.sendMessage(numeroContato, `Estarei encerrando seu atendimento.\nAgradecemos seu contato.🙂\nQualquer dúvida, sinta-se à vontade em entrar em contato usando "menu"`);
-        console.log(`Atendimento para ${numeroContato} encerrado devido à inatividade.`);
     }
 
     // Limpa o indicador de mensagem recebida após verificar a inatividade
@@ -123,10 +122,10 @@ function iniciarTimerInatividade(numeroContato) {
 
 client.on('message_create', message => {
     if (!message.fromMe) {
-        
+
         const notifyName = message._data.notifyName;
         respostas.nomeperfil = notifyName;
-        
+
         respostas.menu = `Fala, ${notifyName}!\nDiz aí quais delícias vai querer hoje?\nEscolha algo na lista.\n1️⃣ Fazer pedido\n2️⃣ Cardápio\n3️⃣ Atendimento\nEscolha uma opção da lista.`
     }
 });
@@ -213,7 +212,6 @@ async function sandubaIndividual(numeroContato, client, idproduto) {
             estado.resp1 = 3;
             estado.resp2 = 1;
             estado.escolha = resultado.produtoNome;
-            console.log("Sanduba Indie: " + estado.resp1)
             setTimeout(() => {
                 client.sendMessage(numeroContato, respostas.maisUmAdicional);
             }, 1000);
@@ -262,8 +260,6 @@ function adicionarProdutoAoCarrinho(numeroContato, produto) {
     estado.escolha
     let nao = "Não";
     adicionarItem2(produto, nao);
-
-    console.log(produto + " foi adicionado ao carrinho com o ID " + proximoId);
 
 }
 
@@ -370,7 +366,6 @@ function adicionarItem(numeroContato) {
 function adicionarValorProdutoAoCarrinho(numeroContato, valorProdutoNovo) {
     const carrinho = getCardapioIndividual(numeroContato);
     carrinho.preco = (parseFloat(carrinho.preco) || 0) + parseFloat(valorProdutoNovo);
-    console.log("Preço add ao carro");
 }
 // Consultar extras disponivel
 async function obterExtrasDoLanche(numeroContato, message) {
@@ -402,7 +397,6 @@ function resetarStatus(numeroContato) {
         estado.resp9 = 0,
         estado.resp10 = 0,
         estado.respx = 0
-    //console.log("Resetou tudo papai");
 }
 
 client.on('message', async (message) => {
@@ -431,7 +425,7 @@ client.on('message', async (message) => {
     } else if (mensagemRecebida === '2') {
         avaliarresp2(numeroContato, message);
     } else if (mensagemRecebida === '3') {
-        verificarRegistro(numeroContato);
+        
         avaliarresp3(numeroContato, message);
     } else if (mensagemRecebida === '4') {
         const carrinho = getCardapioIndividual(numeroContato);
@@ -443,13 +437,12 @@ client.on('message', async (message) => {
         //imprimirCarrinhoTemp2(numeroContato, message)
         //message.reply("aaa")
 
-    } 
+    }
 });
 
 async function avaliarrespx(numeroContato, message) {
     const estado = getEstadoIndividual(numeroContato);
     const carrinho = getCardapioIndividual(numeroContato)
-    console.log("RespX: " + estado.respx)
     switch (estado.respx) {
         case 0: // Manda o menu do cardápio
             await client.sendMessage(numeroContato, respostas.menu);
@@ -488,7 +481,6 @@ async function avaliarrespx(numeroContato, message) {
             break
         default:
             // Lidar com estado desconhecido, se necessário
-            //console.log("Mensagem recebida de um remetente com estado desconhecido:", msg.body);
             break;
     }
 }
@@ -529,11 +521,12 @@ async function avaliarresp1(numeroContato, message) {
             tudosandubas(numeroContato, client);
             break;
         case 99:
-            message.reply(respostas.cardapio);
+            client.sendMessage(numeroContato, respostas.cardapio);
             estado.resp1 = 1;
+            console.log(estado.resp1);
             break
         case 100:
-            verificarConcluido(numeroContato, message)
+            verificarConcluido(numeroContato, message, null)
             estado.resp1 = 1;
             break
         default:
@@ -588,7 +581,6 @@ async function avaliarresp3(numeroContato, message) {
     const estado = getEstadoIndividual(numeroContato);
     estado.resp1 = 15;
     const carrinho = getCardapioIndividual(numeroContato);
-    console.log(carrinho);
     for (const key in carrinho.extras) {
         const value = carrinho.extras[key];
         const mensagem = `Seu Carrinho\nProdutos: ${value.item}\nExtras: ${value.extras}`;
@@ -617,7 +609,6 @@ async function carregarJSON() {
 async function salvarJSON(json) {
     try {
         await fs.writeFile(jsonFiles, JSON.stringify(json, null, 2));
-        console.log('JSON salvo com sucesso!');
     } catch (error) {
         console.error('Erro ao salvar o arquivo JSON:', error.message);
     }
@@ -626,52 +617,43 @@ async function salvarJSON(json) {
 // Função para verificar o estado de atendimento atual
 function verificarEstado(numeroContato) {
     const estado = getEstadoIndividual(numeroContato);
-    //console.log(`Estado de atendimento para ${numeroContato}:`, estado);
 }
 
 // Função para salvar o JSON no arquivo
 async function salvarJSON(json) {
     try {
         await fs.writeFile(jsonFiles, JSON.stringify(json, null, 2));
-        console.log('JSON salvo com sucesso!');
     } catch (error) {
         console.error('Erro ao salvar o arquivo JSON:', error.message);
     }
 }
-async function verificarConcluido(numeroContato, message) {
+async function verificarConcluido(numeroContato, message, mensagemRecebida) {
     const estado = getEstadoIndividual(numeroContato);
     const json = await carregarJSON();
     if (json[numeroContato]) {
         const registro = json[numeroContato];
         if (registro.concluido && registro.concluido === "nao") {
-            //estado.resp1 = 101;
-            console.log(estado.resp1);
-            console.log(`O registro de ${numeroContato} está marcado como "não concluído".`);
             //avaliarresp1(numeroContato, message);
             cadastroEndereco(numeroContato, message, registro)
             // Adicione aqui a lógica para lidar com o registro não concluído, se necessário
         } else {
             estado.resp1 = 99;
-            console.log(estado.resp1);
-            console.log(`O registro de ${numeroContato} está marcado como "concluído" ou não possui o campo "concluido".`);
             avaliarresp1(numeroContato, message);
         }
     } else {
-        console.log(`Nenhum registro encontrado para ${numeroContato}.`);
-        verificarRegistro(numeroContato);
+        verificarRegistro(numeroContato, null);
         setTimeout(() => {
-            verificarConcluido(numeroContato, message)
+            verificarConcluido(numeroContato, message, mensagemRecebida)
         }, 200);
     }
 }
 
 // Verificar se um número de contato tem algum registro no JSON
-async function verificarRegistro(numeroContato) {
+async function verificarRegistro(numeroContato, mensagemRecebida) {
     const json = await carregarJSON();
     if (json[numeroContato]) {
-        verificarConcluido(numeroContato)
+        verificarConcluido(numeroContato, mensagemRecebida)
     } else {
-        console.log(`${numeroContato} não possui registros.`);
         // Criar um registro em branco para o número de contato
         json[numeroContato] = {
             "concluido": "nao",
@@ -680,94 +662,168 @@ async function verificarRegistro(numeroContato) {
             "bairro": "",
             "numeroCasa": "",
             "referencia": "",
-            "complemento": ""
+            "complemento": "",
+            "estado": 0
         };
         await salvarJSON(json);
+        verificarConcluido(numeroContato, null);
     }
 }
 
-async function editarJSON(numeroContato, campo, novoValor) {
-    const json = await carregarJSON();
-    if (json[numeroContato]) {
-        // Verifica se o campo existe antes de atualizá-lo
-        if (json[numeroContato][campo] !== undefined) {
-            // Verifica se o novo valor é numérico
-            if (!isNaN(novoValor)) {
-                // Se for numérico, converte para número
-                json[numeroContato][campo] = Number(novoValor);
-            } else {
-                // Se não for numérico, mantém como string
-                json[numeroContato][campo] = novoValor.toString();
-            }
-            await salvarJSON(json);
-            console.log(`Campo ${campo} para ${numeroContato} atualizado com sucesso.`);
-        } else {
-            console.log(`O campo ${campo} não existe para ${numeroContato}.`);
-        }
+function editarEstado(numeroContato, novoEstado) {
+    const fs = require('fs');
+    // Carregar os dados do arquivo JSON
+    let dados = JSON.parse(fs.readFileSync(jsonFiles, 'utf8'));
+
+    // Verificar se o número de contato existe nos dados
+    if (dados.hasOwnProperty(numeroContato)) {
+        // Editar o campo "estado" do número de contato
+        dados[numeroContato].estado = novoEstado;
+
+        // Salvar as alterações de volta no arquivo
+        fs.writeFileSync(jsonFiles, JSON.stringify(dados, null, 2));
     } else {
-        console.log(`Nenhum registro encontrado para ${numeroContato}.`);
+        console.error(`O número ${numeroContato} não foi encontrado nos dados.`);
     }
 }
 
-async function editarCampoJSON(numeroContato, campo, novoValor) {
-    let json = await carregarJSON();
-    if (json[numeroContato] && json[numeroContato][campo] !== undefined) {
-        json[numeroContato][campo] = novoValor;
-        await salvarJSON(json);
-        console.log(`Campo ${campo} para ${numeroContato} atualizado com sucesso.`);
+function editarEndereco(numeroContato, novoEstado) {
+    const fs = require('fs');
+    // Carregar os dados do arquivo JSON
+    let dados = JSON.parse(fs.readFileSync(jsonFiles, 'utf8'));
+
+    // Verificar se o número de contato existe nos dados
+    if (dados.hasOwnProperty(numeroContato)) {
+        // Editar o campo "estado" do número de contato
+        dados[numeroContato].endereco = novoEstado;
+
+        // Salvar as alterações de volta no arquivo
+        fs.writeFileSync(jsonFiles, JSON.stringify(dados, null, 2));
     } else {
-        console.log(`O campo ${campo} não existe para ${numeroContato}.`);
+        console.error(`O número ${numeroContato} não foi encontrado nos dados.`);
     }
 }
+function editarBairro(numeroContato, novoEstado) {
+    const fs = require('fs');
+    // Carregar os dados do arquivo JSON
+    let dados = JSON.parse(fs.readFileSync(jsonFiles, 'utf8'));
+    // Verificar se o número de contato existe nos dados
+    if (dados.hasOwnProperty(numeroContato)) {
+        // Editar o campo "estado" do número de contato
+        dados[numeroContato].bairro = novoEstado;
 
+        // Salvar as alterações de volta no arquivo
+        fs.writeFileSync(jsonFiles, JSON.stringify(dados, null, 2));
+    } else {
+        console.error(`O número ${numeroContato} não foi encontrado nos dados.`);
+    }
+}
+function editarNumeroCasa(numeroContato, novoEstado) {
+    const fs = require('fs');
+    // Carregar os dados do arquivo JSON
+    let dados = JSON.parse(fs.readFileSync(jsonFiles, 'utf8'));
+    // Verificar se o número de contato existe nos dados
+    if (dados.hasOwnProperty(numeroContato)) {
+        // Editar o campo "estado" do número de contato
+        dados[numeroContato].numeroCasa = novoEstado;
+
+        // Salvar as alterações de volta no arquivo
+        fs.writeFileSync(jsonFiles, JSON.stringify(dados, null, 2));
+    } else {
+        console.error(`O número ${numeroContato} não foi encontrado nos dados.`);
+    }
+}
+function editarReferencia(numeroContato, novoEstado) {
+    const fs = require('fs');
+    // Carregar os dados do arquivo JSON
+    let dados = JSON.parse(fs.readFileSync(jsonFiles, 'utf8'));
+    // Verificar se o número de contato existe nos dados
+    if (dados.hasOwnProperty(numeroContato)) {
+        // Editar o campo "estado" do número de contato
+        dados[numeroContato].referencia = novoEstado;
+
+        // Salvar as alterações de volta no arquivo
+        fs.writeFileSync(jsonFiles, JSON.stringify(dados, null, 2));
+    } else {
+        console.error(`O número ${numeroContato} não foi encontrado nos dados.`);
+    }
+}
+function editarComplemento(numeroContato, novoEstado) {
+    const fs = require('fs');
+    // Carregar os dados do arquivo JSON
+    let dados = JSON.parse(fs.readFileSync(jsonFiles, 'utf8'));
+    // Verificar se o número de contato existe nos dados
+    if (dados.hasOwnProperty(numeroContato)) {
+        // Editar o campo "estado" do número de contato
+        dados[numeroContato].complemento = novoEstado;
+        // Salvar as alterações de volta no arquivo
+        fs.writeFileSync(jsonFiles, JSON.stringify(dados, null, 2));
+    } else {
+        console.error(`O número ${numeroContato} não foi encontrado nos dados.`);
+    }
+}
+function editarConcluido(numeroContato, novoEstado) {
+    const fs = require('fs');
+    // Carregar os dados do arquivo JSON
+    let dados = JSON.parse(fs.readFileSync(jsonFiles, 'utf8'));
+    // Verificar se o número de contato existe nos dados
+    if (dados.hasOwnProperty(numeroContato)) {
+        // Editar o campo "estado" do número de contato
+        dados[numeroContato].concluido = novoEstado;
+        // Salvar as alterações de volta no arquivo
+        fs.writeFileSync(jsonFiles, JSON.stringify(dados, null, 2));
+    } else {
+        console.error(`O número ${numeroContato} não foi encontrado nos dados.`);
+    }
+}
 
 async function cadastroEndereco(numeroContato, mensagemRecebida) {
     const json = await carregarJSON();
     const registro = json[numeroContato];
     switch (registro.estado) {
-        
         case 0:
             client.sendMessage(numeroContato, `Qual é o seu endereço? *"Nome da rua"*?`);
-            editarJSON(numeroContato, "estado", 1);
-            editarCampoJSON(numeroContato, "estado", 1);
+            editarEstado(numeroContato, 1);
             break;
         case 1:
-            editarCampoJSON(numeroContato, "estado", 2);
+            editarEstado(numeroContato, 2);
             client.sendMessage(numeroContato, "Qual é o seu bairro / povoado?");
-            
+
             const enderecoRecebido = mensagemRecebida || "AAA";
-            editarJSON(numeroContato, "endereco", enderecoRecebido);
+            editarEndereco(numeroContato, enderecoRecebido);
             break;
         case 2:
-            editarCampoJSON(numeroContato, "estado", 3);
+            editarEstado(numeroContato, 3);
             client.sendMessage(numeroContato, "Qual é o número da sua casa?");
             const bairroRecebido = mensagemRecebida || "BBB";
-            editarJSON(numeroContato, "bairro", bairroRecebido);
-            
+            editarBairro(numeroContato, bairroRecebido);
+
             break;
         case 3:
-            editarCampoJSON(numeroContato, "estado", 4);
+            editarEstado(numeroContato, 4);
             client.sendMessage(numeroContato, "Algum ponto de referência para adicionar? Ex. Final da rua, Casa com portão branco.");
             const numeroCasaRecebido = mensagemRecebida || "CCC";
-            editarJSON(numeroContato, "numeroCasa", numeroCasaRecebido);
-            
+            editarNumeroCasa(numeroContato, numeroCasaRecebido);
+
             break;
         case 4:
-            editarCampoJSON(numeroContato, "estado", 5);
+            editarEstado(numeroContato, 5);
             client.sendMessage(numeroContato, `Algum complemento? Ex. Casa de andar.`);
             const referenciaRecebido = mensagemRecebida || "DDD";
-            editarJSON(numeroContato, "referencia", referenciaRecebido);
-            
+            editarReferencia(numeroContato, referenciaRecebido);
+
             break;
         case 5:
-            editarJSON(numeroContato, "concluido", "sim");
+            editarConcluido(numeroContato, "sim");
             const complementoRecebido = mensagemRecebida || "EEE";
             client.sendMessage(numeroContato, "Pronto, seu endereço foi cadastrado!");
-            editarJSON(numeroContato, "complemento", complementoRecebido);
-            
-            
-            // Realiza alguma ação após o cadastro do endereço, se necessário
+            editarComplemento(numeroContato, complementoRecebido);
+            editarEstado(numeroContato, 6);
+            cadastroEndereco(numeroContato, null);
             break;
+        case 6:
+            verificarRegistro(numeroContato, mensagemRecebida);
+            break
         default:
             // Lidar com estado desconhecido, se necessário
             break;
@@ -780,13 +836,11 @@ async function validacaoDasMsg(numeroContato, message, mensagemDoUser) {
     const mensagemRecebida = mensagemDoUser; // Aqui você obtém a mensagem enviada pelo usuário
     switch (getEstadoIndividual(numeroContato).menu) {
         case 1:
-            cadastroEndereco(numeroContato, mensagemRecebida); // Passa a mensagem recebida para a função cadastroEndereco
-            console.log(registro);
-            //console.log(`${registro.estado} | Status do ID do estado do cadastro do endereço`);
+            //cadastroEndereco(numeroContato, mensagemRecebida); // Passa a mensagem recebida para a função cadastroEndereco
+            verificarRegistro(numeroContato, mensagemRecebida)
             break;
         default:
             message.reply(respostas.semAtendimento);
-            console.log("Mensagem de validação enviada com sucesso.");
             break;
     }
 }
