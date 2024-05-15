@@ -2,11 +2,11 @@
   "5579936180455@c.us": {
     "concluido": "sim",
     "fidelidade": "0",
-    "endereco": "Rua do alambique",
-    "bairro": "Centro",
-    "numeroCasa": "181",
-    "referencia": "Em frente a cancela",
-    "complemento": "Segunda vila de casas",
-    "estado": 6
+    "endereco": "",
+    "bairro": "",
+    "numeroCasa": "",
+    "referencia": "",
+    "complemento": "",
+    "estado": 0
   }
 }
