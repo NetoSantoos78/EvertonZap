@@ -42,10 +42,10 @@ const client = new Client({
     authStrategy: new LocalAuth(),
     webVersion: "2.2409.2",
     webVersionCache: {
-          type: "remote",
-          remotePath:
+        type: "remote",
+        remotePath:
             "https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/2.2409.2.html",
-        },
+    },
 });
 
 
@@ -70,6 +70,7 @@ function getEstadoIndividual(numeroContato) {
             resp10: 0,
             respx: 0,
             escolha: '',
+            conclusao: 0,
         };
     }
     return estadosIndividuais[numeroContato];
@@ -427,7 +428,7 @@ client.on('message', async (message) => {
     } else if (mensagemRecebida === '2') {
         avaliarresp2(numeroContato, message);
     } else if (mensagemRecebida === '3') {
-        
+
         avaliarresp3(numeroContato, message);
     } else if (mensagemRecebida === '4') {
         const carrinho = getCardapioIndividual(numeroContato);
@@ -487,53 +488,60 @@ async function avaliarrespx(numeroContato, message) {
     }
 }
 
-async function avaliarresp1(numeroContato, message) {
+async function avaliarresp1(numeroContato, message, client) {
     const estado = getEstadoIndividual(numeroContato);
-    switch (estado.resp1) {
-        case 0: // Manda o menu do cardápio
-            await avaliarrespx(numeroContato, message);
-
-            break;
-        case 1: // Mensagem que vai mandar os lanches
-            estado.respx = 1;
-            await message.reply("Perfeito, vou te enviar nosso cardápio, só escolher o que deseja pedir.");
-            await avaliarrespx(numeroContato, message);
-            break;
-        case 2: // Chama o lanche com id 1
-            estado.respx = 2;
-            avaliarrespx(numeroContato, message)
+    switch (estado.conclusao) {
+        case 0:
+            verificarConcluido(numeroContato, null);
             break
-        case 3: // Lista de estra do sanduba escolhido
-            estado.respx = 3;
-            message.reply("Escolha abaixo o que deseja adicionar no sanduíche");
-            avaliarrespx(numeroContato, message)
+        case 1:
+            switch (estado.resp1) {
+                case 0: // Manda o menu do cardápio
+                    avaliarrespx(numeroContato, message);
+                    break;
+                case 1: // Mensagem que vai mandar os lanches
+                    estado.respx = 1;
+                    console.log(typeof message);
+                    console.log(message);
+                    message.reply("Perfeito, vou te enviar nosso cardápio, só escolher o que deseja pedir.");
+                    avaliarrespx(numeroContato, message);
+                    break;
+                case 2: // Chama o lanche com id 1
+                    estado.respx = 2;
+                    avaliarrespx(numeroContato, message)
+                    break
+                case 3: // Lista de estra do sanduba escolhido
+                    estado.respx = 3;
+                    message.reply("Escolha abaixo o que deseja adicionar no sanduíche");
+                    avaliarrespx(numeroContato, message)
+                    break
+                case 4:
+                    estado.respx = 4;
+                    avaliarrespx(numeroContato, message);
+                    break
+                case 5:
+                    estado.respx = 3;
+                    avaliarrespx(numeroContato, message);
+                    break
+                case 6: // ADD mais algo ao pedido
+                    message.reply(respostas.cardapioAdd);
+                    break
+                case 20:
+                    tudosandubas(numeroContato, client);
+                    break;
+                case 99:
+                    client.sendMessage(numeroContato, respostas.cardapio);
+                    estado.resp1 = 1;
+                    console.log(estado.resp1);
+                    break
+                case 100:
+                    verificarConcluido(numeroContato, message, null)
+                    estado.resp1 = 1;
+                    break
+                default:
+                    break;
+            }
             break
-        case 4:
-            estado.respx = 4;
-            avaliarrespx(numeroContato, message);
-            break
-        case 5:
-            estado.respx = 3;
-            avaliarrespx(numeroContato, message);
-            break
-        case 6: // ADD mais algo ao pedido
-            message.reply(respostas.cardapioAdd);
-            break
-        case 20:
-            tudosandubas(numeroContato, client);
-            break;
-        case 99:
-            client.sendMessage(numeroContato, respostas.cardapio);
-            estado.resp1 = 1;
-            console.log(estado.resp1);
-            break
-        case 100:
-            verificarConcluido(numeroContato, message, null)
-            estado.resp1 = 1;
-            break
-        default:
-            // Lidar com estado desconhecido, se necessário
-            break;
     }
 }
 
@@ -590,6 +598,7 @@ async function avaliarresp3(numeroContato, message) {
         // Agora você pode enviar a mensagem para o cliente
         // client.sendMessage(numeroContato, mensagem);
     }
+    message.reply("eaeeee")
 
 
 }
@@ -639,8 +648,8 @@ async function verificarConcluido(numeroContato, message, mensagemRecebida) {
             cadastroEndereco(numeroContato, message, registro)
             // Adicione aqui a lógica para lidar com o registro não concluído, se necessário
         } else {
-            estado.resp1 = 99;
-            avaliarresp1(numeroContato, message);
+            estado.conclusao = 1;
+            await avaliarresp1(numeroContato, message, client);
         }
     } else {
         verificarRegistro(numeroContato, null);
