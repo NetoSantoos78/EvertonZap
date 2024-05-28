@@ -40,12 +40,14 @@ const client = new Client({
         ignoreDefaultArgs: ['--disable-dev-shm-usage'], ignoreHTTPSErrors: true
     },
     authStrategy: new LocalAuth(),
-    webVersion: '2.2409.2',
+    webVersion: "2.2409.2",
     webVersionCache: {
-        type: 'remote',
-        remotePath: 'https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/2.2409.2.html'
-    },
+          type: "remote",
+          remotePath:
+            "https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/2.2409.2.html",
+        },
 });
+
 
 const estadosIndividuais = {};
 const carrrinhoIndividuais = {};
