@@ -2,11 +2,41 @@
   "5579936180455@c.us": {
     "concluido": "sim",
     "fidelidade": "0",
+    "endereco": "rua do alambique",
+    "bairro": "centro",
+    "numeroCasa": "181",
+    "referencia": "fim da rua",
+    "complemento": "frente a cancela",
+    "estado": 6
+  },
+  "557999724137@c.us": {
+    "concluido": "sim",
+    "fidelidade": "0",
+    "endereco": "rua floriano peixoto",
+    "bairro": "centro",
+    "numeroCasa": "120",
+    "referencia": "saida para pinhao",
+    "complemento": "nao",
+    "estado": 6
+  },
+  "status@broadcast": {
+    "concluido": "nao",
+    "fidelidade": "0",
     "endereco": "",
     "bairro": "",
     "numeroCasa": "",
     "referencia": "",
     "complemento": "",
     "estado": 0
+  },
+  "557988414680@c.us": {
+    "concluido": "nao",
+    "fidelidade": "0",
+    "endereco": "",
+    "bairro": "",
+    "numeroCasa": "",
+    "referencia": "",
+    "complemento": "",
+    "estado": 1
   }
 }

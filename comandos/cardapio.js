@@ -10,11 +10,33 @@ async function lerCardapio(nomeArquivo) {
         throw error;
     }
 }
+async function lerCardapioPizza1(nomeArquivo) {
+    try {
+        const data = await fs.readFile(nomeArquivo, 'utf8');
+        const cardapio = JSON.parse(data);
+        return cardapio;
+    } catch (error) {
+        throw error;
+    }
+}
+async function lerCardapioPizza2(nomeArquivo) {
+    try {
+        const data = await fs.readFile(nomeArquivo, 'utf8');
+        const cardapio = JSON.parse(data);
+        return cardapio;
+    } catch (error) {
+        throw error;
+    }
+}
 
 
 // Caminho para o arquivo JSON
 const caminhoArquivo = './cardapio/burguers.json';
-
+const caminhoArquivoPizza1 = './cardapio/pizzaEspecial.json';
+const caminhoArquivoPizza2 = './cardapio/pizzaTradicional.json';
+const caminhoArquivoBebidas = './cardapio/bebidas.json';
+const caminhoArquivoBatatas = './cardapio/batatas.json';
+const caminhoArquivoAcai = './cardapio/acai.json';
 
 async function cardapioIndividual(lanche) {
     try {
@@ -36,9 +58,108 @@ async function cardapioIndividual(lanche) {
         throw error;
     }
 }
+async function cardapioIndividualPizza1(lanche) {
+    try {
+        const cardapio = await lerCardapio(caminhoArquivo);
+        if (cardapio) {
+            const produto = cardapio[lanche];
+            if (produto) {
+                const produtoNome = produto.produto;
+                const ingredientes = produto.ingredientes;
+                const valor = produto.valor;
+                return { produtoNome, ingredientes, valor };
+            } else {
+                throw new Error("Índice não encontrado: " + lanche);
+            }
+        } else {
+            throw new Error("Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+async function cardapioIndividualPizza2(lanche) {
+    try {
+        const cardapio = await lerCardapio(caminhoArquivo);
+        if (cardapio) {
+            const produto = cardapio[lanche];
+            if (produto) {
+                const produtoNome = produto.produto;
+                const ingredientes = produto.ingredientes;
+                const valor = produto.valor;
+                return { produtoNome, ingredientes, valor };
+            } else {
+                throw new Error("Índice não encontrado: " + lanche);
+            }
+        } else {
+            throw new Error("Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+async function cardapioIndividualBebidas(lanche) {
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoBebidas);
+        if (cardapio) {
+            const produto = cardapio[lanche];
+            if (produto) {
+                const produtoNome = produto.produto;
+                const ingredientes = produto.ingredientes;
+                const valor = produto.valor;
+                return { produtoNome, ingredientes, valor };
+            } else {
+                throw new Error("Índice não encontrado: " + lanche);
+            }
+        } else {
+            throw new Error("Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+async function cardapioIndividualBatatas(lanche) {
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoBatatas);
+        if (cardapio) {
+            const produto = cardapio[lanche];
+            if (produto) {
+                const produtoNome = produto.produto;
+                const ingredientes = produto.ingredientes;
+                const valor = produto.valor;
+                return { produtoNome, ingredientes, valor };
+            } else {
+                throw new Error("Índice não encontrado: " + lanche);
+            }
+        } else {
+            throw new Error("Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+async function cardapioIndividualAcai(lanche) {
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoAcai);
+        if (cardapio) {
+            const produto = cardapio[lanche];
+            if (produto) {
+                const produtoNome = produto.produto;
+                const ingredientes = produto.ingredientes;
+                const valor = produto.valor;
+                return { produtoNome, ingredientes, valor };
+            } else {
+                throw new Error("Índice não encontrado: " + lanche);
+            }
+        } else {
+            throw new Error("Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        throw error;
+    }
+}
 
-
-
+//####################################
 async function cardapioCompleto(callback) {
     try {
         const cardapio = await lerCardapio(caminhoArquivo);
@@ -57,7 +178,98 @@ async function cardapioCompleto(callback) {
         callback(null, error);
     }
 }
+async function cardapioCompletoPizzas1(callback) {
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoPizza1);
+        if (cardapio) {
+            let output = "";
+            Object.keys(cardapio).forEach((indice, i) => {
+                const emoji = emojisNumeros[i];
+                const { produto, valor, ingredientes } = cardapio[indice];
+                output += `${emoji} ${produto}\n   ❯ ${ingredientes.join(", ")}\n   ❯ R$: ${valor}\n\n`;
+            });
+            callback(output, null);
+        } else {
+            callback(null, "Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        callback(null, error);
+    }
+}
+async function cardapioCompletoPizzas2(callback) {
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoPizza2);
+        if (cardapio) {
+            let output = "";
+            Object.keys(cardapio).forEach((indice, i) => {
+                const emoji = emojisNumeros[i];
+                const { produto, valor, ingredientes } = cardapio[indice];
+                output += `${emoji} ${produto}\n   ❯ ${ingredientes.join(", ")}\n   ❯ R$: ${valor}\n\n`;
+            });
+            callback(output, null);
+        } else {
+            callback(null, "Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        callback(null, error);
+    }
+}
+async function cardapioCompletoBebidas(callback) {
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoBebidas);
+        if (cardapio) {
+            let output = "";
+            Object.keys(cardapio).forEach((indice, i) => {
+                const emoji = emojisNumeros[i];
+                const { produto, valor, ingredientes } = cardapio[indice];
+                output += `${emoji} ${produto}\n   ❯ ${ingredientes.join(", ")}\n   ❯ R$: ${valor}\n\n`;
+            });
+            callback(output, null);
+        } else {
+            callback(null, "Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        callback(null, error);
+    }
+}
+async function cardapioCompletoBatatas(callback) {
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoBatatas);
+        if (cardapio) {
+            let output = "";
+            Object.keys(cardapio).forEach((indice, i) => {
+                const emoji = emojisNumeros[i];
+                const { produto, valor, ingredientes } = cardapio[indice];
+                output += `${emoji} ${produto}\n   ❯ ${ingredientes.join(", ")}\n   ❯ R$: ${valor}\n\n`;
+            });
+            callback(output, null);
+        } else {
+            callback(null, "Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        callback(null, error);
+    }
+}
+async function cardapioCompletoAcai(callback) {
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoAcai);
+        if (cardapio) {
+            let output = "";
+            Object.keys(cardapio).forEach((indice, i) => {
+                const emoji = emojisNumeros[i];
+                const { produto, valor, ingredientes } = cardapio[indice];
+                output += `${emoji} ${produto}\n   ❯ ${ingredientes.join(", ")}\n   ❯ R$: ${valor}\n\n`;
+            });
+            callback(output, null);
+        } else {
+            callback(null, "Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        callback(null, error);
+    }
+}
 
+//####################################
 async function sandubaCompleto(callback) {
     try {
         const cardapio = await lerCardapio(caminhoArquivo);
@@ -76,7 +288,102 @@ async function sandubaCompleto(callback) {
         callback(null, error);
     }
 }
+async function pizzasCompleto1(callback) {
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoPizza1);
+        if (cardapio) {
+            let output = "";
+            output += `*Aqui estão algumas das pizzas mais especiais que você já experimentou.*\n\n`;
+            Object.keys(cardapio).forEach((indice, i) => {
+                const emoji = emojisNumeros[i];
+                const { produto, valor, ingredientes } = cardapio[indice];
+                output += `${emoji} ${produto}\n`;
+            });
+            output += `\n*Pequena: R$:28,00*\n*Média R$:38,00*\n*Grande: R$:48,00*`;
+            callback(output, null);
+        } else {
+            callback(null, "Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        callback(null, error);
+    }
+}
+async function pizzasCompleto2(callback) {
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoPizza2);
+        if (cardapio) {
+            let output = "";
+            output += `*Aqui estão algumas das pizzas mais especiais que você já experimentou.*\n\n`;
+            Object.keys(cardapio).forEach((indice, i) => {
+                const emoji = emojisNumeros[i];
+                const { produto, valor, ingredientes } = cardapio[indice];
+                output += `${emoji} ${produto}\n`;
+            });
+            output += `\nPequena: R$:20,00\nMédia R$:30,00\nGrande: R$:40,00`;
+            callback(output, null);
+        } else {
+            callback(null, "Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        callback(null, error);
+    }
+}
+async function bebidasCompleto(callback) {
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoBebidas);
+        if (cardapio) {
+            let output = "";
+            Object.keys(cardapio).forEach((indice, i) => {
+                const emoji = emojisNumeros[i];
+                const { produto, valor, ingredientes } = cardapio[indice];
+                output += `${emoji} ${produto}\n   ❯ R$: ${valor}\n\n`;
+            });
+            callback(output, null);
+        } else {
+            callback(null, "Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        callback(null, error);
+    }
+}
+async function batatasCompleto(callback) {
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoBatatas);
+        if (cardapio) {
+            let output = "";
+            Object.keys(cardapio).forEach((indice, i) => {
+                const emoji = emojisNumeros[i];
+                const { produto, valor, ingredientes } = cardapio[indice];
+                output += `${emoji} ${produto}\n   ❯ R$: ${valor}\n\n`;
+            });
+            callback(output, null);
+        } else {
+            callback(null, "Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        callback(null, error);
+    }
+}
+async function acaiCompleto(callback) {
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoAcai);
+        if (cardapio) {
+            let output = "";
+            Object.keys(cardapio).forEach((indice, i) => {
+                const emoji = emojisNumeros[i];
+                const { produto, valor, ingredientes } = cardapio[indice];
+                output += `${emoji} ${produto}\n   ❯ R$: ${valor}\n\n`;
+            });
+            callback(output, null);
+        } else {
+            callback(null, "Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        callback(null, error);
+    }
+}
 
+//####################################
 async function cardapioExtras(lanche) {
     try {
         const cardapio = await lerCardapio(caminhoArquivo);
@@ -100,8 +407,123 @@ async function cardapioExtras(lanche) {
         throw error;
     }
 }
+async function cardapioExtrasPizza1(lanche) {
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoPizza1);
+        if (cardapio) {
+            const produto = cardapio[lanche];
+            if (produto) {
+                let extrasString = '';
+                const extrasPrecos = produto.extrasPrecos;
+                Object.keys(extrasPrecos).forEach((extra, index) => {
+                    const numeroEmoji = emojisNumeros[index]; // Obter emoji do número
+                    extrasString += `${numeroEmoji} ${extra}: R$ ${extrasPrecos[extra]}\n`;
+                });
+                return extrasString;
+            } else {
+                throw new Error("Índice não encontrado: " + lanche);
+            }
+        } else {
+            throw new Error("Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+async function cardapioExtrasPizza2(lanche) {
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoPizza2);
+        if (cardapio) {
+            const produto = cardapio[lanche];
+            if (produto) {
+                let extrasString = '';
+                const extrasPrecos = produto.extrasPrecos;
+                Object.keys(extrasPrecos).forEach((extra, index) => {
+                    const numeroEmoji = emojisNumeros[index]; // Obter emoji do número
+                    extrasString += `${numeroEmoji} ${extra}: R$ ${extrasPrecos[extra]}\n`;
+                });
+                return extrasString;
+            } else {
+                throw new Error("Índice não encontrado: " + lanche);
+            }
+        } else {
+            throw new Error("Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+async function cardapioExtrasBebidas(lanche) {
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoBebidas);
+        if (cardapio) {
+            const produto = cardapio[lanche];
+            if (produto) {
+                let extrasString = '';
+                const extrasPrecos = produto.extrasPrecos;
+                Object.keys(extrasPrecos).forEach((extra, index) => {
+                    const numeroEmoji = emojisNumeros[index]; // Obter emoji do número
+                    extrasString += `${numeroEmoji} ${extra}: R$ ${extrasPrecos[extra]}\n`;
+                });
+                return extrasString;
+            } else {
+                throw new Error("Índice não encontrado: " + lanche);
+            }
+        } else {
+            throw new Error("Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+async function cardapioExtrasBatatas(lanche) {
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoBatatas);
+        if (cardapio) {
+            const produto = cardapio[lanche];
+            if (produto) {
+                let extrasString = '';
+                const extrasPrecos = produto.extrasPrecos;
+                Object.keys(extrasPrecos).forEach((extra, index) => {
+                    const numeroEmoji = emojisNumeros[index]; // Obter emoji do número
+                    extrasString += `${numeroEmoji} ${extra}: R$ ${extrasPrecos[extra]}\n`;
+                });
+                return extrasString;
+            } else {
+                throw new Error("Índice não encontrado: " + lanche);
+            }
+        } else {
+            throw new Error("Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+async function cardapioExtrasAcai(lanche) {
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoAcai);
+        if (cardapio) {
+            const produto = cardapio[lanche];
+            if (produto) {
+                let extrasString = '';
+                const extrasPrecos = produto.extrasPrecos;
+                Object.keys(extrasPrecos).forEach((extra, index) => {
+                    const numeroEmoji = emojisNumeros[index]; // Obter emoji do número
+                    extrasString += `${numeroEmoji} ${extra}: R$ ${extrasPrecos[extra]}\n`;
+                });
+                return extrasString;
+            } else {
+                throw new Error("Índice não encontrado: " + lanche);
+            }
+        } else {
+            throw new Error("Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        throw error;
+    }
+}
 
-
+//####################################
 async function valorExtraEspecifico(lanche, indiceExtra) {
     try {
         const cardapio = await lerCardapio(caminhoArquivo);
@@ -125,7 +547,123 @@ async function valorExtraEspecifico(lanche, indiceExtra) {
         throw error;
     }
 }
+async function valorExtraEspecificoPizza1(lanche, indiceExtra) {
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoPizza1);
+        if (cardapio) {
+            const produto = cardapio[lanche];
+            if (produto) {
+                const extrasPrecos = Object.values(produto.extrasPrecos); // Obtém os preços dos extras
+                const valorExtra = extrasPrecos[indiceExtra - 1]; // Subtrai 1 para obter o índice correto
+                if (valorExtra) {
+                    return valorExtra;
+                } else {
+                    throw new Error(`Extra no índice '${indiceExtra}' não encontrado no lanche ${lanche}.`);
+                }
+            } else {
+                throw new Error("Lanche não encontrado: " + lanche);
+            }
+        } else {
+            throw new Error("Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+async function valorExtraEspecificoPizza2(lanche, indiceExtra) {
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoPizza2);
+        if (cardapio) {
+            const produto = cardapio[lanche];
+            if (produto) {
+                const extrasPrecos = Object.values(produto.extrasPrecos); // Obtém os preços dos extras
+                const valorExtra = extrasPrecos[indiceExtra - 1]; // Subtrai 1 para obter o índice correto
+                if (valorExtra) {
+                    return valorExtra;
+                } else {
+                    throw new Error(`Extra no índice '${indiceExtra}' não encontrado no lanche ${lanche}.`);
+                }
+            } else {
+                throw new Error("Lanche não encontrado: " + lanche);
+            }
+        } else {
+            throw new Error("Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+async function valorExtraEspecificoBebidas(lanche, indiceExtra) {
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoBebidas);
+        if (cardapio) {
+            const produto = cardapio[lanche];
+            if (produto) {
+                const extrasPrecos = Object.values(produto.extrasPrecos); // Obtém os preços dos extras
+                const valorExtra = extrasPrecos[indiceExtra - 1]; // Subtrai 1 para obter o índice correto
+                if (valorExtra) {
+                    return valorExtra;
+                } else {
+                    throw new Error(`Extra no índice '${indiceExtra}' não encontrado no lanche ${lanche}.`);
+                }
+            } else {
+                throw new Error("Lanche não encontrado: " + lanche);
+            }
+        } else {
+            throw new Error("Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+async function valorExtraEspecificoBatatas(lanche, indiceExtra) {
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoBatatas);
+        if (cardapio) {
+            const produto = cardapio[lanche];
+            if (produto) {
+                const extrasPrecos = Object.values(produto.extrasPrecos); // Obtém os preços dos extras
+                const valorExtra = extrasPrecos[indiceExtra - 1]; // Subtrai 1 para obter o índice correto
+                if (valorExtra) {
+                    return valorExtra;
+                } else {
+                    throw new Error(`Extra no índice '${indiceExtra}' não encontrado no lanche ${lanche}.`);
+                }
+            } else {
+                throw new Error("Lanche não encontrado: " + lanche);
+            }
+        } else {
+            throw new Error("Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+async function valorExtraEspecificoAcai(lanche, indiceExtra) {
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoAcai);
+        if (cardapio) {
+            const produto = cardapio[lanche];
+            if (produto) {
+                const extrasPrecos = Object.values(produto.extrasPrecos); // Obtém os preços dos extras
+                const valorExtra = extrasPrecos[indiceExtra - 1]; // Subtrai 1 para obter o índice correto
+                if (valorExtra) {
+                    return valorExtra;
+                } else {
+                    throw new Error(`Extra no índice '${indiceExtra}' não encontrado no lanche ${lanche}.`);
+                }
+            } else {
+                throw new Error("Lanche não encontrado: " + lanche);
+            }
+        } else {
+            throw new Error("Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        throw error;
+    }
+}
 
+//####################################
 async function nomeExtraEspecifico(lanche, indiceExtra) {
     try {
         const cardapio = await lerCardapio(caminhoArquivo);
@@ -150,7 +688,126 @@ async function nomeExtraEspecifico(lanche, indiceExtra) {
         throw error;
     }
 }
-
+async function nomeExtraEspecificoPizza1(lanche, indiceExtra) {
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoPizza1);
+        if (cardapio) {
+            const produto = cardapio[lanche];
+            if (produto) {
+                const extrasNomes = Object.values(produto.extras); // Obtém os nomes dos extras
+                const nomeItem = produto.produto; // Obtém o nome do item do cardápio
+                const nomeExtra = extrasNomes[indiceExtra - 1]; // Subtrai 1 para obter o índice correto
+                if (nomeExtra) {
+                    return { nomeExtra, nomeItem };
+                } else {
+                    throw new Error(`Extra no índice '${indiceExtra}' não encontrado no lanche ${lanche}.`);
+                }
+            } else {
+                throw new Error("Lanche não encontrado: " + lanche);
+            }
+        } else {
+            throw new Error("Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+async function nomeExtraEspecificoPizza2(lanche, indiceExtra) {
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoPizza2);
+        if (cardapio) {
+            const produto = cardapio[lanche];
+            if (produto) {
+                const extrasNomes = Object.values(produto.extras); // Obtém os nomes dos extras
+                const nomeItem = produto.produto; // Obtém o nome do item do cardápio
+                const nomeExtra = extrasNomes[indiceExtra - 1]; // Subtrai 1 para obter o índice correto
+                if (nomeExtra) {
+                    return { nomeExtra, nomeItem };
+                } else {
+                    throw new Error(`Extra no índice '${indiceExtra}' não encontrado no lanche ${lanche}.`);
+                }
+            } else {
+                throw new Error("Lanche não encontrado: " + lanche);
+            }
+        } else {
+            throw new Error("Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+async function nomeExtraEspecificBebidas(lanche, indiceExtra) {
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoBebidas);
+        if (cardapio) {
+            const produto = cardapio[lanche];
+            if (produto) {
+                const extrasNomes = Object.values(produto.extras); // Obtém os nomes dos extras
+                const nomeItem = produto.produto; // Obtém o nome do item do cardápio
+                const nomeExtra = extrasNomes[indiceExtra - 1]; // Subtrai 1 para obter o índice correto
+                if (nomeExtra) {
+                    return { nomeExtra, nomeItem };
+                } else {
+                    throw new Error(`Extra no índice '${indiceExtra}' não encontrado no lanche ${lanche}.`);
+                }
+            } else {
+                throw new Error("Lanche não encontrado: " + lanche);
+            }
+        } else {
+            throw new Error("Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+async function nomeExtraEspecificoBatatas(lanche, indiceExtra) {
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoBatatas);
+        if (cardapio) {
+            const produto = cardapio[lanche];
+            if (produto) {
+                const extrasNomes = Object.values(produto.extras); // Obtém os nomes dos extras
+                const nomeItem = produto.produto; // Obtém o nome do item do cardápio
+                const nomeExtra = extrasNomes[indiceExtra - 1]; // Subtrai 1 para obter o índice correto
+                if (nomeExtra) {
+                    return { nomeExtra, nomeItem };
+                } else {
+                    throw new Error(`Extra no índice '${indiceExtra}' não encontrado no lanche ${lanche}.`);
+                }
+            } else {
+                throw new Error("Lanche não encontrado: " + lanche);
+            }
+        } else {
+            throw new Error("Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+async function nomeExtraEspecificoAcai(lanche, indiceExtra) {
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoAcai);
+        if (cardapio) {
+            const produto = cardapio[lanche];
+            if (produto) {
+                const extrasNomes = Object.values(produto.extras); // Obtém os nomes dos extras
+                const nomeItem = produto.produto; // Obtém o nome do item do cardápio
+                const nomeExtra = extrasNomes[indiceExtra - 1]; // Subtrai 1 para obter o índice correto
+                if (nomeExtra) {
+                    return { nomeExtra, nomeItem };
+                } else {
+                    throw new Error(`Extra no índice '${indiceExtra}' não encontrado no lanche ${lanche}.`);
+                }
+            } else {
+                throw new Error("Lanche não encontrado: " + lanche);
+            }
+        } else {
+            throw new Error("Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        throw error;
+    }
+}
 
 const emojisNumeros = [
     "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", 
@@ -165,5 +822,34 @@ module.exports = {
     cardapioExtras,
     valorExtraEspecifico,
     sandubaCompleto,
-    nomeExtraEspecifico
+    nomeExtraEspecifico,
+    pizzasCompleto1,
+    pizzasCompleto2,
+    cardapioIndividualPizza1,
+    nomeExtraEspecificoAcai,
+    nomeExtraEspecificoBatatas,
+    nomeExtraEspecificBebidas,
+    nomeExtraEspecificoPizza2,
+    nomeExtraEspecificoPizza1,
+    valorExtraEspecificoAcai,
+    valorExtraEspecificoBatatas,
+    valorExtraEspecificoBebidas,
+    valorExtraEspecificoPizza2,
+    valorExtraEspecificoPizza1,
+    cardapioExtrasAcai,
+    cardapioExtrasBatatas,
+    cardapioExtrasBebidas,
+    cardapioExtrasPizza2,
+    cardapioExtrasPizza1,
+    acaiCompleto,
+    batatasCompleto,
+    bebidasCompleto,
+    cardapioCompletoAcai,
+    cardapioCompletoBatatas,
+    cardapioCompletoBebidas,
+    cardapioCompletoPizzas2,
+    cardapioCompletoPizzas1,
+    cardapioIndividualAcai,
+    cardapioIndividualBatatas,
+    cardapioIndividualPizza2,
 };
