@@ -7,8 +7,16 @@ const puppeteer = require('puppeteer');
 const { Client, MessageMedia, Poll, LocalAuth } = require('whatsapp-web.js');
 const { criarPagamento, criarPagamentoRenovacao } = require('./criarCompra.js');
 const { dataFormatada, horaFormatada } = require('./funcoes/pegardata.js');
-const { cardapioIndividual, cardapioCompleto, cardapioExtras, valorExtraEspecifico, sandubaCompleto, nomeExtraEspecifico } = require('./comandos/cardapio.js');
-const { addCarrinho, atualizarStatusPedido } = require('./comandos/carrinho.js')
+const { cardapioIndividual, cardapioCompleto, cardapioExtras, valorExtraEspecifico, sandubaCompleto, nomeExtraEspecifico,
+    pizzasCompleto1, pizzasCompleto2, cardapioIndividualPizza1, nomeExtraEspecificoAcai, nomeExtraEspecificoBatatas,
+    nomeExtraEspecificBebidas, nomeExtraEspecificoPizza2, nomeExtraEspecificoPizza1, valorExtraEspecificoAcai,
+    valorExtraEspecificoBatatas, valorExtraEspecificoBebidas, valorExtraEspecificoPizza2, valorExtraEspecificoPizza1,
+    cardapioExtrasAcai, cardapioExtrasBatatas, cardapioExtrasBebidas, cardapioExtrasPizza2, cardapioExtrasPizza1,
+    acaiCompleto, batatasCompleto, bebidasCompleto, cardapioCompletoAcai, cardapioCompletoBatatas, cardapioCompletoBebidas,
+    cardapioCompletoPizzas2, cardapioCompletoPizzas1, cardapioIndividualAcai, cardapioIndividualBatatas, cardapioIndividualPizza2, } = require('./comandos/cardapio.js');
+const { addCarrinho, atualizarStatusPedido } = require('./comandos/carrinho.js');
+const { verificarConcluido, verificarRegistro, cadastroEndereco } = require('./funcoes/endereco.js');
+const { obterTaxaEntregaEspecifica } = require('./funcoes/entrega');
 const { Callback } = require('puppeteer');
 const { clear } = require('console');
 
@@ -69,8 +77,10 @@ function getEstadoIndividual(numeroContato) {
             resp9: 0,
             resp10: 0,
             respx: 0,
+            cliente: '',
             escolha: '',
-            conclusao: 0,
+            conclusao: '',
+            msg: '',
         };
     }
     return estadosIndividuais[numeroContato];
@@ -168,6 +178,30 @@ function limparNome(nomeUsuario) {
 // Compra dos sanduba
 async function sandubas(numeroContato, client) {
     sandubaCompleto((output, error) => {
+        if (error) {
+            client.sendMessage(numeroContato, "Erro ao obter o cardápio:");
+            // Aqui você pode enviar uma mensagem de erro para o usuário, se necessário
+        } else {
+            const retorno = output;
+            client.sendMessage(numeroContato, retorno);
+            // Aqui você pode enviar o cardápio completo para o usuário
+        }
+    });
+}
+async function pizzas1(numeroContato, client) {
+    pizzasCompleto1((output, error) => {
+        if (error) {
+            client.sendMessage(numeroContato, "Erro ao obter o cardápio:");
+            // Aqui você pode enviar uma mensagem de erro para o usuário, se necessário
+        } else {
+            const retorno = output;
+            client.sendMessage(numeroContato, retorno);
+            // Aqui você pode enviar o cardápio completo para o usuário
+        }
+    });
+}
+async function pizzas2(numeroContato, client) {
+    pizzasCompleto2((output, error) => {
         if (error) {
             client.sendMessage(numeroContato, "Erro ao obter o cardápio:");
             // Aqui você pode enviar uma mensagem de erro para o usuário, se necessário
@@ -404,44 +438,57 @@ function resetarStatus(numeroContato) {
 
 client.on('message', async (message) => {
     const numeroContato = message.from;
-    contatinho = numeroContato;
     const estado = getEstadoIndividual(numeroContato);
+    const mensagemRecebida = removerAcentos(message.body.trim().toLowerCase());
+    estado.msg = mensagemRecebida;
+    const mensagemUser = estado.msg;
     estado.mensagemRecebida = true; // Define o indicador de mensagem recebida como verdadeiro
+
     if (estado.atendimento === 0) {
         iniciarAtendimento(numeroContato);
     }
-    verificarEstado(numeroContato);
-    // Inicia o timer de inatividade após receber uma mensagem
+
+    const statusConclusao = await verificarConcluido(numeroContato);
+    estado.conclusao = statusConclusao;
+
     iniciarTimerInatividade(numeroContato);
-    // Aqui você pode adicionar a lógica para processar a mensagem recebida
-    const mensagemRecebida = removerAcentos(message.body.trim().toLowerCase()); // Remover acentos e converter para minúsculas
+    await avaliarmenu(numeroContato, message, mensagemUser);
 
-    // Verifica se a mensagem é 'menu' e responde com a mensagem correspondente
-    if (mensagemRecebida === 'menu') {
-        resetarStatus(numeroContato);
-        avaliarrespx(numeroContato, message);
-    } else if (mensagemRecebida) {
-        const mensagemDoUser = message.body;
-        validacaoDasMsg(numeroContato, message, mensagemDoUser)
-    } else if (mensagemRecebida === '1') {
-        avaliarresp1(numeroContato, message);
-    } else if (mensagemRecebida === '2') {
-        avaliarresp2(numeroContato, message);
-    } else if (mensagemRecebida === '3') {
-
-        avaliarresp3(numeroContato, message);
-    } else if (mensagemRecebida === '4') {
-        const carrinho = getCardapioIndividual(numeroContato);
-        const jsonString = JSON.stringify(carrinho, null, 2);
-
-        // Mensagem a ser enviada
-        const mensagem = `Seu Carrinho:\n${jsonString}`;
-        message.reply(mensagem);
-        //imprimirCarrinhoTemp2(numeroContato, message)
-        //message.reply("aaa")
-
+    // Switch para lidar com as mensagens recebidas
+    switch (mensagemRecebida) {
+        case 'menu':
+            avaliarrespx(numeroContato, message);
+            break;
+        case '1':
+            avaliarresp1(numeroContato, message);
+            break;
+        case '2':
+            avaliarresp2(numeroContato, message);
+            break;
+        case '3':
+            console.log(estado.resp2)
+            //avaliarresp3(numeroContato, message);
+            break;
+        default:
+            break;
     }
 });
+
+async function avaliarmenu(numeroContato, message, mensagemUser) {
+    const estado = getEstadoIndividual(numeroContato);
+    switch (estado.conclusao) {
+        case 'sim':
+            console.log("[!] " + numeroContato + " -> Endereço cadastrado")
+            break;
+        case 'nao':
+            console.log("[!] " + numeroContato + " -> Endereço não cadastrado")
+            const respostaCadastro = await cadastroEndereco(numeroContato, mensagemUser, respostas);
+            if (respostaCadastro) {
+                client.sendMessage(numeroContato, respostaCadastro);
+            }
+            break;
+    }
+}
 
 async function avaliarrespx(numeroContato, message) {
     const estado = getEstadoIndividual(numeroContato);
@@ -449,8 +496,57 @@ async function avaliarrespx(numeroContato, message) {
     switch (estado.respx) {
         case 0: // Manda o menu do cardápio
             await client.sendMessage(numeroContato, respostas.menu);
+            estado.resp1 = 20;
+            break;
+        case 1: // Menu do cardapio de sandubas
+            await sandubas(numeroContato, client);
+            estado.resp1 = 2;
+            break;
+        case 2:
+            sandubaIndividual(numeroContato, client, 1);
+            break
+        case 3:
+            obterExtrasDoLanche(numeroContato, message);
+            break
+        case 4:
+            adicionarExtraAoCarrinho(numeroContato, carrinho.idProduto, 1)
+            break
+        case 5: //ADICIONAR MAIS COISAS AO SANDUBA
+            adicionarExtraAoCarrinho(numeroContato, carrinho.idProduto, 1)
+            break
+        case 6: // Cardapio completo para ver dos sanduba
+            //tudosandubas(numeroContato, client);
+            estado.resp2 = 1
+            avaliarresp1(numeroContato, message);
+            break
+        case 7: // NÃO QUER NADA NO LANCHE
+            adicionarIdPedidoAoCarrinho(numeroContato);
+            adicionarNomeAoCarrinho(numeroContato);
+            adicionarContatoAoCarrinho(numeroContato);
+            adicionarItem(numeroContato);
+            message.reply(respostas.maisAlgoPedido);
+            estado.resp1 = 6;
+            estado.resp2 = 2
+            break
+        case 99:
+            client.sendMessage(numeroContato, respostas.pizzasTipos);
+            estado.resp1 = 99;
+            estado.resp2 = 3;
+            break
+        case 100:
+
+        default:
+            // Lidar com estado desconhecido, se necessário
+            break;
+    }
+}
+async function avaliarresp1(numeroContato, message) {
+    const estado = getEstadoIndividual(numeroContato);
+    const carrinho = getCardapioIndividual(numeroContato)
+    switch (estado.resp1) {
+        case 0: // Manda o menu do cardápio
+            await client.sendMessage(numeroContato, respostas.menu);
             estado.menu = 1;
-            estado.resp1 = 100;
             break;
         case 1: // Menu do cardapio de sandubas
             await sandubas(numeroContato, client);
@@ -482,66 +578,21 @@ async function avaliarrespx(numeroContato, message) {
             estado.resp1 = 6;
             estado.resp2 = 2
             break
+        case 20: // Segundo menu do cardapio para escolher o que vai pedir
+            client.sendMessage(numeroContato, respostas.cardapio);
+            estado.resp1 = 21;
+            estado.resp2 = 2; //Menu Pizzas -> 2
+            break
+        case 21:
+            estado.respx = 1;
+            avaliarrespx(numeroContato, message);
+            break
+        case 99:
+            await pizzas1(numeroContato, client);
+            break
         default:
             // Lidar com estado desconhecido, se necessário
             break;
-    }
-}
-
-async function avaliarresp1(numeroContato, message, client) {
-    const estado = getEstadoIndividual(numeroContato);
-    switch (estado.conclusao) {
-        case 0:
-            verificarConcluido(numeroContato, null);
-            break
-        case 1:
-            switch (estado.resp1) {
-                case 0: // Manda o menu do cardápio
-                    avaliarrespx(numeroContato, message);
-                    break;
-                case 1: // Mensagem que vai mandar os lanches
-                    estado.respx = 1;
-                    console.log(typeof message);
-                    console.log(message);
-                    message.reply("Perfeito, vou te enviar nosso cardápio, só escolher o que deseja pedir.");
-                    avaliarrespx(numeroContato, message);
-                    break;
-                case 2: // Chama o lanche com id 1
-                    estado.respx = 2;
-                    avaliarrespx(numeroContato, message)
-                    break
-                case 3: // Lista de estra do sanduba escolhido
-                    estado.respx = 3;
-                    message.reply("Escolha abaixo o que deseja adicionar no sanduíche");
-                    avaliarrespx(numeroContato, message)
-                    break
-                case 4:
-                    estado.respx = 4;
-                    avaliarrespx(numeroContato, message);
-                    break
-                case 5:
-                    estado.respx = 3;
-                    avaliarrespx(numeroContato, message);
-                    break
-                case 6: // ADD mais algo ao pedido
-                    message.reply(respostas.cardapioAdd);
-                    break
-                case 20:
-                    tudosandubas(numeroContato, client);
-                    break;
-                case 99:
-                    client.sendMessage(numeroContato, respostas.cardapio);
-                    estado.resp1 = 1;
-                    console.log(estado.resp1);
-                    break
-                case 100:
-                    verificarConcluido(numeroContato, message, null)
-                    estado.resp1 = 1;
-                    break
-                default:
-                    break;
-            }
-            break
     }
 }
 
@@ -556,21 +607,28 @@ async function avaliarresp2(numeroContato, message) {
             await avaliarrespx(numeroContato, message);
             break;
         case 2:
+            estado.respx = 99;
+            await avaliarrespx(numeroContato, message);
+            break;
+        case 3: //Menu das Pizzas ESPECIAIS
+            await pizzas2(numeroContato, client);
+            break
+        case 20:
             message.reply(respostas.verCarrinho);
             const carrinho = getCardapioIndividual(numeroContato);
             const jsonString = JSON.stringify(carrinho, null, 2);
             const carrinhoExtras = JSON.stringify(carrinho.extras, null, 2);
-            let mensagem = 'Seu carrinho\n\n';
-            mensagem += `Pedido           (${carrinho.extras.length} item no carrinho)\n`;
+            let mensagem = 'Seu pedido                     xxxxxxx\n\n';
+            mensagem += `Pedido         (${carrinho.extras.length} item no carrinho)\n`;
             carrinho.extras.forEach((extra, index) => {
                 // Dividir a string pelo espaço em branco
-                let aaaa = extra.extras === "1x Não" ? "Não" : extra.extras;
+                let aaaa = extra.extras === "1x Não" ? "Sem extras" : extra.extras;
                 mensagem += `*${extra.item}*\n  *↳ ${aaaa}*\n`;
             });
             mensagem += '\n*Pagamento*\n';
-            mensagem += `subtotal           *R$ ${carrinho.preco}*\n`;
-            mensagem += `taxa de entrega           *R$ ${carrinho.taxaEntrega}*\n`;
-            mensagem += `total           *R$ ${carrinho.total}*\n`;
+            mensagem += `subtotal                  *R$ ${carrinho.preco}*\n`;
+            mensagem += `taxa de entrega      *R$ ${carrinho.taxaEntrega || '1,00'}*\n`;
+            mensagem += `total                        *R$ ${carrinho.total + 1}*\n`;
 
             // Agora você pode enviar a mensagem com os detalhes formatados
 
@@ -587,274 +645,70 @@ async function avaliarresp2(numeroContato, message) {
     }
 }
 
-async function avaliarresp3(numeroContato, message) {
-    const estado = getEstadoIndividual(numeroContato);
-    estado.resp1 = 15;
-    const carrinho = getCardapioIndividual(numeroContato);
-    for (const key in carrinho.extras) {
-        const value = carrinho.extras[key];
-        const mensagem = `Seu Carrinho\nProdutos: ${value.item}\nExtras: ${value.extras}`;
-        client.sendMessage(numeroContato, mensagem);
-        // Agora você pode enviar a mensagem para o cliente
-        // client.sendMessage(numeroContato, mensagem);
-    }
-    message.reply("eaeeee")
-
-
-}
-
-const jsonFiles = './usuarios.json'; // Substitua pelo caminho do seu arquivo JSON
-
-// Função para carregar o JSON do arquivo
-async function carregarJSON() {
-    try {
-        const jsonString = await fs.readFile(jsonFiles, 'utf8');
-        return JSON.parse(jsonString);
-    } catch (error) {
-        console.error('Erro ao carregar o arquivo JSON:', error.message);
-        return {};
-    }
-}
-
-// Função para salvar o JSON no arquivo
-async function salvarJSON(json) {
-    try {
-        await fs.writeFile(jsonFiles, JSON.stringify(json, null, 2));
-    } catch (error) {
-        console.error('Erro ao salvar o arquivo JSON:', error.message);
-    }
-}
-
-// Função para verificar o estado de atendimento atual
-function verificarEstado(numeroContato) {
-    const estado = getEstadoIndividual(numeroContato);
-}
-
-// Função para salvar o JSON no arquivo
-async function salvarJSON(json) {
-    try {
-        await fs.writeFile(jsonFiles, JSON.stringify(json, null, 2));
-    } catch (error) {
-        console.error('Erro ao salvar o arquivo JSON:', error.message);
-    }
-}
-async function verificarConcluido(numeroContato, message, mensagemRecebida) {
-    const estado = getEstadoIndividual(numeroContato);
-    const json = await carregarJSON();
-    if (json[numeroContato]) {
-        const registro = json[numeroContato];
-        if (registro.concluido && registro.concluido === "nao") {
-            //avaliarresp1(numeroContato, message);
-            cadastroEndereco(numeroContato, message, registro)
-            // Adicione aqui a lógica para lidar com o registro não concluído, se necessário
-        } else {
-            estado.conclusao = 1;
-            await avaliarresp1(numeroContato, message, client);
-        }
-    } else {
-        verificarRegistro(numeroContato, null);
-        setTimeout(() => {
-            verificarConcluido(numeroContato, message, mensagemRecebida)
-        }, 200);
-    }
-}
-
-// Verificar se um número de contato tem algum registro no JSON
-async function verificarRegistro(numeroContato, mensagemRecebida) {
-    const json = await carregarJSON();
-    if (json[numeroContato]) {
-        verificarConcluido(numeroContato, mensagemRecebida)
-    } else {
-        // Criar um registro em branco para o número de contato
-        json[numeroContato] = {
-            "concluido": "nao",
-            "fidelidade": "0",
-            "endereco": "",
-            "bairro": "",
-            "numeroCasa": "",
-            "referencia": "",
-            "complemento": "",
-            "estado": 0
-        };
-        await salvarJSON(json);
-        verificarConcluido(numeroContato, null);
-    }
-}
-
-function editarEstado(numeroContato, novoEstado) {
-    const fs = require('fs');
-    // Carregar os dados do arquivo JSON
-    let dados = JSON.parse(fs.readFileSync(jsonFiles, 'utf8'));
-
-    // Verificar se o número de contato existe nos dados
-    if (dados.hasOwnProperty(numeroContato)) {
-        // Editar o campo "estado" do número de contato
-        dados[numeroContato].estado = novoEstado;
-
-        // Salvar as alterações de volta no arquivo
-        fs.writeFileSync(jsonFiles, JSON.stringify(dados, null, 2));
-    } else {
-        console.error(`O número ${numeroContato} não foi encontrado nos dados.`);
-    }
-}
-
-function editarEndereco(numeroContato, novoEstado) {
-    const fs = require('fs');
-    // Carregar os dados do arquivo JSON
-    let dados = JSON.parse(fs.readFileSync(jsonFiles, 'utf8'));
-
-    // Verificar se o número de contato existe nos dados
-    if (dados.hasOwnProperty(numeroContato)) {
-        // Editar o campo "estado" do número de contato
-        dados[numeroContato].endereco = novoEstado;
-
-        // Salvar as alterações de volta no arquivo
-        fs.writeFileSync(jsonFiles, JSON.stringify(dados, null, 2));
-    } else {
-        console.error(`O número ${numeroContato} não foi encontrado nos dados.`);
-    }
-}
-function editarBairro(numeroContato, novoEstado) {
-    const fs = require('fs');
-    // Carregar os dados do arquivo JSON
-    let dados = JSON.parse(fs.readFileSync(jsonFiles, 'utf8'));
-    // Verificar se o número de contato existe nos dados
-    if (dados.hasOwnProperty(numeroContato)) {
-        // Editar o campo "estado" do número de contato
-        dados[numeroContato].bairro = novoEstado;
-
-        // Salvar as alterações de volta no arquivo
-        fs.writeFileSync(jsonFiles, JSON.stringify(dados, null, 2));
-    } else {
-        console.error(`O número ${numeroContato} não foi encontrado nos dados.`);
-    }
-}
-function editarNumeroCasa(numeroContato, novoEstado) {
-    const fs = require('fs');
-    // Carregar os dados do arquivo JSON
-    let dados = JSON.parse(fs.readFileSync(jsonFiles, 'utf8'));
-    // Verificar se o número de contato existe nos dados
-    if (dados.hasOwnProperty(numeroContato)) {
-        // Editar o campo "estado" do número de contato
-        dados[numeroContato].numeroCasa = novoEstado;
-
-        // Salvar as alterações de volta no arquivo
-        fs.writeFileSync(jsonFiles, JSON.stringify(dados, null, 2));
-    } else {
-        console.error(`O número ${numeroContato} não foi encontrado nos dados.`);
-    }
-}
-function editarReferencia(numeroContato, novoEstado) {
-    const fs = require('fs');
-    // Carregar os dados do arquivo JSON
-    let dados = JSON.parse(fs.readFileSync(jsonFiles, 'utf8'));
-    // Verificar se o número de contato existe nos dados
-    if (dados.hasOwnProperty(numeroContato)) {
-        // Editar o campo "estado" do número de contato
-        dados[numeroContato].referencia = novoEstado;
-
-        // Salvar as alterações de volta no arquivo
-        fs.writeFileSync(jsonFiles, JSON.stringify(dados, null, 2));
-    } else {
-        console.error(`O número ${numeroContato} não foi encontrado nos dados.`);
-    }
-}
-function editarComplemento(numeroContato, novoEstado) {
-    const fs = require('fs');
-    // Carregar os dados do arquivo JSON
-    let dados = JSON.parse(fs.readFileSync(jsonFiles, 'utf8'));
-    // Verificar se o número de contato existe nos dados
-    if (dados.hasOwnProperty(numeroContato)) {
-        // Editar o campo "estado" do número de contato
-        dados[numeroContato].complemento = novoEstado;
-        // Salvar as alterações de volta no arquivo
-        fs.writeFileSync(jsonFiles, JSON.stringify(dados, null, 2));
-    } else {
-        console.error(`O número ${numeroContato} não foi encontrado nos dados.`);
-    }
-}
-function editarConcluido(numeroContato, novoEstado) {
-    const fs = require('fs');
-    // Carregar os dados do arquivo JSON
-    let dados = JSON.parse(fs.readFileSync(jsonFiles, 'utf8'));
-    // Verificar se o número de contato existe nos dados
-    if (dados.hasOwnProperty(numeroContato)) {
-        // Editar o campo "estado" do número de contato
-        dados[numeroContato].concluido = novoEstado;
-        // Salvar as alterações de volta no arquivo
-        fs.writeFileSync(jsonFiles, JSON.stringify(dados, null, 2));
-    } else {
-        console.error(`O número ${numeroContato} não foi encontrado nos dados.`);
-    }
-}
-
-async function cadastroEndereco(numeroContato, mensagemRecebida) {
-    const json = await carregarJSON();
-    const registro = json[numeroContato];
-    switch (registro.estado) {
-        case 0:
-            client.sendMessage(numeroContato, `Qual é o seu endereço? *"Nome da rua"*?`);
-            editarEstado(numeroContato, 1);
-            break;
-        case 1:
-            editarEstado(numeroContato, 2);
-            client.sendMessage(numeroContato, "Qual é o seu bairro / povoado?");
-
-            const enderecoRecebido = mensagemRecebida || "AAA";
-            editarEndereco(numeroContato, enderecoRecebido);
-            break;
-        case 2:
-            editarEstado(numeroContato, 3);
-            client.sendMessage(numeroContato, "Qual é o número da sua casa?");
-            const bairroRecebido = mensagemRecebida || "BBB";
-            editarBairro(numeroContato, bairroRecebido);
-
-            break;
-        case 3:
-            editarEstado(numeroContato, 4);
-            client.sendMessage(numeroContato, "Algum ponto de referência para adicionar? Ex. Final da rua, Casa com portão branco.");
-            const numeroCasaRecebido = mensagemRecebida || "CCC";
-            editarNumeroCasa(numeroContato, numeroCasaRecebido);
-
-            break;
-        case 4:
-            editarEstado(numeroContato, 5);
-            client.sendMessage(numeroContato, `Algum complemento? Ex. Casa de andar.`);
-            const referenciaRecebido = mensagemRecebida || "DDD";
-            editarReferencia(numeroContato, referenciaRecebido);
-
-            break;
-        case 5:
-            editarConcluido(numeroContato, "sim");
-            const complementoRecebido = mensagemRecebida || "EEE";
-            client.sendMessage(numeroContato, "Pronto, seu endereço foi cadastrado!");
-            editarComplemento(numeroContato, complementoRecebido);
-            editarEstado(numeroContato, 6);
-            cadastroEndereco(numeroContato, null);
-            break;
-        case 6:
-            verificarRegistro(numeroContato, mensagemRecebida);
-            break
-        default:
-            // Lidar com estado desconhecido, se necessário
-            break;
-    }
-}
-
-async function validacaoDasMsg(numeroContato, message, mensagemDoUser) {
-    const json = await carregarJSON();
-    const registro = json[numeroContato];
-    const mensagemRecebida = mensagemDoUser; // Aqui você obtém a mensagem enviada pelo usuário
-    switch (getEstadoIndividual(numeroContato).menu) {
-        case 1:
-            //cadastroEndereco(numeroContato, mensagemRecebida); // Passa a mensagem recebida para a função cadastroEndereco
-            verificarRegistro(numeroContato, mensagemRecebida)
-            break;
-        default:
-            message.reply(respostas.semAtendimento);
-            break;
-    }
-}
-
-
 client.initialize();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//async function buscarTaxaEntregaEspecifica(chaveEspecifica) {
+/*    try {
+        const taxaEntregaEspecifica = await obterTaxaEntregaEspecifica(chaveEspecifica);
+
+        if (taxaEntregaEspecifica) {
+            console.log(`Taxa de Entrega para '${chaveEspecifica}':`, taxaEntregaEspecifica);
+            // Aqui você pode manipular a taxa de entrega como desejar
+            // Exemplo: enviar para um cliente, armazenar em uma variável global, etc.
+            return taxaEntregaEspecifica;
+        } else {
+            console.log(`Taxa de entrega para '${chaveEspecifica}' não encontrada no arquivo JSON.`);
+            return null;
+        }
+    } catch (erro) {
+        console.error('Erro ao obter a taxa de entrega específica:', erro.message);
+        return null;
+    }
+}
+
+// Exemplo de uso da função
+(async () => {
+    const chave = 'a'; // Substitua pela chave específica que você está procurando
+    const taxa = await buscarTaxaEntregaEspecifica(chave);
+    //console.log(taxa);
+    // Use a taxa conforme necessário
+})();*/
