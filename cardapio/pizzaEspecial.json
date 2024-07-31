@@ -1,37 +1,43 @@
 {
-    "atum": {
+    "1": {
         "produto": "Atum",
         "sabores": ["Molho", "Mussarela", "Atum", "Tomate", "Cebola", "Orégano"],
-        "valor": "Pequena: R$:28,00, Média R$:38,00, Grande: R$:48,00"
+        "valor": "Pequena: R$:28,00, Média R$:38,00, Grande: R$:48,00",
+        "tam": ["28,00","38,00","48,00"]
     },
-    "carne": {
+    "2": {
         "produto": "Carne Seca",
         "sabores": ["Molho", "Mussarela", "Carne Seca", "Cebola", "Azeitona", "Orégano"],
-        "valor": "Pequena: R$:28,00, Média R$:38,00, Grande: R$:48,00"
+        "valor": "Pequena: R$:28,00, Média R$:38,00, Grande: R$:48,00",
+        "tam": ["28,00","38,00","48,00"]
         
     },
-    "strogonoff": {
+    "3": {
         "produto": "Strogonoff",
         "sabores": ["Molho", "Mussarela", "Frango", "Batata Palha", "Orégano"],
-        "valor": "Pequena: R$:28,00, Média R$:38,00, Grande: R$:48,00"
+        "valor": "Pequena: R$:28,00, Média R$:38,00, Grande: R$:48,00",
+        "tam": ["28,00","38,00","48,00"]
         
     },
-    "franbacon": {
+    "4": {
         "produto": "FranBacon",
         "sabores": ["Molho", "Mussarela", "Frango", "Bacon", "Azeitona", "Orégano"],
-        "valor": "Pequena: R$:28,00, Média R$:38,00, Grande: R$:48,00"
+        "valor": "Pequena: R$:28,00, Média R$:38,00, Grande: R$:48,00",
+        "tam": ["28,00","38,00","48,00"]
         
     },
-    "baconcheddar": {
+    "5": {
         "produto": "Bacon Cheddar",
         "sabores": ["Molho", "Mussarela", "Bacon", "Cheddar", "Milho", "Cebola", "Orégano"],
-        "valor": "Pequena: R$:28,00, Média R$:38,00, Grande: R$:48,00"
+        "valor": "Pequena: R$:28,00, Média R$:38,00, Grande: R$:48,00",
+        "tam": ["28,00","38,00","48,00"]
         
     },
-    "calabresacheddar": {
+    "6": {
         "produto": "Calabresa Cheddar",
         "sabores": ["Molho", "Mussarela", "Calabresa", "Cheddar", "Cebola", "Orégano"],
-        "valor": "Pequena: R$:28,00, Média R$:38,00, Grande: R$:48,00"
+        "valor": "Pequena: R$:28,00, Média R$:38,00, Grande: R$:48,00",
+        "tam": ["28,00","38,00","48,00"]
         
     }
 }

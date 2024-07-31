@@ -15,6 +15,7 @@ const { cardapioIndividual, cardapioCompleto, cardapioExtras, valorExtraEspecifi
     acaiCompleto, batatasCompleto, bebidasCompleto, cardapioCompletoAcai, cardapioCompletoBatatas, cardapioCompletoBebidas,
     cardapioCompletoPizzas2, cardapioCompletoPizzas1, cardapioIndividualAcai, cardapioIndividualBatatas, cardapioIndividualPizza2, } = require('./comandos/cardapio.js');
 const { addCarrinho, atualizarStatusPedido } = require('./comandos/carrinho.js');
+const { pegarRetorno } = require('./funcoes/gerenciamentoProdutos.js')
 const { verificarConcluido, verificarRegistro, cadastroEndereco } = require('./funcoes/endereco.js');
 const { obterTaxaEntregaEspecifica } = require('./funcoes/entrega');
 const { Callback } = require('puppeteer');
@@ -55,7 +56,6 @@ const client = new Client({
             "https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/2.2409.2.html",
     },
 });
-
 
 const estadosIndividuais = {};
 const carrrinhoIndividuais = {};
@@ -280,7 +280,7 @@ function adicionarIdPedidoAoCarrinho(numeroContato) {
 
 }
 // Add os produtos
-function adicionarProdutoAoCarrinho(numeroContato, produto) {
+async function adicionarProdutoAoCarrinho(numeroContato, produto) {
     const pedido = getCardapioIndividual(numeroContato);
     const estado = getEstadoIndividual(numeroContato)
     // Verifica se já existe um objeto de produtos no carrinho
@@ -400,7 +400,7 @@ function adicionarItem(numeroContato) {
 }
 
 // Add o preço
-function adicionarValorProdutoAoCarrinho(numeroContato, valorProdutoNovo) {
+async function adicionarValorProdutoAoCarrinho(numeroContato, valorProdutoNovo) {
     const carrinho = getCardapioIndividual(numeroContato);
     carrinho.preco = (parseFloat(carrinho.preco) || 0) + parseFloat(valorProdutoNovo);
 }
@@ -437,6 +437,7 @@ function resetarStatus(numeroContato) {
 }
 
 client.on('message', async (message) => {
+
     const numeroContato = message.from;
     const estado = getEstadoIndividual(numeroContato);
     const mensagemRecebida = removerAcentos(message.body.trim().toLowerCase());
@@ -450,10 +451,15 @@ client.on('message', async (message) => {
 
     const statusConclusao = await verificarConcluido(numeroContato);
     estado.conclusao = statusConclusao;
-
+    const carrinho = getCardapioIndividual(numeroContato);
     iniciarTimerInatividade(numeroContato);
     await avaliarmenu(numeroContato, message, mensagemUser);
 
+    /* AAAA -> (1-> parametro do seletor do switch )
+       BBBB -> (10->id do lanche na mensagem de 1 a X)
+       CCCC -> (10-> indice X a ser buscado no lanche escolhido) */
+
+    //const retorno = await pegarRetorno(numeroContato, client, AAAA, BBBB, CCCC, estado, carrinho);
     // Switch para lidar com as mensagens recebidas
     switch (mensagemRecebida) {
         case 'menu':
@@ -466,14 +472,18 @@ client.on('message', async (message) => {
             avaliarresp2(numeroContato, message);
             break;
         case '3':
-            console.log(estado.resp2)
-            //avaliarresp3(numeroContato, message);
+            try {
+                const retorno = await pegarRetorno(numeroContato, client, /*A:*/18, /*B:*/10, /*C:*/null, estado, carrinho);
+                console.log(retorno); // Aqui você imprime o valor retornado pela função
+                message.reply(retorno)
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
             break;
         default:
             break;
     }
 });
-
 async function avaliarmenu(numeroContato, message, mensagemUser) {
     const estado = getEstadoIndividual(numeroContato);
     switch (estado.conclusao) {
@@ -492,7 +502,7 @@ async function avaliarmenu(numeroContato, message, mensagemUser) {
 
 async function avaliarrespx(numeroContato, message) {
     const estado = getEstadoIndividual(numeroContato);
-    const carrinho = getCardapioIndividual(numeroContato)
+    const carrinho = getCardapioIndividual(numeroContato);
     switch (estado.respx) {
         case 0: // Manda o menu do cardápio
             await client.sendMessage(numeroContato, respostas.menu);
@@ -542,7 +552,7 @@ async function avaliarrespx(numeroContato, message) {
 }
 async function avaliarresp1(numeroContato, message) {
     const estado = getEstadoIndividual(numeroContato);
-    const carrinho = getCardapioIndividual(numeroContato)
+    const carrinho = getCardapioIndividual(numeroContato);
     switch (estado.resp1) {
         case 0: // Manda o menu do cardápio
             await client.sendMessage(numeroContato, respostas.menu);
@@ -581,13 +591,13 @@ async function avaliarresp1(numeroContato, message) {
         case 20: // Segundo menu do cardapio para escolher o que vai pedir
             client.sendMessage(numeroContato, respostas.cardapio);
             estado.resp1 = 21;
-            estado.resp2 = 2; //Menu Pizzas -> 2
+            estado.resp2 = 2; // /Menu->Produtos->Pizzas(2)
             break
         case 21:
             estado.respx = 1;
             avaliarrespx(numeroContato, message);
             break
-        case 99:
+        case 99: // Menu das Pizzas Tradicionais
             await pizzas1(numeroContato, client);
             break
         default:
@@ -646,10 +656,6 @@ async function avaliarresp2(numeroContato, message) {
 }
 
 client.initialize();
-
-
-
-
 
 
 

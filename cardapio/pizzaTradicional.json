@@ -1,43 +1,50 @@
 {
-    "calabresa": {
+    "1": {
         "produto": "Calabresa",
         "sabores": ["Molho", "Mussarela", "Calabresa", "Cebola", "Orégano"],
-        "valor": "Pequena: R$:20,00, Média R$:30,00, Grande: R$:40,00"
+        "valor": "Pequena: R$:20,00, Média R$:30,00, Grande: R$:40,00",
+        "tam": ["20,00","30,00","40,00"]
     },
-    "mista": {
+    "2": {
         "produto": "Calabresa",
         "sabores": ["Molho", "Mussarela", "Presunto", "Orégano"],
-        "valor": "Pequena: R$:20,00, Média R$:30,00, Grande: R$:40,00"
+        "valor": "Pequena: R$:20,00, Média R$:30,00, Grande: R$:40,00",
+        "tam": ["20,00","30,00","40,00"]
         
     },
-    "4queijo": {
+    "3": {
         "produto": "4 Queijo",
         "sabores": ["Molho", "Mussarela", "Catupiry", "Cheddar", "Azeitona", "Orégano"],
-        "valor": "Pequena: R$:20,00, Média R$:30,00, Grande: R$:40,00"
+        "valor": "Pequena: R$:20,00, Média R$:30,00, Grande: R$:40,00",
+        "tam": ["20,00","30,00","40,00"]
         
     },
-    "bacon": {
+    "4": {
         "produto": "Bacon",
         "sabores": ["Molho", "Mussarela", "Bacon", "Cebola", "Orégano"],
-        "valor": "Pequena: R$:20,00, Média R$:30,00, Grande: R$:40,00"
+        "valor": "Pequena: R$:20,00, Média R$:30,00, Grande: R$:40,00",
+        "tam": ["20,00","30,00","40,00"]
         
     },
-    "frango": {
+    "5": {
         "produto": "Frango",
         "sabores": ["Molho", "Mussarela", "Frango", "Orégano"],
-        "valor": "Pequena: R$:20,00, Média R$:30,00, Grande: R$:40,00"
+        "valor": "Pequena: R$:20,00, Média R$:30,00, Grande: R$:40,00",
+        "tam": ["20,00","30,00","40,00"]
         
     },
-    "portuguesa": {
+    "6": {
         "produto": "4 Queijo",
         "sabores": ["Molho", "Mussarela", "Presunto", "Tomate", "Cebola", "Milho", "Ovo", "Azeitona", "Orégano"],
-        "valor": "Pequena: R$:20,00, Média R$:30,00, Grande: R$:40,00"
+        "valor": "Pequena: R$:20,00, Média R$:30,00, Grande: R$:40,00",
+        "tam": ["20,00","30,00","40,00"]
         
     },
-    "frangocatu": {
+    "7": {
         "produto": "4 Queijo",
         "sabores": ["Molho", "Mussarela", "Frango", "Catupiry", "Orégano"],
-        "valor": "Pequena: R$:20,00, Média R$:30,00, Grande: R$:40,00"
+        "valor": "Pequena: R$:20,00, Média R$:30,00, Grande: R$:40,00",
+        "tam": ["20,00","30,00","40,00"]
         
     }
 }

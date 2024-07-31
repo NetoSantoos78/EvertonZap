@@ -1,35 +1,35 @@
 {
-    "coca2litros": {
+    "1": {
         "produto": "Coca Cola 2 Litros",
         "valor": "11,00"
         
     },
-    "guarana2litros": {
+    "2": {
         "produto": "Guaraná 2 Litros",
         "valor": "10,00"
         
     },
-    "coca1litro": {
+    "3": {
         "produto": "Coca Cola 1 Litros",
         "valor": "7,00"
         
     },
-    "fanta1litro": {
+    "4": {
         "produto": "Fanta 1 Litros",
         "valor": "7,00"
         
     },
-    "guarana1litro": {
+    "5": {
         "produto": "Guaraná 1 Litros",
         "valor": "6,00"
         
     },
-    "latinha": {
+    "6": {
         "produto": "Refrigerante em lata",
         "valor": "5,00"
         
     },
-    "caculinha": {
+    "7": {
         "produto": "Refrigerante de 250 ml",
         "valor": "2,50"
         

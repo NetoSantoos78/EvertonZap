@@ -37,6 +37,26 @@
     "numeroCasa": "",
     "referencia": "",
     "complemento": "",
+    "estado": 2
+  },
+  "557991175551@c.us": {
+    "concluido": "sim",
+    "fidelidade": "0",
+    "endereco": "testando a velocidade do servidor...",
+    "bairro": "*▸resultado do teste de velocidade:*\nping (latencia): ⏱️ 4.453 ms\ndownload: ⬇️ 2229.22 mbit/s\nupload: ⬆️ 1541.25 mbit/s",
+    "numeroCasa": "ola, amigo cliente!!\nsou o assistente virtual do parkinho.\ntemos varios produtos para oferecer!\nquer conhecer? responda com *\"menu\"*.",
+    "referencia": "*usuario*  *onlines*   *limite*\n\nzp3dm348         1       1\n▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂\nzpikdj32         1       1\n▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂\ndomdom36         1      10\n▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂\nivan78           1       1\n▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂\nnetoo            1      10\n▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂\nemerson78        1       1\n▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂\nroot             1    root\n▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂\nsshd             1    root\n▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂",
+    "complemento": "estarei encerrando seu atendimento.\nagradecemos seu contato.🙂\nqualquer duvida, sinta-se a vontade em entrar em contato usando \"menu\"",
+    "estado": 6
+  },
+  "557996567015@c.us": {
+    "concluido": "nao",
+    "fidelidade": "0",
+    "endereco": "",
+    "bairro": "",
+    "numeroCasa": "",
+    "referencia": "",
+    "complemento": "",
     "estado": 1
   }
 }

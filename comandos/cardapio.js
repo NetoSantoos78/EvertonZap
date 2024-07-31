@@ -158,7 +158,6 @@ async function cardapioIndividualAcai(lanche) {
         throw error;
     }
 }
-
 //####################################
 async function cardapioCompleto(callback) {
     try {
@@ -222,7 +221,7 @@ async function cardapioCompletoBebidas(callback) {
             Object.keys(cardapio).forEach((indice, i) => {
                 const emoji = emojisNumeros[i];
                 const { produto, valor, ingredientes } = cardapio[indice];
-                output += `${emoji} ${produto}\n   ❯ ${ingredientes.join(", ")}\n   ❯ R$: ${valor}\n\n`;
+                output += `${emoji} ${produto}\n   ❯ R$: ${valor}\n`;
             });
             callback(output, null);
         } else {
@@ -239,8 +238,8 @@ async function cardapioCompletoBatatas(callback) {
             let output = "";
             Object.keys(cardapio).forEach((indice, i) => {
                 const emoji = emojisNumeros[i];
-                const { produto, valor, ingredientes } = cardapio[indice];
-                output += `${emoji} ${produto}\n   ❯ ${ingredientes.join(", ")}\n   ❯ R$: ${valor}\n\n`;
+                const { produto, valor, adicionais } = cardapio[indice];
+                output += `${emoji} ${produto}\n   ❯ ${adicionais.join(", ")}\n   ❯ R$: ${valor}\n`;
             });
             callback(output, null);
         } else {
@@ -258,7 +257,7 @@ async function cardapioCompletoAcai(callback) {
             Object.keys(cardapio).forEach((indice, i) => {
                 const emoji = emojisNumeros[i];
                 const { produto, valor, ingredientes } = cardapio[indice];
-                output += `${emoji} ${produto}\n   ❯ ${ingredientes.join(", ")}\n   ❯ R$: ${valor}\n\n`;
+                output += `${emoji} ${produto}\n   ❯ ${ingredientes.join(", ")}\n   ❯ R$: ${valor}\n`;
             });
             callback(output, null);
         } else {
@@ -414,7 +413,7 @@ async function cardapioExtrasPizza1(lanche) {
             const produto = cardapio[lanche];
             if (produto) {
                 let extrasString = '';
-                const extrasPrecos = produto.extrasPrecos;
+                const extrasPrecos = produto.valor;
                 Object.keys(extrasPrecos).forEach((extra, index) => {
                     const numeroEmoji = emojisNumeros[index]; // Obter emoji do número
                     extrasString += `${numeroEmoji} ${extra}: R$ ${extrasPrecos[extra]}\n`;
@@ -437,7 +436,7 @@ async function cardapioExtrasPizza2(lanche) {
             const produto = cardapio[lanche];
             if (produto) {
                 let extrasString = '';
-                const extrasPrecos = produto.extrasPrecos;
+                const extrasPrecos = produto.valor;
                 Object.keys(extrasPrecos).forEach((extra, index) => {
                     const numeroEmoji = emojisNumeros[index]; // Obter emoji do número
                     extrasString += `${numeroEmoji} ${extra}: R$ ${extrasPrecos[extra]}\n`;
@@ -483,10 +482,10 @@ async function cardapioExtrasBatatas(lanche) {
             const produto = cardapio[lanche];
             if (produto) {
                 let extrasString = '';
-                const extrasPrecos = produto.extrasPrecos;
-                Object.keys(extrasPrecos).forEach((extra, index) => {
+                const extrasAdicionais = produto.adicionais;
+                Object.keys(extrasAdicionais).forEach((extra, index) => {
                     const numeroEmoji = emojisNumeros[index]; // Obter emoji do número
-                    extrasString += `${numeroEmoji} ${extra}: R$ ${extrasPrecos[extra]}\n`;
+                    extrasString += `${numeroEmoji} ${extra}: R$ ${extrasAdicionais[extra]}\n`;
                 });
                 return extrasString;
             } else {
@@ -506,10 +505,10 @@ async function cardapioExtrasAcai(lanche) {
             const produto = cardapio[lanche];
             if (produto) {
                 let extrasString = '';
-                const extrasPrecos = produto.extrasPrecos;
-                Object.keys(extrasPrecos).forEach((extra, index) => {
+                const extrasComplementos = produto.complementos;
+                Object.keys(extrasComplementos).forEach((extra, index) => {
                     const numeroEmoji = emojisNumeros[index]; // Obter emoji do número
-                    extrasString += `${numeroEmoji} ${extra}: R$ ${extrasPrecos[extra]}\n`;
+                    extrasString += `${numeroEmoji} ${extra}: R$ ${extrasComplementos[extra]}\n`;
                 });
                 return extrasString;
             } else {
@@ -524,7 +523,9 @@ async function cardapioExtrasAcai(lanche) {
 }
 
 //####################################
-async function valorExtraEspecifico(lanche, indiceExtra) {
+async function valorExtraEspecifico(indiceExtras, lanches) {
+    const indiceExtra = indiceExtras;
+    const lanche = lanches;
     try {
         const cardapio = await lerCardapio(caminhoArquivo);
         if (cardapio) {
@@ -547,13 +548,15 @@ async function valorExtraEspecifico(lanche, indiceExtra) {
         throw error;
     }
 }
-async function valorExtraEspecificoPizza1(lanche, indiceExtra) {
+async function valorExtraEspecificoPizza1(indiceExtras, lanches) {
+    const indiceExtra = indiceExtras;
+    const lanche = lanches;
     try {
         const cardapio = await lerCardapio(caminhoArquivoPizza1);
         if (cardapio) {
             const produto = cardapio[lanche];
             if (produto) {
-                const extrasPrecos = Object.values(produto.extrasPrecos); // Obtém os preços dos extras
+                const extrasPrecos = Object.values(produto.tam); // Obtém os preços dos extras
                 const valorExtra = extrasPrecos[indiceExtra - 1]; // Subtrai 1 para obter o índice correto
                 if (valorExtra) {
                     return valorExtra;
@@ -570,13 +573,15 @@ async function valorExtraEspecificoPizza1(lanche, indiceExtra) {
         throw error;
     }
 }
-async function valorExtraEspecificoPizza2(lanche, indiceExtra) {
+async function valorExtraEspecificoPizza2(indiceExtras, lanches) {
+    const indiceExtra = indiceExtras;
+    const lanche = lanches;
     try {
         const cardapio = await lerCardapio(caminhoArquivoPizza2);
         if (cardapio) {
             const produto = cardapio[lanche];
             if (produto) {
-                const extrasPrecos = Object.values(produto.extrasPrecos); // Obtém os preços dos extras
+                const extrasPrecos = Object.values(produto.tam); // Obtém os preços dos extras
                 const valorExtra = extrasPrecos[indiceExtra - 1]; // Subtrai 1 para obter o índice correto
                 if (valorExtra) {
                     return valorExtra;
@@ -593,7 +598,9 @@ async function valorExtraEspecificoPizza2(lanche, indiceExtra) {
         throw error;
     }
 }
-async function valorExtraEspecificoBebidas(lanche, indiceExtra) {
+async function valorExtraEspecificoBebidas(indiceExtras, lanches) {
+    const indiceExtra = indiceExtras;
+    const lanche = lanches;
     try {
         const cardapio = await lerCardapio(caminhoArquivoBebidas);
         if (cardapio) {
@@ -616,7 +623,9 @@ async function valorExtraEspecificoBebidas(lanche, indiceExtra) {
         throw error;
     }
 }
-async function valorExtraEspecificoBatatas(lanche, indiceExtra) {
+async function valorExtraEspecificoBatatas(indiceExtras, lanches) {
+    const indiceExtra = indiceExtras;
+    const lanche = lanches;
     try {
         const cardapio = await lerCardapio(caminhoArquivoBatatas);
         if (cardapio) {
@@ -639,13 +648,15 @@ async function valorExtraEspecificoBatatas(lanche, indiceExtra) {
         throw error;
     }
 }
-async function valorExtraEspecificoAcai(lanche, indiceExtra) {
+async function valorExtraEspecificoAcai(indiceExtras, lanches) {
+    const indiceExtra = indiceExtras;
+    const lanche = lanches;
     try {
         const cardapio = await lerCardapio(caminhoArquivoAcai);
         if (cardapio) {
             const produto = cardapio[lanche];
             if (produto) {
-                const extrasPrecos = Object.values(produto.extrasPrecos); // Obtém os preços dos extras
+                const extrasPrecos = Object.values(produto.complementos); // Obtém os preços dos extras
                 const valorExtra = extrasPrecos[indiceExtra - 1]; // Subtrai 1 para obter o índice correto
                 if (valorExtra) {
                     return valorExtra;
@@ -664,7 +675,9 @@ async function valorExtraEspecificoAcai(lanche, indiceExtra) {
 }
 
 //####################################
-async function nomeExtraEspecifico(lanche, indiceExtra) {
+async function nomeExtraEspecifico(indiceExtras, lanches) {
+    const indiceExtra = indiceExtras;
+    const lanche = lanches;
     try {
         const cardapio = await lerCardapio(caminhoArquivo);
         if (cardapio) {
@@ -688,7 +701,9 @@ async function nomeExtraEspecifico(lanche, indiceExtra) {
         throw error;
     }
 }
-async function nomeExtraEspecificoPizza1(lanche, indiceExtra) {
+async function nomeExtraEspecificoPizza1(indiceExtras, lanches) {
+    const indiceExtra = indiceExtras;
+    const lanche = lanches;
     try {
         const cardapio = await lerCardapio(caminhoArquivoPizza1);
         if (cardapio) {
@@ -712,7 +727,9 @@ async function nomeExtraEspecificoPizza1(lanche, indiceExtra) {
         throw error;
     }
 }
-async function nomeExtraEspecificoPizza2(lanche, indiceExtra) {
+async function nomeExtraEspecificoPizza2(indiceExtras, lanches) {
+    const indiceExtra = indiceExtras;
+    const lanche = lanches;
     try {
         const cardapio = await lerCardapio(caminhoArquivoPizza2);
         if (cardapio) {
@@ -736,7 +753,9 @@ async function nomeExtraEspecificoPizza2(lanche, indiceExtra) {
         throw error;
     }
 }
-async function nomeExtraEspecificBebidas(lanche, indiceExtra) {
+async function nomeExtraEspecificBebidas(indiceExtras, lanches) {
+    const indiceExtra = indiceExtras;
+    const lanche = lanches;
     try {
         const cardapio = await lerCardapio(caminhoArquivoBebidas);
         if (cardapio) {
@@ -760,13 +779,15 @@ async function nomeExtraEspecificBebidas(lanche, indiceExtra) {
         throw error;
     }
 }
-async function nomeExtraEspecificoBatatas(lanche, indiceExtra) {
+async function nomeExtraEspecificoBatatas(indiceExtras, lanches) {
+    const indiceExtra = indiceExtras;
+    const lanche = lanches;
     try {
         const cardapio = await lerCardapio(caminhoArquivoBatatas);
         if (cardapio) {
             const produto = cardapio[lanche];
             if (produto) {
-                const extrasNomes = Object.values(produto.extras); // Obtém os nomes dos extras
+                const extrasNomes = Object.values(produto.adicionais); // Obtém os nomes dos extras
                 const nomeItem = produto.produto; // Obtém o nome do item do cardápio
                 const nomeExtra = extrasNomes[indiceExtra - 1]; // Subtrai 1 para obter o índice correto
                 if (nomeExtra) {
@@ -784,13 +805,15 @@ async function nomeExtraEspecificoBatatas(lanche, indiceExtra) {
         throw error;
     }
 }
-async function nomeExtraEspecificoAcai(lanche, indiceExtra) {
+async function nomeExtraEspecificoAcai(indiceExtras, lanches) {
+    const indiceExtra = indiceExtras;
+    const lanche = lanches;
     try {
         const cardapio = await lerCardapio(caminhoArquivoAcai);
         if (cardapio) {
             const produto = cardapio[lanche];
             if (produto) {
-                const extrasNomes = Object.values(produto.extras); // Obtém os nomes dos extras
+                const extrasNomes = Object.values(produto.complementos); // Obtém os nomes dos extras
                 const nomeItem = produto.produto; // Obtém o nome do item do cardápio
                 const nomeExtra = extrasNomes[indiceExtra - 1]; // Subtrai 1 para obter o índice correto
                 if (nomeExtra) {
@@ -808,6 +831,68 @@ async function nomeExtraEspecificoAcai(lanche, indiceExtra) {
         throw error;
     }
 }
+
+//####################################
+async function opcoesAcai(indiceExtras, lanches) {
+    const indiceExtra = indiceExtras;
+    const lanche = lanches;
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoAcai);
+        if (cardapio) {
+            const produto = cardapio[lanche];
+            if (produto) {
+                const extrasNomes = Object.values(produto.complementos); // Obtém os nomes dos extras
+                const nomeItem = produto.produto; // Obtém o nome do item do cardápio
+                const nomeExtra = extrasNomes[indiceExtra - 1]; // Subtrai 1 para obter o índice correto
+                if (nomeExtra) {
+                    return { nomeExtra, nomeItem };
+                } else {
+                    throw new Error(`Extra no índice '${indiceExtra}' não encontrado no lanche ${lanche}.`);
+                }
+            } else {
+                throw new Error("Lanche não encontrado: " + lanche);
+            }
+        } else {
+            throw new Error("Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+async function caldasAcai(indiceExtras, lanches) {
+    const indiceExtra = indiceExtras;
+    const lanche = lanches;
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoAcai);
+        if (cardapio) {
+            const produto = cardapio[lanche];
+            if (produto) {
+                const caldas = produto.calda; // Obtém o array de caldas
+                const nomeItem = produto.produto; // Obtém o nome do item do cardápio
+                
+                if (caldas && caldas.length > 0) {
+                    const caldaEscolhida = caldas[indiceExtra - 1]; // Acessa a calda com base no índice fornecido
+
+                    if (caldaEscolhida) {
+                        return { nomeItem, caldaEscolhida }; // Retorna o nome do item e a calda escolhida
+                    } else {
+                        throw new Error(`Calda no índice '${indiceExtra}' não encontrada para o lanche ${nomeItem}.`);
+                    }
+                } else {
+                    throw new Error(`Nenhuma calda disponível para o lanche ${nomeItem}.`);
+                }
+            } else {
+                throw new Error("Lanche não encontrado: " + lanche);
+            }
+        } else {
+            throw new Error("Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+
+
 
 const emojisNumeros = [
     "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", 
@@ -818,6 +903,8 @@ const emojisNumeros = [
 
 module.exports = {
     cardapioIndividual,
+    opcoesAcai,
+    caldasAcai,
     cardapioCompleto,
     cardapioExtras,
     valorExtraEspecifico,
@@ -852,4 +939,5 @@ module.exports = {
     cardapioIndividualAcai,
     cardapioIndividualBatatas,
     cardapioIndividualPizza2,
+    cardapioIndividualBebidas,
 };
