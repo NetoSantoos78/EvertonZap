@@ -337,7 +337,12 @@ async function pegarRetorno(numeroContato, client, parametros, ids, lanches, est
         case 31: // Quantidade das caldas do açaí
             try {
                 const resultado = await caldasAcai(lanche, id);
-                return `${resultado}`;
+                if (resultado && typeof resultado === 'object') {
+                    const { nomeItem, caldaEscolhida } = resultado;
+                    return `Item: ${nomeItem}, Calda: ${caldaEscolhida}`;
+                } else {
+                    return `Resultado inesperado: ${resultado}`;
+                }
             } catch (error) {
                 return `Erro ao obter o produto: ${error.message}`;
             }
