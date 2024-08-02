@@ -40,7 +40,8 @@ const respostas = {
     verCarrinho: 'Tudo certo, por favor, confira seu pedido e confirme se está tudo certo antes de confirmá-lo.',
     nomeperfil: '',
     carrinho: '',
-    qualnome: ''
+    qualnome: '',
+    idgrupo: '',
 }
 
 const client = new Client({
@@ -135,10 +136,10 @@ function iniciarTimerInatividade(numeroContato) {
 
 client.on('message_create', message => {
     if (!message.fromMe) {
-
         const notifyName = message._data.notifyName;
+        const idGupo = message._data.from;
         respostas.nomeperfil = notifyName;
-
+        respostas.idgrupo = idGupo;
         respostas.menu = `Fala, ${notifyName}!\nDiz aí quais delícias vai querer hoje?\nEscolha algo na lista.\n1️⃣ Fazer pedido\n2️⃣ Cardápio\n3️⃣ Atendimento\nEscolha uma opção da lista.`
     }
 });
@@ -150,6 +151,8 @@ client.on('qr', (qr) => {
 
 client.on('ready', () => {
     console.log('WhatsApp está pronto!');
+    const grupo = "120363319684575824@g.us";
+    client.sendMessage(grupo, "[!] Estou online e operante");
 });
 // Função para remover acentos de uma string
 function removerAcentos(str) {
@@ -437,13 +440,12 @@ function resetarStatus(numeroContato) {
 }
 
 client.on('message', async (message) => {
-
     const numeroContato = message.from;
     const estado = getEstadoIndividual(numeroContato);
     const mensagemRecebida = removerAcentos(message.body.trim().toLowerCase());
     estado.msg = mensagemRecebida;
     const mensagemUser = estado.msg;
-    estado.mensagemRecebida = true; // Define o indicador de mensagem recebida como verdadeiro
+    estado.mensagemRecebida = true;
 
     if (estado.atendimento === 0) {
         iniciarAtendimento(numeroContato);
@@ -455,35 +457,100 @@ client.on('message', async (message) => {
     iniciarTimerInatividade(numeroContato);
     await avaliarmenu(numeroContato, message, mensagemUser);
 
-    /* AAAA -> (1-> parametro do seletor do switch )
-       BBBB -> (10->id do lanche na mensagem de 1 a X)
-       CCCC -> (10-> indice X a ser buscado no lanche escolhido) */
+    const parts = mensagemRecebida.split(' ');
+    const comando = parts[0];
 
-    //const retorno = await pegarRetorno(numeroContato, client, AAAA, BBBB, CCCC, estado, carrinho);
-    // Switch para lidar com as mensagens recebidas
-    switch (mensagemRecebida) {
-        case 'menu':
-            avaliarrespx(numeroContato, message);
-            break;
-        case '1':
-            avaliarresp1(numeroContato, message);
-            break;
-        case '2':
-            avaliarresp2(numeroContato, message);
-            break;
-        case '3':
-            try {
-                const retorno = await pegarRetorno(numeroContato, client, /*A:*/18, /*B:*/10, /*C:*/null, estado, carrinho);
-                console.log(retorno); // Aqui você imprime o valor retornado pela função
-                message.reply(retorno)
-            } catch (error) {
-                console.error('Erro ao obter o retorno:', error);
+    switch (parts.length) {
+        case 1:
+            // Comandos simples que não têm parâmetros adicionais
+            switch (comando) {
+                case 'menu':
+                    avaliarrespx(numeroContato, message);
+                    break;
+                case '1':
+                    avaliarresp1(numeroContato, message);
+                    break;
+                case '2':
+                    avaliarresp2(numeroContato, message);
+                    break;
+                case '3':
+                    try {
+                        const retorno = await pegarRetorno(numeroContato, client, 18, 9, null, estado, carrinho);
+                        console.log(retorno);
+                        message.reply(retorno);
+                    } catch (error) {
+                        console.error('Erro ao obter o retorno:', error);
+                    }
+                    break;
+                case '/reload':
+                    require('child_process').exec('pm2 restart Everton', (err, stdout, stderr) => {
+                        if (err) {
+                            console.error(`Erro ao reiniciar o bot: ${err}`);
+                            message.reply(`[!] Erro ao reiniciar o bot: ${err}`);
+                            return;
+                        }
+                    
+                        // Enviar a resposta de que o bot está reiniciando
+                        message.reply('Bot reiniciando...').then(() => {
+                            // Usar setTimeout para aguardar alguns segundos antes de confirmar a reinicialização
+                            setTimeout(() => {
+                                require('child_process').exec('pm2 status Everton', (statusErr, statusStdout, statusStderr) => {
+                                    if (statusErr) {
+                                        console.error(`Erro ao verificar o status do bot: ${statusErr}`);
+                                        message.reply (`[!] Erro ao verificar o status do bot: ${statusErr}`);
+                                    } else {
+                                        // Verificar se o bot está ativo após o reinício
+                                        if (statusStdout.includes('online')) {
+                                            message.reply('[!] Bot reiniciado');
+                                        } else {
+                                            message.reply('[!] Bot não reiniciado corretamente');
+                                        }
+                                    }
+                                });
+                            }, 2000); // Ajustar o atraso conforme necessário para garantir que o bot tenha tempo para reiniciar
+                        });
+                    });
+                    
+                    break;
+                case '/id':
+                    message.reply("ID: "+respostas.idgrupo);
+                    break
+                default:
+                    message.reply('Comando não reconhecido.');
+                    break;
             }
             break;
         default:
-            break;
+            // Comandos que podem ter parâmetros adicionais
+            switch (comando) {
+                case '/teste':
+                    if (parts.length === 4) {
+                        let param1 = parts[1] === 'null' ? null : parseInt(parts[1], 10); // Converte "null" para null e string numérica para número
+                        let param2 = parts[2] === 'null' ? null : parseInt(parts[2], 10);
+                        const param3 = parts[3] === 'null' ? null : parseInt(parts[3], 10);
+            
+                        console.log(`Parâmetros recebidos: param1=${param1}, param2=${param2}, param3=${param3}`);
+            
+                        try {
+                            const retorno = await pegarRetorno(numeroContato, client, param1, param2, param3, estado, carrinho);
+                            console.log(`Valor retornado pela função pegarRetorno: ${retorno}`);
+                            message.reply(retorno);
+                        } catch (error) {
+                            console.error('Erro ao obter o retorno:', error);
+                            message.reply(`Erro ao obter o retorno: ${error.message}`);
+                        }
+                    } else {
+                        message.reply('Formato incorreto. Use: /teste X X X');
+                    }
+                    break;
+                default:
+                    message.reply('Comando não reconhecido ou formato incorreto.');
+                    break;
+            }
+            
     }
 });
+
 async function avaliarmenu(numeroContato, message, mensagemUser) {
     const estado = getEstadoIndividual(numeroContato);
     switch (estado.conclusao) {

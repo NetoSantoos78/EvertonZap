@@ -325,7 +325,12 @@ async function pegarRetorno(numeroContato, client, parametros, ids, lanches, est
         case 30: // Quantidade dos complementos de cada tamanho do açaí
             try {
                 const resultado = await opcoesAcai(lanche, id);
-                return `Extra: ${resultado}`;
+                if (resultado && typeof resultado === 'object') {
+                    const { nomeExtra, nomeItem } = resultado;
+                    return `Item: ${nomeItem}, Extra: ${nomeExtra}`;
+                } else {
+                    return `Resultado inesperado: ${resultado}`;
+                }
             } catch (error) {
                 return `Erro ao obter o produto: ${error.message}`;
             }
@@ -340,7 +345,7 @@ async function pegarRetorno(numeroContato, client, parametros, ids, lanches, est
         case 33:
         case 34:
         default:
-            return '[!] Parâmetro de seleção desconhecido.';
+            return `[!] Parâmetro de seleção desconhecido. :${parametro, id, lanche}`;
     }
 }
 async function sandubaIndividual(idproduto) {

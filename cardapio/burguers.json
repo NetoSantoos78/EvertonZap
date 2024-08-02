@@ -31,7 +31,7 @@
         "produto": "X-Calabresa",
         "ingredientes": ["Pão", "Carne", "Calabresa", "Queijo", "Presunto", "Tomate", "Alface" ],
         "extras": ["Carne", "Calabresa", "Queijo", "Presunto", "Tomate", "Alface" ],
-        "extrasPrecos": {"Carne": "1", "Calabresa": "1", "Queijo": "1", "Presunto": "1", "Tomate": "1", "Alface": "1"},
+        "extrasPrecos": {"Carne": "10", "Calabresa": "21", "Queijo": "15", "Presunto": "61", "Tomate": "17", "Alface": "1"},
         "valor": "9.00"
     },
     "6": {

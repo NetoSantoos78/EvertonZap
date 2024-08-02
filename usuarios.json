@@ -58,5 +58,25 @@
     "referencia": "",
     "complemento": "",
     "estado": 1
+  },
+  "120363319684575824@g.us": {
+    "concluido": "nao",
+    "fidelidade": "0",
+    "endereco": ".",
+    "bairro": "/id",
+    "numeroCasa": "",
+    "referencia": "",
+    "complemento": "",
+    "estado": 3
+  },
+  "120363316801307384@g.us": {
+    "concluido": "nao",
+    "fidelidade": "0",
+    "endereco": "nao sei quem e voce",
+    "bairro": "",
+    "numeroCasa": "",
+    "referencia": "casa do portao branco numero 109 rua doutor manoel aguiar",
+    "complemento": "",
+    "estado": 5
   }
 }
