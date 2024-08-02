@@ -413,10 +413,9 @@ async function cardapioExtrasPizza1(lanche) {
             const produto = cardapio[lanche];
             if (produto) {
                 let extrasString = '';
-                const extrasPrecos = produto.valor;
+                const extrasPrecos = produto.tam;
                 Object.keys(extrasPrecos).forEach((extra, index) => {
-                    const numeroEmoji = emojisNumeros[index]; // Obter emoji do número
-                    extrasString += `${numeroEmoji} ${extra}: R$ ${extrasPrecos[extra]}\n`;
+                    extrasString += `${extrasPrecos[extra]}\n`;
                 });
                 return extrasString;
             } else {
@@ -436,10 +435,10 @@ async function cardapioExtrasPizza2(lanche) {
             const produto = cardapio[lanche];
             if (produto) {
                 let extrasString = '';
-                const extrasPrecos = produto.valor;
+                const extrasPrecos = produto.tam;
                 Object.keys(extrasPrecos).forEach((extra, index) => {
                     const numeroEmoji = emojisNumeros[index]; // Obter emoji do número
-                    extrasString += `${numeroEmoji} ${extra}: R$ ${extrasPrecos[extra]}\n`;
+                    extrasString += `R$ ${extrasPrecos[extra]}\n`;
                 });
                 return extrasString;
             } else {
@@ -485,7 +484,7 @@ async function cardapioExtrasBatatas(lanche) {
                 const extrasAdicionais = produto.adicionais;
                 Object.keys(extrasAdicionais).forEach((extra, index) => {
                     const numeroEmoji = emojisNumeros[index]; // Obter emoji do número
-                    extrasString += `${numeroEmoji} ${extra}: R$ ${extrasAdicionais[extra]}\n`;
+                    extrasString += `${extrasAdicionais[extra]}\n`;
                 });
                 return extrasString;
             } else {

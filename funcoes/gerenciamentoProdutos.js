@@ -248,14 +248,14 @@ async function pegarRetorno(numeroContato, client, parametros, ids, lanches, est
         case 19: // Valor dos tamanhos das pizzas especiais
             try {
                 const resultado = await cardapioExtrasPizza1(id);
-                return `Produto: ${resultado}`;
+                return `Pizzas:\n${resultado}`;
             } catch (error) {
                 return `Erro ao obter o produto: ${error.message}`;
             }
         case 20: // Valor dos tamanhos das pizzas tradicionais
             try {
                 const resultado = await cardapioExtrasPizza2(id);
-                return `Produto: ${resultado}`;
+                return `Pizzas:\n${resultado}`;
             } catch (error) {
                 return `Erro ao obter o produto: ${error.message}`;
             }
