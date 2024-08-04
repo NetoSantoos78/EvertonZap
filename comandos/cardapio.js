@@ -522,7 +522,7 @@ async function cardapioExtrasAcai(lanche) {
 }
 
 //####################################
-async function valorExtraEspecifico(indiceExtras, lanches) {
+async function valorExtraEspecifico(lanches, indiceExtras) {
     const indiceExtra = indiceExtras;
     const lanche = lanches;
     try {
@@ -547,7 +547,7 @@ async function valorExtraEspecifico(indiceExtras, lanches) {
         throw error;
     }
 }
-async function valorExtraEspecificoPizza1(indiceExtras, lanches) {
+async function valorExtraEspecificoPizza1(lanches, indiceExtras) {
     const indiceExtra = indiceExtras;
     const lanche = lanches;
     try {
@@ -572,7 +572,7 @@ async function valorExtraEspecificoPizza1(indiceExtras, lanches) {
         throw error;
     }
 }
-async function valorExtraEspecificoPizza2(indiceExtras, lanches) {
+async function valorExtraEspecificoPizza2(lanches, indiceExtras) {
     const indiceExtra = indiceExtras;
     const lanche = lanches;
     try {
@@ -597,7 +597,7 @@ async function valorExtraEspecificoPizza2(indiceExtras, lanches) {
         throw error;
     }
 }
-async function valorExtraEspecificoBebidas(indiceExtras, lanches) {
+async function valorExtraEspecificoBebidas(lanches, indiceExtras) {
     const indiceExtra = indiceExtras;
     const lanche = lanches;
     try {
@@ -622,7 +622,7 @@ async function valorExtraEspecificoBebidas(indiceExtras, lanches) {
         throw error;
     }
 }
-async function valorExtraEspecificoBatatas(indiceExtras, lanches) {
+async function valorExtraEspecificoBatatas(lanches, indiceExtras) {
     const indiceExtra = indiceExtras;
     const lanche = lanches;
     try {
@@ -647,7 +647,7 @@ async function valorExtraEspecificoBatatas(indiceExtras, lanches) {
         throw error;
     }
 }
-async function valorExtraEspecificoAcai(indiceExtras, lanches) {
+async function valorExtraEspecificoAcai(lanches, indiceExtras) {
     const indiceExtra = indiceExtras;
     const lanche = lanches;
     try {
@@ -674,7 +674,7 @@ async function valorExtraEspecificoAcai(indiceExtras, lanches) {
 }
 
 //####################################
-async function nomeExtraEspecifico(indiceExtras, lanches) {
+async function nomeExtraEspecifico(lanches, indiceExtras) {
     const indiceExtra = indiceExtras;
     const lanche = lanches;
     try {
@@ -682,11 +682,9 @@ async function nomeExtraEspecifico(indiceExtras, lanches) {
         if (cardapio) {
             const produto = cardapio[lanche];
             if (produto) {
-                const extrasNomes = Object.values(produto.extras); // Obtém os nomes dos extras
-                const nomeItem = produto.produto; // Obtém o nome do item do cardápio
-                const nomeExtra = extrasNomes[indiceExtra - 1]; // Subtrai 1 para obter o índice correto
+                const nomeExtra = produto.extras[indiceExtra - 1]; // Obtém diretamente o nome do extra
                 if (nomeExtra) {
-                    return { nomeExtra, nomeItem };
+                    return nomeExtra; // Retorna o nome do extra como string
                 } else {
                     throw new Error(`Extra no índice '${indiceExtra}' não encontrado no lanche ${lanche}.`);
                 }
@@ -700,7 +698,7 @@ async function nomeExtraEspecifico(indiceExtras, lanches) {
         throw error;
     }
 }
-async function nomeExtraEspecificoPizza1(indiceExtras, lanches) {
+async function nomeExtraEspecificoPizza1(lanches, indiceExtras) {
     const indiceExtra = indiceExtras;
     const lanche = lanches;
     try {
@@ -726,7 +724,7 @@ async function nomeExtraEspecificoPizza1(indiceExtras, lanches) {
         throw error;
     }
 }
-async function nomeExtraEspecificoPizza2(indiceExtras, lanches) {
+async function nomeExtraEspecificoPizza2(lanches, indiceExtras) {
     const indiceExtra = indiceExtras;
     const lanche = lanches;
     try {
@@ -752,7 +750,7 @@ async function nomeExtraEspecificoPizza2(indiceExtras, lanches) {
         throw error;
     }
 }
-async function nomeExtraEspecificBebidas(indiceExtras, lanches) {
+async function nomeExtraEspecificBebidas(lanches, indiceExtras) {
     const indiceExtra = indiceExtras;
     const lanche = lanches;
     try {
@@ -778,7 +776,7 @@ async function nomeExtraEspecificBebidas(indiceExtras, lanches) {
         throw error;
     }
 }
-async function nomeExtraEspecificoBatatas(indiceExtras, lanches) {
+async function nomeExtraEspecificoBatatas(lanches, indiceExtras) {
     const indiceExtra = indiceExtras;
     const lanche = lanches;
     try {
@@ -804,7 +802,7 @@ async function nomeExtraEspecificoBatatas(indiceExtras, lanches) {
         throw error;
     }
 }
-async function nomeExtraEspecificoAcai(indiceExtras, lanches) {
+async function nomeExtraEspecificoAcai(lanches, indiceExtras) {
     const indiceExtra = indiceExtras;
     const lanche = lanches;
     try {
@@ -832,7 +830,7 @@ async function nomeExtraEspecificoAcai(indiceExtras, lanches) {
 }
 
 //####################################
-async function opcoesAcai(indiceExtras, lanches) {
+async function opcoesAcai(lanches, indiceExtras) {
     const indiceExtra = indiceExtras;
     const lanche = lanches;
     try {
@@ -858,7 +856,7 @@ async function opcoesAcai(indiceExtras, lanches) {
         throw error;
     }
 }
-async function caldasAcai(indiceExtras, lanches) {
+async function caldasAcai(lanches, indiceExtras) {
     const indiceExtra = indiceExtras;
     const lanche = lanches;
     try {

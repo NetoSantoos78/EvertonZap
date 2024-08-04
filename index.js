@@ -27,6 +27,7 @@ const TIMEOUT_INTERVAL = 300000; // 15 segundos em milissegundos
 const respostas = {
     menu: '',
     semAtendimento: 'Desculpa, não consegui entender o que você falou, por favor mande *"menu"* para iniciar seu pedido.',
+    atendimento: 'Vou te repassar para algum atendente.',
     cardapio: 'Por favor, escolha o que deseja pedir.\n1️⃣ Sanduíches\n2️⃣ Pizzas\n3️⃣ Açaí\n4️⃣ Batata Frita\n5️⃣ Bebidas',
     cardapioAdd: 'Por favor, escolha o que deseja adicionar.\n1️⃣ Sanduíches\n2️⃣ Pizzas\n3️⃣ Açaí\n4️⃣ Batata Frita\n5️⃣ Bebidas',
     cardapiover: 'Por favor, escolha o que deseja ver.\n1️⃣ Sanduíches\n2️⃣ Pizzas\n3️⃣ Açaí\n4️⃣ Batata Frita\n5️⃣ Bebidas',
@@ -94,13 +95,18 @@ function getCardapioIndividual(numeroContato) {
             comprador: '',
             idPedido: '',
             produtos: {},
-            extras: [],
+            extras: {},
             preco: '0',
             idProduto: 0,
         };
     }
     return carrrinhoIndividuais[numeroContato];
 }
+function exibirCarrinho(numeroContato) {
+    const carrinho = getCardapioIndividual(numeroContato);
+    console.log(JSON.stringify(carrinho, null, 2));
+}
+
 // Função para iniciar o atendimento
 function iniciarAtendimento(numeroContato) {
 
@@ -178,89 +184,6 @@ function limparNome(nomeUsuario) {
     return nomeLimpo;
 }
 
-// Compra dos sanduba
-async function sandubas(numeroContato, client) {
-    sandubaCompleto((output, error) => {
-        if (error) {
-            client.sendMessage(numeroContato, "Erro ao obter o cardápio:");
-            // Aqui você pode enviar uma mensagem de erro para o usuário, se necessário
-        } else {
-            const retorno = output;
-            client.sendMessage(numeroContato, retorno);
-            // Aqui você pode enviar o cardápio completo para o usuário
-        }
-    });
-}
-async function pizzas1(numeroContato, client) {
-    pizzasCompleto1((output, error) => {
-        if (error) {
-            client.sendMessage(numeroContato, "Erro ao obter o cardápio:");
-            // Aqui você pode enviar uma mensagem de erro para o usuário, se necessário
-        } else {
-            const retorno = output;
-            client.sendMessage(numeroContato, retorno);
-            // Aqui você pode enviar o cardápio completo para o usuário
-        }
-    });
-}
-async function pizzas2(numeroContato, client) {
-    pizzasCompleto2((output, error) => {
-        if (error) {
-            client.sendMessage(numeroContato, "Erro ao obter o cardápio:");
-            // Aqui você pode enviar uma mensagem de erro para o usuário, se necessário
-        } else {
-            const retorno = output;
-            client.sendMessage(numeroContato, retorno);
-            // Aqui você pode enviar o cardápio completo para o usuário
-        }
-    });
-}
-// Ver tudo dos sandubas
-async function tudosandubas(numeroContato, client) {
-    cardapioCompleto((output, error) => {
-        if (error) {
-            client.sendMessage(numeroContato, "Erro ao obter o cardápio:");
-            // Aqui você pode enviar uma mensagem de erro para o usuário, se necessário
-        } else {
-            const retorno = output;
-            client.sendMessage(numeroContato, retorno);
-            setTimeout(() => {
-                // Enviar a segunda mensagem após 25 segundos
-                client.sendMessage(
-                    numeroContato,
-                    'Este é todo nosso cardápio do sanduíche. Para voltar, envie *"menu"*.'
-                );
-            }, 1000);
-            // Aqui você pode enviar o cardápio completo para o usuário
-        }
-    });
-}
-// Info do lanche escolhido
-async function sandubaIndividual(numeroContato, client, idproduto) {
-    const idFinal = idproduto;
-    const carrinho = getCardapioIndividual(numeroContato);
-    const estado = getEstadoIndividual(numeroContato);
-    carrinho.idProduto = idFinal;
-    cardapioIndividual(idFinal)
-
-        .then(resultado => {
-            // Aqui você pode manipular o resultado conforme necessário
-            const retorno = `Perfeito, o produto ${resultado.produtoNome} foi adicionado ao seu pedido.`;
-            adicionarValorProdutoAoCarrinho(numeroContato, resultado.valor);
-            adicionarProdutoAoCarrinho(numeroContato, resultado.produtoNome);
-            client.sendMessage(numeroContato, retorno);
-            estado.resp1 = 3;
-            estado.resp2 = 1;
-            estado.escolha = resultado.produtoNome;
-            setTimeout(() => {
-                client.sendMessage(numeroContato, respostas.maisUmAdicional);
-            }, 1000);
-        })
-        .catch(error => {
-            client.sendMessage(numeroContato, "Erro ao obter o cardápio: " + error.message);
-            // Aqui você pode enviar uma mensagem de erro para o usuário, se necessário
-        });
-}
 // Adicionando ao carrinho
 // Add numero contato
 function adicionarContatoAoCarrinho(numeroContato) {
@@ -283,129 +206,58 @@ function adicionarIdPedidoAoCarrinho(numeroContato) {
 
 }
 // Add os produtos
-async function adicionarProdutoAoCarrinho(numeroContato, produto) {
-    const pedido = getCardapioIndividual(numeroContato);
-    const estado = getEstadoIndividual(numeroContato)
-    // Verifica se já existe um objeto de produtos no carrinho
-    if (!pedido.produtos) {
-        // Se não existir, inicializa o objeto de produtos
-        pedido.produtos = {};
-    }
-
-    // Define o próximo ID como o próximo número após o maior ID existente
-    const proximoId = Object.keys(pedido.produtos).length + 1;
-
-    // Adiciona o produto ao objeto de produtos com o próximo ID
-    pedido.produtos[proximoId.toString()] = produto;
-    estado.escolha
-    let nao = "Não";
-    adicionarItem2(produto, nao);
-
-}
-
-// Add os extras
-async function adicionarExtraAoCarrinho(numeroContato, produto, extra) {
-    try {
-        const carrinho = getCardapioIndividual(numeroContato);
-        const estado = getEstadoIndividual(numeroContato);
-        const lanche = carrinho.idProduto; // Supondo que idPedido seja o identificador do produto
-        const indiceExtra = extra; // Supondo que extra seja o índice do extra no cardápio
-        const valorExtra = await valorExtraEspecifico(lanche, indiceExtra);
-        const nomeExtra = await nomeExtraEspecifico(lanche, indiceExtra);
-        const r1 = nomeExtra.nomeItem;
-        const r2 = nomeExtra.nomeExtra;
-        adicionarItem2(r1, r2);
-        estado.resp1 = 5
-        client.sendMessage(numeroContato, respostas.maisUmAdicional);
-    } catch (error) {
-        console.error("Erro ao adicionar extra ao carrinho:", error);
-    }
-}
-
-/////////////
-const carrinhoTemp2 = [];
-
-function adicionarItem2(lanche, ...extras) {
-    // Verifica se já existe um item com o mesmo lanche no carrinho temporário
-    const itemExistente = carrinhoTemp2.find(item => item.lanche === lanche);
-
-    if (itemExistente) {
-        // Atualiza a contagem dos extras no item existente
-        extras.forEach(extra => {
-            if (itemExistente.extraCounts[extra]) {
-                itemExistente.extraCounts[extra]++;
-            } else {
-                itemExistente.extraCounts[extra] = 1;
-            }
-        });
-    } else {
-        // Se o item não existe, cria um novo item no carrinho temporário
-        const extraCounts = {};
-        extras.forEach(extra => {
-            if (extraCounts[extra]) {
-                extraCounts[extra]++;
-            } else {
-                extraCounts[extra] = 1;
-            }
-        });
-
-        carrinhoTemp2.push({
-            lanche: lanche,
-            extraCounts: extraCounts
-        });
-    }
-}
-
-
-function adicionarItem(numeroContato) {
+function adicionarProdutoNoCart(numeroContato, lanche) {
+    // Obtém o cardápio individual do contato
     const carrinho = getCardapioIndividual(numeroContato);
-    const estado = getEstadoIndividual(numeroContato);
-
-    // Objeto para armazenar a contagem de cada extra
-    const extraCounts = {};
-    // Array para armazenar os nomes dos lanches
-    const nomesLanche = [];
-
-    // Adiciona os itens de carrinhoTemp2 a carrinho.extras e atualiza a contagem de extras
-    for (const item of carrinhoTemp2) {
-        // Atualiza a contagem de cada extra
-        for (const extra in item.extraCounts) {
-            if (extraCounts[extra]) {
-                extraCounts[extra] += item.extraCounts[extra];
-            } else {
-                extraCounts[extra] = item.extraCounts[extra];
-            }
-        }
-        // Adiciona o nome do lanche ao array de nomes de lanche
-        nomesLanche.push(item.lanche);
-    }
-
-    // Transforma o objeto extraCounts em um array de objetos
-    const extrasArray = [];
-    for (const extra in extraCounts) {
-        extrasArray.push(`${extraCounts[extra]}x ${extra}`);
-    }
-
-    // Monta a lista de extras para cada item do carrinho
-    const extras = [];
-    for (const item of carrinhoTemp2) {
-        // Remove o "Não" se houver mais de um extra
-        const extrasItem = extrasArray.length > 1 && item.extraCounts['Não'] ? extrasArray.filter(extra => extra !== '1x Não').join(', ') : extrasArray.join(', ');
-        extras.push({ item: item.lanche, extras: extrasItem });
-    }
-
-    // Adiciona os extras ao carrinho
-    carrinho.extras.push(...extras);
-
-    // Limpa carrinhoTemp2 para uso futuro
-    carrinhoTemp2.length = 0;
-
+    // Obtém o próximo ID de produto disponível
+    const novoIdProduto = carrinho.idProduto + 1;
+    // Atualiza o ID do próximo produto no carrinho
+    carrinho.idProduto = novoIdProduto;
+    // Adiciona o lanche ao carrinho com o novo ID
+    carrinho.produtos[novoIdProduto] = lanche;
+    // Atualiza o carrinho no banco de dados ou onde estiver armazenado
+    // Retorna o carrinho atualizado
+    console.log("[!] " + lanche + " adicionado ao carrinho de: " + numeroContato)
+    return carrinho;
 }
+// Add extra
+function adicionarExtraNoCart(numeroContato, extra, quantidade) {
+    // Obtém o cardápio individual do contato
+    const carrinho = getCardapioIndividual(numeroContato);
+    // Obtém o ID do produto atual
+    const idProduto = carrinho.idProduto;
+
+    // Verifica se o produto com o idProduto existe
+    if (carrinho.produtos.hasOwnProperty(idProduto)) {
+        // Se os extras para o produto ainda não existem, inicializa um objeto vazio
+        if (!carrinho.extras.hasOwnProperty(idProduto)) {
+            carrinho.extras[idProduto] = {};
+            console.log(`[!][Inicializado] Extras para produto ID ${idProduto} inicializados.`);
+        }
+
+        // Se o extra já existe, atualiza a quantidade existente
+        if (carrinho.extras[idProduto].hasOwnProperty(extra)) {
+            carrinho.extras[idProduto][extra] += quantidade;
+            console.log(`[!][Atualizado] ${extra} atualizado para produto ID ${idProduto} no carrinho de: ${numeroContato}. Quantidade total agora: ${carrinho.extras[idProduto][extra]}`);
+        } else {
+            // Se o extra não existe, adiciona o novo extra com a quantidade fornecida
+            carrinho.extras[idProduto][extra] = quantidade;
+            console.log(`[!][Adicionado] ${extra} adicionado ao produto ID ${idProduto} no carrinho de: ${numeroContato}. Quantidade: ${quantidade}`);
+        }
+
+        return carrinho;
+    } else {
+        // Se o produto não for encontrado, lança um erro
+        throw new Error(`Produto com ID ${idProduto} não encontrado.`);
+    }
+}
+
 
 // Add o preço
 async function adicionarValorProdutoAoCarrinho(numeroContato, valorProdutoNovo) {
     const carrinho = getCardapioIndividual(numeroContato);
     carrinho.preco = (parseFloat(carrinho.preco) || 0) + parseFloat(valorProdutoNovo);
+
 }
 // Consultar extras disponivel
 async function obterExtrasDoLanche(numeroContato, message) {
@@ -446,6 +298,11 @@ client.on('message', async (message) => {
     estado.msg = mensagemRecebida;
     const mensagemUser = estado.msg;
     estado.mensagemRecebida = true;
+    /* AAAA -> (1-> parametro do seletor do switch )
+      BBBB -> (10->id do lanche na mensagem de 1 a X)
+      CCCC -> (10-> indice X a ser buscado no lanche escolhido) */
+
+
 
     if (estado.atendimento === 0) {
         iniciarAtendimento(numeroContato);
@@ -464,6 +321,48 @@ client.on('message', async (message) => {
         case 1:
             // Comandos simples que não têm parâmetros adicionais
             switch (comando) {
+                case 'ex':
+                    const carrinhos = getCardapioIndividual(numeroContato);
+
+                    // Verifique se `carrinhos` está corretamente definido
+                    if (carrinhos) {
+                        console.log(JSON.stringify(carrinhos, null, 2));
+                    } else {
+                        console.log('carrinhos não está definido.');
+                    }
+                    break;
+                    break
+                case 'car':
+                    // Obtenha o carrinho do contato
+                    const carrinho = getCardapioIndividual(numeroContato);
+                    // Inicialize a mensagem
+                    let mensagem = 'Seu pedido                     xxxxxxx\n\n';
+                    // Adicione detalhes do pedido
+                    mensagem += `Pedido         (${Object.keys(carrinho.produtos).length} item no carrinho)\n`;
+                    // Itera sobre os produtos e seus extras
+                    for (const [idProduto, produto] of Object.entries(carrinho.produtos)) {
+                        mensagem += `*${produto}*\n`;
+
+                        // Verifica se há extras para o produto
+                        if (carrinho.extras.hasOwnProperty(idProduto) && Object.keys(carrinho.extras[idProduto]).length > 0) {
+                            Object.entries(carrinho.extras[idProduto]).forEach(([extra, quantidade]) => {
+                                mensagem += `  *↳ ${extra}: ${quantidade}*\n`;
+                            });
+                        } else {
+                            mensagem += `  *↳ Nenhum extra*\n`;
+                        }
+                    }
+                    // Adiciona detalhes de pagamento
+                    mensagem += '\n*Pagamento*\n';
+                    mensagem += `subtotal                  *R$ ${carrinho.preco}*\n`;
+                    mensagem += `taxa de entrega      *R$ ${carrinho.taxaEntrega || '1,00'}*\n`;
+                    mensagem += `total                        *R$ ${carrinho.total + 1}*\n`;
+
+                    // Envia a mensagem com os detalhes formatados
+                    setTimeout(() => {
+                        client.sendMessage(numeroContato, mensagem);
+                    }, 500);
+                    break
                 case 'menu':
                     avaliarrespx(numeroContato, message);
                     break;
@@ -474,9 +373,12 @@ client.on('message', async (message) => {
                     avaliarresp2(numeroContato, message);
                     break;
                 case '3':
+                    avaliarresp3(numeroContato, message);
+                    break;
+                case '4':
                     try {
                         const retorno = await pegarRetorno(numeroContato, client, 18, 9, null, estado, carrinho);
-                        console.log(retorno);
+                        //console.log(retorno);
                         message.reply(retorno);
                     } catch (error) {
                         console.error('Erro ao obter o retorno:', error);
@@ -489,7 +391,7 @@ client.on('message', async (message) => {
                             message.reply(`[!] Erro ao reiniciar o bot: ${err}`);
                             return;
                         }
-                    
+
                         // Enviar a resposta de que o bot está reiniciando
                         message.reply('Bot reiniciando...').then(() => {
                             // Usar setTimeout para aguardar alguns segundos antes de confirmar a reinicialização
@@ -497,7 +399,7 @@ client.on('message', async (message) => {
                                 require('child_process').exec('pm2 status Everton', (statusErr, statusStdout, statusStderr) => {
                                     if (statusErr) {
                                         console.error(`Erro ao verificar o status do bot: ${statusErr}`);
-                                        message.reply (`[!] Erro ao verificar o status do bot: ${statusErr}`);
+                                        message.reply(`[!] Erro ao verificar o status do bot: ${statusErr}`);
                                     } else {
                                         // Verificar se o bot está ativo após o reinício
                                         if (statusStdout.includes('online')) {
@@ -510,10 +412,10 @@ client.on('message', async (message) => {
                             }, 2000); // Ajustar o atraso conforme necessário para garantir que o bot tenha tempo para reiniciar
                         });
                     });
-                    
+
                     break;
                 case '/id':
-                    message.reply("ID: "+respostas.idgrupo);
+                    message.reply("ID: " + respostas.idgrupo);
                     break
                 default:
                     message.reply('Comando não reconhecido.');
@@ -528,9 +430,9 @@ client.on('message', async (message) => {
                         let param1 = parts[1] === 'null' ? null : parseInt(parts[1], 10); // Converte "null" para null e string numérica para número
                         let param2 = parts[2] === 'null' ? null : parseInt(parts[2], 10);
                         const param3 = parts[3] === 'null' ? null : parseInt(parts[3], 10);
-            
+
                         console.log(`Parâmetros recebidos: param1=${param1}, param2=${param2}, param3=${param3}`);
-            
+
                         try {
                             const retorno = await pegarRetorno(numeroContato, client, param1, param2, param3, estado, carrinho);
                             console.log(`Valor retornado pela função pegarRetorno: ${retorno}`);
@@ -547,7 +449,7 @@ client.on('message', async (message) => {
                     message.reply('Comando não reconhecido ou formato incorreto.');
                     break;
             }
-            
+
     }
 });
 
@@ -573,45 +475,29 @@ async function avaliarrespx(numeroContato, message) {
     switch (estado.respx) {
         case 0: // Manda o menu do cardápio
             await client.sendMessage(numeroContato, respostas.menu);
-            estado.resp1 = 20;
+            estado.resp1 = 1;
+            estado.resp2 = 1;
+            estado.resp3 = 1;
             break;
         case 1: // Menu do cardapio de sandubas
-            await sandubas(numeroContato, client);
-            estado.resp1 = 2;
+            try {
+                const retorno = await pegarRetorno(numeroContato, client, 13, null, null, estado, carrinho);
+                message.reply(retorno);
+                estado.resp1 = 3;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
             break;
-        case 2:
-            sandubaIndividual(numeroContato, client, 1);
-            break
-        case 3:
-            obterExtrasDoLanche(numeroContato, message);
-            break
-        case 4:
-            adicionarExtraAoCarrinho(numeroContato, carrinho.idProduto, 1)
-            break
-        case 5: //ADICIONAR MAIS COISAS AO SANDUBA
-            adicionarExtraAoCarrinho(numeroContato, carrinho.idProduto, 1)
-            break
-        case 6: // Cardapio completo para ver dos sanduba
-            //tudosandubas(numeroContato, client);
-            estado.resp2 = 1
-            avaliarresp1(numeroContato, message);
-            break
-        case 7: // NÃO QUER NADA NO LANCHE
-            adicionarIdPedidoAoCarrinho(numeroContato);
-            adicionarNomeAoCarrinho(numeroContato);
-            adicionarContatoAoCarrinho(numeroContato);
-            adicionarItem(numeroContato);
-            message.reply(respostas.maisAlgoPedido);
-            estado.resp1 = 6;
-            estado.resp2 = 2
-            break
-        case 99:
-            client.sendMessage(numeroContato, respostas.pizzasTipos);
-            estado.resp1 = 99;
-            estado.resp2 = 3;
-            break
-        case 100:
-
+        case 2: // Extras do MISTO
+            try {
+                const retorno = await pegarRetorno(numeroContato, client, 18, 1, null, estado, carrinho);
+                message.reply(retorno);
+                estado.resp1 = 5;
+                estado.resp2 = 3;
+                estado.resp3 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
         default:
             // Lidar com estado desconhecido, se necessário
             break;
@@ -625,47 +511,50 @@ async function avaliarresp1(numeroContato, message) {
             await client.sendMessage(numeroContato, respostas.menu);
             estado.menu = 1;
             break;
-        case 1: // Menu do cardapio de sandubas
-            await sandubas(numeroContato, client);
-            estado.resp1 = 2;
-            break;
-        case 2:
-            sandubaIndividual(numeroContato, client, 1);
-            break
-        case 3:
-            obterExtrasDoLanche(numeroContato, message);
-            break
-        case 4:
-            adicionarExtraAoCarrinho(numeroContato, carrinho.idProduto, 1)
-            break
-        case 5: //ADICIONAR MAIS COISAS AO SANDUBA
-            adicionarExtraAoCarrinho(numeroContato, carrinho.idProduto, 1)
-            break
-        case 6: // Cardapio completo para ver dos sanduba
-            estado.resp1 = 20;
-            estado.resp2 = 1
-            avaliarresp1(numeroContato, message);
-            break
-        case 7: // NÃO QUER NADA NO LANCHE
-            adicionarIdPedidoAoCarrinho(numeroContato);
-            adicionarNomeAoCarrinho(numeroContato);
-            adicionarContatoAoCarrinho(numeroContato);
-            adicionarItem(numeroContato);
-            message.reply(respostas.maisAlgoPedido);
-            estado.resp1 = 6;
-            estado.resp2 = 2
-            break
-        case 20: // Segundo menu do cardapio para escolher o que vai pedir
-            client.sendMessage(numeroContato, respostas.cardapio);
-            estado.resp1 = 21;
-            estado.resp2 = 2; // /Menu->Produtos->Pizzas(2)
-            break
-        case 21:
+        case 1: // Menu do cardapio de produtos existente
             estado.respx = 1;
+            estado.resp1 = 2;
+            await client.sendMessage(numeroContato, respostas.cardapio);
+            break
+        case 2: // Chamada do respx
             avaliarrespx(numeroContato, message);
             break
-        case 99: // Menu das Pizzas Tradicionais
-            await pizzas1(numeroContato, client);
+        case 3: // Pegar o Misto da lista
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 1, 1, null, estado, carrinho);// Nome do  lanche
+                const retorno2 = await pegarRetorno(numeroContato, client, 32, 1, 1, estado, carrinho);// Valor do lanche
+                adicionarProdutoNoCart(numeroContato, retorno1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
+                message.reply("Perfeito, o produto " + retorno1 + " foi adicionado ao seu pedido.");
+
+
+                setTimeout(() => {
+                    message.reply(respostas.adicionais);
+                }, 500);
+                estado.respx = 2;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 4: // Chamada do respx
+            avaliarrespx(numeroContato, message);
+            break
+        case 5: // 
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 1, "1", estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 1, 1, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 1, null, estado, carrinho);// Nome do lanche
+                console.log("valor do extra: " + retorno1);
+                console.log("Extra escolhido: " + retorno2);
+                console.log("Sanduiche escolhido: " + retorno3);
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
             break
         default:
             // Lidar com estado desconhecido, se necessário
@@ -677,44 +566,28 @@ async function avaliarresp2(numeroContato, message) {
     const estado = getEstadoIndividual(numeroContato);
     switch (estado.resp2) {
         case 0: // Manda o menu do cardápio
-            client.sendMessage(numeroContato, respostas.cardapiover);
+            await client.sendMessage(numeroContato, respostas.menu);
             break;
-        case 1: // Não do menu de adicionar coisas ao lanche
-            estado.respx = 7;
-            await avaliarrespx(numeroContato, message);
+        case 1: // Manda o cardapio de leitura para os produtos da lanchonete
+            await client.sendMessage(numeroContato, respostas.cardapiover);
+            estado.respx = 3;
             break;
-        case 2:
-            estado.respx = 99;
-            await avaliarrespx(numeroContato, message);
+        // Outros casos de estado...
+        default:
+            // Lidar com estado desconhecido, se necessário
             break;
-        case 3: //Menu das Pizzas ESPECIAIS
-            await pizzas2(numeroContato, client);
-            break
-        case 20:
-            message.reply(respostas.verCarrinho);
-            const carrinho = getCardapioIndividual(numeroContato);
-            const jsonString = JSON.stringify(carrinho, null, 2);
-            const carrinhoExtras = JSON.stringify(carrinho.extras, null, 2);
-            let mensagem = 'Seu pedido                     xxxxxxx\n\n';
-            mensagem += `Pedido         (${carrinho.extras.length} item no carrinho)\n`;
-            carrinho.extras.forEach((extra, index) => {
-                // Dividir a string pelo espaço em branco
-                let aaaa = extra.extras === "1x Não" ? "Sem extras" : extra.extras;
-                mensagem += `*${extra.item}*\n  *↳ ${aaaa}*\n`;
-            });
-            mensagem += '\n*Pagamento*\n';
-            mensagem += `subtotal                  *R$ ${carrinho.preco}*\n`;
-            mensagem += `taxa de entrega      *R$ ${carrinho.taxaEntrega || '1,00'}*\n`;
-            mensagem += `total                        *R$ ${carrinho.total + 1}*\n`;
+    }
+}
 
-            // Agora você pode enviar a mensagem com os detalhes formatados
-
-            setTimeout(() => {
-                // Enviar a segunda mensagem após 0,5 segundos
-                client.sendMessage(numeroContato, mensagem);
-
-            }, 500);
-            break
+async function avaliarresp3(numeroContato, message) {
+    const estado = getEstadoIndividual(numeroContato);
+    switch (estado.resp2) {
+        case 0: // Manda o menu do cardápio
+            await client.sendMessage(numeroContato, respostas.menu);
+            break;
+        case 1: // Mandando o atendimento ao cliente
+            await client.sendMessage(numeroContato, respostas.atendimento);
+            break;
         // Outros casos de estado...
         default:
             // Lidar com estado desconhecido, se necessário

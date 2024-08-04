@@ -34,7 +34,7 @@ async function pegarRetorno(numeroContato, client, parametros, ids, lanches, est
         case 1: // Sanduíches individuais
             try {
                 const resultado = await sandubaIndividual(id);
-                return `Produto: ${resultado}`;
+                return `${resultado}`;
             } catch (error) {
                 return `Erro ao obter o produto: ${error.message}`;
             }
@@ -241,7 +241,7 @@ async function pegarRetorno(numeroContato, client, parametros, ids, lanches, est
         case 18: // Valor dos extra dos burguers
             try {
                 const resultado = await cardapioExtras(id);
-                return `Produto: ${resultado}`;
+                return `${resultado}`;
             } catch (error) {
                 return `Erro ao obter o produto: ${error.message}`;
             }
@@ -276,7 +276,7 @@ async function pegarRetorno(numeroContato, client, parametros, ids, lanches, est
         case 23: // Valor de um extra especifico de um sanduiche
             try {
                 const resultado = await valorExtraEspecifico(lanche, id);
-                return `Produto: ${resultado}`;
+                return `${resultado}`;
             } catch (error) {
                 return `Erro ao obter o produto: ${error.message}`;
             }
@@ -304,7 +304,7 @@ async function pegarRetorno(numeroContato, client, parametros, ids, lanches, est
         case 27: // Nome de um extra especifico de um burguer
             try {
                 const resultado = await nomeExtraEspecifico(lanche, id);
-                return `Extra: ${resultado}`;
+                return `${resultado}`;
             } catch (error) {
                 return `Erro ao obter o produto: ${error.message}`;
             }
@@ -339,14 +339,20 @@ async function pegarRetorno(numeroContato, client, parametros, ids, lanches, est
                 const resultado = await caldasAcai(lanche, id);
                 if (resultado && typeof resultado === 'object') {
                     const { nomeItem, caldaEscolhida } = resultado;
-                    return `Item: ${nomeItem}, Calda: ${caldaEscolhida}`;
+                    return `${nomeItem}, Calda: ${caldaEscolhida}`;
                 } else {
                     return `Resultado inesperado: ${resultado}`;
                 }
             } catch (error) {
                 return `Erro ao obter o produto: ${error.message}`;
             }
-        case 32:
+        case 32: // Valor de um burguer
+            try {
+                const resultado = await valorsandubaIndividual(lanche);
+                return `${resultado}`;
+            } catch (error) {
+                return `Erro ao obter o produto: ${error.message}`;
+            }
         case 33:
         case 34:
         default:
@@ -357,6 +363,14 @@ async function sandubaIndividual(idproduto) {
     try {
         const resultado = await cardapioIndividual(idproduto);
         return `${resultado.produtoNome}`;
+    } catch (error) {
+        throw new Error('[!] Deu erro na busca, o produto não foi encontrado');
+    }
+}
+async function valorsandubaIndividual(idproduto) {
+    try {
+        const resultado = await cardapioIndividual(idproduto);
+        return `${resultado.valor}`;
     } catch (error) {
         throw new Error('[!] Deu erro na busca, o produto não foi encontrado');
     }
