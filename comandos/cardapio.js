@@ -391,10 +391,13 @@ async function cardapioExtras(lanche) {
             if (produto) {
                 let extrasString = '';
                 const extrasPrecos = produto.extrasPrecos;
-                Object.keys(extrasPrecos).forEach((extra, index) => {
+
+                // Iterar sobre os valores dos preços dos extras
+                Object.values(extrasPrecos).forEach((preco, index) => {
                     const numeroEmoji = emojisNumeros[index]; // Obter emoji do número
-                    extrasString += `${numeroEmoji} ${extra}: R$ ${extrasPrecos[extra]}\n`;
+                    extrasString += `${numeroEmoji} R$ ${preco}\n`;
                 });
+
                 return extrasString;
             } else {
                 throw new Error("Índice não encontrado: " + lanche);
@@ -406,6 +409,36 @@ async function cardapioExtras(lanche) {
         throw error;
     }
 }
+async function cardapioExtrasBurguer(lanche) {
+    try {
+        const cardapio = await lerCardapio(caminhoArquivo);
+        if (cardapio) {
+            const produto = cardapio[lanche];
+            if (produto) {
+                let extrasString = '';
+                const extrasNome = produto.extras;
+                const extrasPrecos = produto.extrasPrecos;
+
+                // Supondo que extrasNome e extrasPrecos sejam objetos com as mesmas chaves
+                Object.keys(extrasPrecos).forEach((extra, index) => {
+                    const nome = extrasNome[extra]; // Nome do extra
+                    const preco = extrasPrecos[extra]; // Preço do extra
+                    const numeroEmoji = emojisNumeros[index]; // Obter emoji do número
+                    extrasString += `${numeroEmoji} ${nome}: R$ ${preco}\n`;
+                });
+
+                return extrasString;
+            } else {
+                throw new Error("Índice não encontrado: " + lanche);
+            }
+        } else {
+            throw new Error("Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+
 async function cardapioExtrasPizza1(lanche) {
     try {
         const cardapio = await lerCardapio(caminhoArquivoPizza1);
@@ -937,4 +970,5 @@ module.exports = {
     cardapioIndividualBatatas,
     cardapioIndividualPizza2,
     cardapioIndividualBebidas,
+    cardapioExtrasBurguer,
 };

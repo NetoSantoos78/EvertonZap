@@ -7,6 +7,7 @@ const puppeteer = require('puppeteer');
 const { Client, MessageMedia, Poll, LocalAuth } = require('whatsapp-web.js');
 const { criarPagamento, criarPagamentoRenovacao } = require('./criarCompra.js');
 const { dataFormatada, horaFormatada } = require('./funcoes/pegardata.js');
+const { atualizarIdGrupo } = require('./funcoes/funcao.js');
 const { cardapioIndividual, cardapioCompleto, cardapioExtras, valorExtraEspecifico, sandubaCompleto, nomeExtraEspecifico,
     pizzasCompleto1, pizzasCompleto2, cardapioIndividualPizza1, nomeExtraEspecificoAcai, nomeExtraEspecificoBatatas,
     nomeExtraEspecificBebidas, nomeExtraEspecificoPizza2, nomeExtraEspecificoPizza1, valorExtraEspecificoAcai,
@@ -35,6 +36,7 @@ const respostas = {
     maisUmAdicional: 'Deseja adicionar mais algo ao seu sanduíche?\n1️⃣ Sim\n2️⃣ Não',
     maisAlgoPedido: 'Quer complementar seu pedido com algo a mais? Ex.: Com uma batata, refrigerante, sorvete?\n1️⃣ Sim\n2️⃣ Não',
     pizzasTipos: 'Qual tipo de pizza deseja?\n1️⃣ Especiais\n2️⃣ Tradicionais',
+    confimacao: '1️⃣ Confimar\n2️⃣ Cancelar pedido',
     extraSanduba: 'Escolha abaixo o que deseja adicionar em seu sanduíche.',
     quantidade: 'Poderia me falar quantos desse lanche você deseja? EX: *1, 2, 3*',
     voltarMenu: 'Digite *"menu"* para voltar ao menu principal.',
@@ -78,6 +80,7 @@ function getEstadoIndividual(numeroContato) {
             resp8: 0,
             resp9: 0,
             resp10: 0,
+            resp0: 0,
             respx: 0,
             cliente: '',
             escolha: '',
@@ -158,7 +161,7 @@ client.on('qr', (qr) => {
 client.on('ready', () => {
     console.log('WhatsApp está pronto!');
     const grupo = "120363319684575824@g.us";
-    client.sendMessage(grupo, "[!] Estou online e operante");
+    client.sendMessage(grupo, "[‼️] Estou online e operante");
 });
 // Função para remover acentos de uma string
 function removerAcentos(str) {
@@ -278,6 +281,7 @@ async function obterExtrasDoLanche(numeroContato, message) {
 function resetarStatus(numeroContato) {
     //const numeroContato = message.from;
     const estado = getEstadoIndividual(numeroContato);
+    const carrinho = getCardapioIndividual(numeroContato);
     estado.resp1 = 0,
         estado.resp2 = 0,
         estado.resp3 = 0,
@@ -288,7 +292,19 @@ function resetarStatus(numeroContato) {
         estado.resp8 = 0,
         estado.resp9 = 0,
         estado.resp10 = 0,
-        estado.respx = 0
+        estado.respx = 0,
+        estado.cliente = '',
+        estado.escolha = '',
+        estado.conclusao = '',
+        estado.msg = '',
+        carrinho.contato = '',
+        carrinho.comprador = '',
+        carrinho.idPedido = '',
+        carrinho.produtos = {},
+        carrinho.extras = {},
+        carrinho.preco = '0',
+        carrinho.idProduto = 0
+    console.log("[!] Dados de " + numeroContato + " foram resetados")
 }
 
 client.on('message', async (message) => {
@@ -354,9 +370,9 @@ client.on('message', async (message) => {
                     }
                     // Adiciona detalhes de pagamento
                     mensagem += '\n*Pagamento*\n';
-                    mensagem += `subtotal                  *R$ ${carrinho.preco}*\n`;
-                    mensagem += `taxa de entrega      *R$ ${carrinho.taxaEntrega || '1,00'}*\n`;
-                    mensagem += `total                        *R$ ${carrinho.total + 1}*\n`;
+                    mensagem += `subtotal                 *R$* ${carrinho.preco}\n`;
+                    mensagem += `taxa de entrega    *R$* ${carrinho.taxaEntrega || '1,00'}\n`;
+                    mensagem += `total                        *R$* ${carrinho.total + 1}\n`;
 
                     // Envia a mensagem com os detalhes formatados
                     setTimeout(() => {
@@ -366,6 +382,9 @@ client.on('message', async (message) => {
                 case 'menu':
                     avaliarrespx(numeroContato, message);
                     break;
+                case '0':
+                    avaliarresp0(numeroContato, message);
+                    break
                 case '1':
                     avaliarresp1(numeroContato, message);
                     break;
@@ -445,6 +464,22 @@ client.on('message', async (message) => {
                         message.reply('Formato incorreto. Use: /teste X X X');
                     }
                     break;
+                    case '/gpedidos':
+                        if (parts.length === 2) {
+                            let param1 = parts[1];
+                            console.log(`[!] Id do grupo: param1=${param1}`);
+                    
+                            try {
+                                const mensagemRetorno = await atualizarIdGrupo(param1);
+                                message.reply(mensagemRetorno);
+                            } catch (error) {
+                                console.error('Erro ao obter o retorno:', error);
+                                message.reply(`Erro ao obter o retorno: ${error.message}`);
+                            }
+                        } else {
+                            message.reply('Formato incorreto. Use: /gpedidos [idgrupo]');
+                        }
+                        break;                    
                 default:
                     message.reply('Comando não reconhecido ou formato incorreto.');
                     break;
@@ -490,8 +525,10 @@ async function avaliarrespx(numeroContato, message) {
             break;
         case 2: // Extras do MISTO
             try {
-                const retorno = await pegarRetorno(numeroContato, client, 18, 1, null, estado, carrinho);
-                message.reply(retorno);
+                const retorno = await pegarRetorno(numeroContato, client, 33, null, 1, estado, carrinho);
+                const retorno1 = await pegarRetorno(numeroContato, client, 1, 1, null, estado, carrinho);// Nome do lanche
+                message.reply("*Extras disponíveis para seu* *" + retorno1 + "*\n\n" + retorno + "\n0️⃣ Voltar");
+                estado.resp0 = 1;
                 estado.resp1 = 5;
                 estado.resp2 = 3;
                 estado.resp3 = 2;
@@ -501,6 +538,17 @@ async function avaliarrespx(numeroContato, message) {
         default:
             // Lidar com estado desconhecido, se necessário
             break;
+    }
+}
+async function avaliarresp0(numeroContato, message) {
+    const estado = getEstadoIndividual(numeroContato);
+    const carrinho = getCardapioIndividual(numeroContato);
+    switch (estado.resp0) {
+        case 1: // Não quer nada, quer voltar ao cardapio com todos os item da loja
+            message.reply(respostas.maisAlgoPedido);
+            estado.resp1 = 1;
+            estado.resp2 = 1;
+            estado.resp3 = 1;
     }
 }
 async function avaliarresp1(numeroContato, message) {
@@ -526,10 +574,8 @@ async function avaliarresp1(numeroContato, message) {
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
                 message.reply("Perfeito, o produto " + retorno1 + " foi adicionado ao seu pedido.");
-
-
                 setTimeout(() => {
-                    message.reply(respostas.adicionais);
+                    client.sendMessage(numeroContato, respostas.adicionais);
                 }, 500);
                 estado.respx = 2;
                 estado.resp1 = 4;
@@ -541,20 +587,23 @@ async function avaliarresp1(numeroContato, message) {
         case 4: // Chamada do respx
             avaliarrespx(numeroContato, message);
             break
-        case 5: // 
+        case 5: // Adicionando o extra no carrinho
             try {
                 const retorno1 = await pegarRetorno(numeroContato, client, 23, 1, "1", estado, carrinho);// Valor do extra
                 const retorno2 = await pegarRetorno(numeroContato, client, 27, 1, 1, estado, carrinho);// Nome do extra
                 const retorno3 = await pegarRetorno(numeroContato, client, 1, 1, null, estado, carrinho);// Nome do lanche
-                console.log("valor do extra: " + retorno1);
-                console.log("Extra escolhido: " + retorno2);
-                console.log("Sanduiche escolhido: " + retorno3);
                 adicionarExtraNoCart(numeroContato, retorno2, 1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
-
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 2;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
             } catch (error) {
                 console.error('Erro ao obter o retorno:', error);
             }
+            break
+        case 6: // Confirmar o pedido e enviar No pv ou grupo 
+            client.sendMessage(numeroContato, "Pedido confirmado e enviado, basta aguardar. Qualquer atualização. Você será avisado aqui.")
             break
         default:
             // Lidar com estado desconhecido, se necessário
@@ -572,6 +621,49 @@ async function avaliarresp2(numeroContato, message) {
             await client.sendMessage(numeroContato, respostas.cardapiover);
             estado.respx = 3;
             break;
+        case 2: // Recusa de algum extra
+            message.reply(respostas.maisAlgoPedido);
+            estado.resp1 = 1;
+            estado.resp2 = 3;
+            break
+        case 3: // Manda o carrinho depois de recusar tudo
+            message.reply(respostas.verCarrinho);
+            // Obtenha o carrinho do contato
+            const carrinho = getCardapioIndividual(numeroContato);
+            // Inicialize a mensagem
+            let mensagem = 'Seu pedido                     xxxxxxx\n\n';
+            // Adicione detalhes do pedido
+            mensagem += `Pedido         (${Object.keys(carrinho.produtos).length} item no carrinho)\n`;
+            // Itera sobre os produtos e seus extras
+            for (const [idProduto, produto] of Object.entries(carrinho.produtos)) {
+                mensagem += `*${produto}*\n`;
+
+                // Verifica se há extras para o produto
+                if (carrinho.extras.hasOwnProperty(idProduto) && Object.keys(carrinho.extras[idProduto]).length > 0) {
+                    Object.entries(carrinho.extras[idProduto]).forEach(([extra, quantidade]) => {
+                        mensagem += `  *↳ ${extra}: ${quantidade}*\n`;
+                    });
+                } else {
+                    mensagem += `  *↳ Nenhum extra*\n`;
+                }
+            }
+            // Adiciona detalhes de pagamento
+            mensagem += '\n*Pagamento*\n';
+            mensagem += `subtotal                 *R$* ${carrinho.preco}\n`;
+            mensagem += `taxa de entrega    *R$* ${carrinho.taxaEntrega || '1,00'}\n`;
+            mensagem += `total                        *R$* ${carrinho.total + 1}\n`;
+
+            // Envia a mensagem com os detalhes formatados
+            setTimeout(() => {
+                client.sendMessage(numeroContato, mensagem);
+                client.sendMessage(numeroContato, respostas.confimacao);
+                estado.resp1 = 6;
+                estado.resp2 = 4;
+            }, 500);
+            break
+        case 4:
+            resetarStatus(numeroContato);
+            cl
         // Outros casos de estado...
         default:
             // Lidar com estado desconhecido, se necessário

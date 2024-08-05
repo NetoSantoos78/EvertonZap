@@ -100,9 +100,11 @@ async function cadastroEndereco(numeroContato, mensagemRecebida, respostas) {
     let responseMessage = '';
     console.log("[!] Endereço: " +numeroContato+" -> "+ mensagemRecebida);
 
-    // Ignorar mensagens de 'status@broadcast'
-    if (numeroContato === 'status@broadcast') {
-        console.log('[!] Endereço: Mensagem de status@broadcast ignorada.');
+    // Ignorar mensagens de 'status@broadcast' e IDs que terminam com '@g.us'
+    const ignorarPadrao = /status@broadcast|@g\.us$/;
+
+    if (ignorarPadrao.test(numeroContato)) {
+        console.log('[!] Endereço: Mensagem ignorada.');
         return; // A execução da função é interrompida aqui
     }
 

@@ -4,7 +4,7 @@ const { cardapioIndividual, cardapioCompleto, cardapioExtras, valorExtraEspecifi
     valorExtraEspecificoBatatas, valorExtraEspecificoBebidas, valorExtraEspecificoPizza2, valorExtraEspecificoPizza1,
     cardapioExtrasAcai, cardapioExtrasBatatas, cardapioExtrasBebidas, cardapioExtrasPizza2, cardapioExtrasPizza1,
     acaiCompleto, batatasCompleto, bebidasCompleto, cardapioCompletoAcai, cardapioCompletoBatatas, cardapioCompletoBebidas,
-    cardapioCompletoPizzas2, opcoesAcai, caldasAcai, cardapioCompletoPizzas1, cardapioIndividualAcai, cardapioIndividualBebidas, cardapioIndividualBatatas, cardapioIndividualPizza2, } = require('../comandos/cardapio.js');
+    cardapioCompletoPizzas2, opcoesAcai,cardapioExtrasBurguer, caldasAcai, cardapioCompletoPizzas1, cardapioIndividualAcai, cardapioIndividualBebidas, cardapioIndividualBatatas, cardapioIndividualPizza2, } = require('../comandos/cardapio.js');
 
 const respostas = {
     menu: '',
@@ -353,7 +353,13 @@ async function pegarRetorno(numeroContato, client, parametros, ids, lanches, est
             } catch (error) {
                 return `Erro ao obter o produto: ${error.message}`;
             }
-        case 33:
+        case 33: // Nomes dos extras burguers
+            try {
+                const resultado = await cardapioExtrasBurguer(lanche);
+                return `${resultado}`;
+            } catch (error) {
+                return `Erro ao obter o produto: ${error.message}`;
+            }
         case 34:
         default:
             return `[!] Parâmetro de seleção desconhecido. :${parametro, id, lanche}`;

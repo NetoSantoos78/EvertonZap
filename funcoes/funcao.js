@@ -1,55 +1,32 @@
-const { contatinho } = require('../index');
-console.log(contatinho+"|Das funções")
 const fs = require('fs');
-const numeroContato = contatinho;
-const jsonFile = './usuarios.json'; // Substitua pelo caminho do seu arquivo JSON
+const caminhoArquivoConfig = './config.json';
 
-
-function carregarJSON() {
+async function atualizarIdGrupo(idgrupo) {
     try {
-        const jsonString = fs.readFileSync(jsonFile, 'utf8');
-        return JSON.parse(jsonString);
-    } catch (error) {
-        console.error('Erro ao carregar o arquivo JSON:', error.message);
-        return {};
-    }
-}
+        // Passo 1: Ler o JSON do arquivo
+        const dados = await fs.promises.readFile(caminhoArquivoConfig, 'utf8');
+        const json = JSON.parse(dados);
 
-function salvarJSON(json) {
-    try {
-        fs.writeFileSync(jsonFile, JSON.stringify(json, null, 2));
-        console.log('JSON salvo com sucesso!');
-    } catch (error) {
-        console.error('Erro ao salvar o arquivo JSON:', error.message);
-    }
-}
+        // Passo 2: Atualizar o JSON
+        const novoIdGrupo = idgrupo; // Novo valor para idgrupo
+        const objetoIdGrupo = json.find(obj => obj.hasOwnProperty("idgrupo"));
 
-function fazerPergunta(pergunta) {
-    console.log(pergunta);
-    // Aqui você pode enviar a pergunta para o usuário através do WhatsApp
-}
-
-function lidarComResposta(resposta, pergunta, json) {
-    if (!json[numeroContato]) {
-        json[numeroContato] = {};
-    }
-    json[numeroContato][pergunta] = resposta;
-    salvarJSON(json);
-}
-
-function iniciarPerguntas() {
-    const json = carregarJSON();
-    const perguntas = [
-        'Qual é o seu nome?',
-        'Qual é o seu endereço?',
-        'Qual é o seu número de telefone?',
-        // Adicione mais perguntas conforme necessário
-    ];
-    perguntas.forEach(pergunta => {
-        if (!json[numeroContato] || !json[numeroContato][pergunta]) {
-            fazerPergunta(pergunta);
+        if (objetoIdGrupo) {
+            objetoIdGrupo.idgrupo = novoIdGrupo;
+        } else {
+            console.log("Campo 'idgrupo' não encontrado no JSON.");
+            return 'Campo \'idgrupo\' não encontrado no JSON.';
         }
-    });
+
+        // Passo 3: Salvar o JSON atualizado no arquivo
+        await fs.promises.writeFile(caminhoArquivoConfig, JSON.stringify(json, null, 2), 'utf8');
+        console.log('Arquivo salvo com sucesso!');
+        return 'ID do grupo atualizado com sucesso!';
+
+    } catch (err) {
+        console.error('Erro ao ler ou salvar o arquivo:', err);
+        return `Erro ao atualizar o ID do grupo: ${err.message}`;
+    }
 }
 
-module.exports = { carregarJSON, salvarJSON, fazerPergunta, lidarComResposta, iniciarPerguntas };
+module.exports = { atualizarIdGrupo };

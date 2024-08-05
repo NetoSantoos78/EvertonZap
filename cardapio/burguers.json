@@ -3,7 +3,7 @@
         "produto": "Misto",
         "ingredientes": ["Pão", "Queijo", "Presunto"],
         "extras": ["Queijo", "Presunto"],
-        "extrasPrecos": ["1.75", "22"],
+        "extrasPrecos": ["1.75", "1"],
         "valor": "4.50"
     },
     "2": {
