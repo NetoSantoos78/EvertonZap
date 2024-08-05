@@ -66,7 +66,7 @@
         "produto": "Especial Burguer Top 10",
         "ingredientes": ["Pão", "2 Carnes", "Bacon", "Queijo", "Presunto", "Ovo", "Frango", "Tomate", "Alface", "Milho", "Batata Palha"],
         "extras": ["Carne", "Bacon", "Queijo", "Presunto", "Ovo", "Frango", "Tomate", "Alface", "Milho", "Batata Palha"],
-        "extrasPrecos": ["100", "100", "100", "100", "100", "100", "100", "100", "100", "100", "100"],
+        "extrasPrecos": ["100", "100", "100", "100", "100", "100", "100", "100", "100", "100"],
         "valor": "18.00"
     }
 }

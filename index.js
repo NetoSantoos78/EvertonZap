@@ -7,7 +7,7 @@ const puppeteer = require('puppeteer');
 const { Client, MessageMedia, Poll, LocalAuth } = require('whatsapp-web.js');
 const { criarPagamento, criarPagamentoRenovacao } = require('./criarCompra.js');
 const { dataFormatada, horaFormatada } = require('./funcoes/pegardata.js');
-const { atualizarIdGrupo } = require('./funcoes/funcao.js');
+const { atualizarIdGrupo, obterIdGrupo } = require('./funcoes/funcao.js');
 const { cardapioIndividual, cardapioCompleto, cardapioExtras, valorExtraEspecifico, sandubaCompleto, nomeExtraEspecifico,
     pizzasCompleto1, pizzasCompleto2, cardapioIndividualPizza1, nomeExtraEspecificoAcai, nomeExtraEspecificoBatatas,
     nomeExtraEspecificBebidas, nomeExtraEspecificoPizza2, nomeExtraEspecificoPizza1, valorExtraEspecificoAcai,
@@ -40,6 +40,7 @@ const respostas = {
     extraSanduba: 'Escolha abaixo o que deseja adicionar em seu sanduíche.',
     quantidade: 'Poderia me falar quantos desse lanche você deseja? EX: *1, 2, 3*',
     voltarMenu: 'Digite *"menu"* para voltar ao menu principal.',
+    cancelar: `Seu pedido foi cancelado. É uma pena isto, mas qualquer coisa só chamar que estaremos sempre disponíveis. Basta apenas enviar *"menu"*`,
     verCarrinho: 'Tudo certo, por favor, confira seu pedido e confirme se está tudo certo antes de confirmá-lo.',
     nomeperfil: '',
     carrinho: '',
@@ -80,6 +81,10 @@ function getEstadoIndividual(numeroContato) {
             resp8: 0,
             resp9: 0,
             resp10: 0,
+            resp11: 0,
+            resp12: 0,
+            resp13: 0,
+            resp14: 0,
             resp0: 0,
             respx: 0,
             cliente: '',
@@ -206,7 +211,6 @@ function adicionarIdPedidoAoCarrinho(numeroContato) {
     const carrinho = getCardapioIndividual(numeroContato);
     const codigoAleatorio = gerarCodigo();
     carrinho.idPedido = codigoAleatorio;
-
 }
 // Add os produtos
 function adicionarProdutoNoCart(numeroContato, lanche) {
@@ -395,13 +399,28 @@ client.on('message', async (message) => {
                     avaliarresp3(numeroContato, message);
                     break;
                 case '4':
-                    try {
-                        const retorno = await pegarRetorno(numeroContato, client, 18, 9, null, estado, carrinho);
-                        //console.log(retorno);
-                        message.reply(retorno);
-                    } catch (error) {
-                        console.error('Erro ao obter o retorno:', error);
-                    }
+                    avaliarresp4(numeroContato, message);
+                    break;
+                case '5':
+                    avaliarresp5(numeroContato, message);
+                    break;
+                case '6':
+                    avaliarresp6(numeroContato, message);
+                    break;
+                case '7':
+                    avaliarresp7(numeroContato, message);
+                    break;
+                case '8':
+                    avaliarresp8(numeroContato, message);
+                    break;
+                case '9':
+                    avaliarresp9(numeroContato, message);
+                    break;
+                case '10':
+                    avaliarresp10(numeroContato, message);
+                    break;
+                case '11':
+                    avaliarresp11(numeroContato, message);
                     break;
                 case '/reload':
                     require('child_process').exec('pm2 restart Everton', (err, stdout, stderr) => {
@@ -464,22 +483,22 @@ client.on('message', async (message) => {
                         message.reply('Formato incorreto. Use: /teste X X X');
                     }
                     break;
-                    case '/gpedidos':
-                        if (parts.length === 2) {
-                            let param1 = parts[1];
-                            console.log(`[!] Id do grupo: param1=${param1}`);
-                    
-                            try {
-                                const mensagemRetorno = await atualizarIdGrupo(param1);
-                                message.reply(mensagemRetorno);
-                            } catch (error) {
-                                console.error('Erro ao obter o retorno:', error);
-                                message.reply(`Erro ao obter o retorno: ${error.message}`);
-                            }
-                        } else {
-                            message.reply('Formato incorreto. Use: /gpedidos [idgrupo]');
+                case '/gpedidos':
+                    if (parts.length === 2) {
+                        let param1 = parts[1];
+                        console.log(`[!] Id do grupo: param1=${param1}`);
+
+                        try {
+                            const mensagemRetorno = await atualizarIdGrupo(param1);
+                            message.reply(mensagemRetorno);
+                        } catch (error) {
+                            console.error('Erro ao obter o retorno:', error);
+                            message.reply(`Erro ao obter o retorno: ${error.message}`);
                         }
-                        break;                    
+                    } else {
+                        message.reply('Formato incorreto. Use: /gpedidos [idgrupo]');
+                    }
+                    break;
                 default:
                     message.reply('Comando não reconhecido ou formato incorreto.');
                     break;
@@ -495,6 +514,11 @@ async function avaliarmenu(numeroContato, message, mensagemUser) {
             console.log("[!] " + numeroContato + " -> Endereço cadastrado")
             break;
         case 'nao':
+            const ignorarPadrao = /status@broadcast|@g\.us$/;
+            if (ignorarPadrao.test(numeroContato)) {
+                return; // A execução da função é interrompida aqui
+            }
+
             console.log("[!] " + numeroContato + " -> Endereço não cadastrado")
             const respostaCadastro = await cadastroEndereco(numeroContato, mensagemUser, respostas);
             if (respostaCadastro) {
@@ -519,6 +543,17 @@ async function avaliarrespx(numeroContato, message) {
                 const retorno = await pegarRetorno(numeroContato, client, 13, null, null, estado, carrinho);
                 message.reply(retorno);
                 estado.resp1 = 3;
+                estado.resp2 = 6;
+                estado.resp3 = 3;
+                estado.resp4 = 2;
+                estado.resp5 = 2;
+                estado.resp6 = 3;
+                estado.resp7 = 1;
+                estado.resp8 = 1;
+                estado.resp9 = 1;
+                estado.resp10 = 1;
+                estado.resp11 = 1;
+
             } catch (error) {
                 console.error('Erro ao obter o retorno:', error);
             }
@@ -530,11 +565,180 @@ async function avaliarrespx(numeroContato, message) {
                 message.reply("*Extras disponíveis para seu* *" + retorno1 + "*\n\n" + retorno + "\n0️⃣ Voltar");
                 estado.resp0 = 1;
                 estado.resp1 = 5;
-                estado.resp2 = 3;
+                estado.resp2 = 5;
                 estado.resp3 = 2;
             } catch (error) {
                 console.error('Erro ao obter o retorno:', error);
+                message.reply("Algo deu errado!! Estou avisando ao meu chefe o erro. Desculpa")
             }
+            break
+        case 3: // Extras do Hamburguer
+            try {
+                const retorno = await pegarRetorno(numeroContato, client, 33, null, 2, estado, carrinho);
+                const retorno1 = await pegarRetorno(numeroContato, client, 1, 2, null, estado, carrinho);// Nome do lanche
+                message.reply("*Extras disponíveis para seu* *" + retorno1 + "*\n\n" + retorno + "\n0️⃣ Voltar");
+                estado.resp0 = 1; // Menu inicial //
+                estado.resp1 = 7; // Carne
+                estado.resp2 = 7; // Tomate
+                estado.resp3 = 2; // Alface
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+                message.reply("Algo deu errado!! Estou avisando ao meu chefe o erro. Desculpa")
+            }
+            break
+        case 4: // Extras do X-Burguer
+            try {
+                const retorno = await pegarRetorno(numeroContato, client, 33, null, 3, estado, carrinho);
+                const retorno1 = await pegarRetorno(numeroContato, client, 1, 3, null, estado, carrinho);// Nome do lanche
+                message.reply("*Extras disponíveis para seu* *" + retorno1 + "*\n\n" + retorno + "\n0️⃣ Voltar");
+                estado.resp0 = 1; // Menu inicial //
+                estado.resp1 = 8; // Carne
+                estado.resp2 = 8; // Queijo
+                estado.resp3 = 4; // Presunto
+                estado.resp4 = 1; // Tomate
+                estado.resp5 = 1; // Alface
+
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+                message.reply("Algo deu errado!! Estou avisando ao meu chefe o erro. Desculpa")
+            }
+            break
+        case 5: // Extras do X-Eggs
+            try {
+                const retorno = await pegarRetorno(numeroContato, client, 33, null, 4, estado, carrinho);
+                const retorno1 = await pegarRetorno(numeroContato, client, 1, 4, null, estado, carrinho);// Nome do lanche
+                message.reply("*Extras disponíveis para seu* *" + retorno1 + "*\n\n" + retorno + "\n0️⃣ Voltar");
+                estado.resp0 = 1; // Menu inicial //
+                estado.resp1 = 9; // Carne
+                estado.resp2 = 9; // Ovo
+                estado.resp3 = 5; // Queijo
+                estado.resp4 = 3; // Presunto
+                estado.resp5 = 1; // Tomate
+                estado.resp6 = 1; // Alface
+
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+                message.reply("Algo deu errado!! Estou avisando ao meu chefe o erro. Desculpa")
+            }
+            break
+        case 6: // Extras do X-Calabresa
+            try {
+                const retorno = await pegarRetorno(numeroContato, client, 33, null, 5, estado, carrinho);
+                const retorno1 = await pegarRetorno(numeroContato, client, 1, 5, null, estado, carrinho);// Nome do lanche
+                message.reply("*Extras disponíveis para seu* *" + retorno1 + "*\n\n" + retorno + "\n0️⃣ Voltar");
+                estado.resp0 = 1; // Menu inicial //
+                estado.resp1 = 10; // Carne
+                estado.resp2 = 10; // Ovo
+                estado.resp3 = 6; // Queijo
+                estado.resp4 = 4; // Presunto
+                estado.resp5 = 3; // Tomate
+                estado.resp6 = 2; // Alface
+
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+                message.reply("Algo deu errado!! Estou avisando ao meu chefe o erro. Desculpa")
+            }
+            break
+        case 7: // Extras do X-Frango
+            try {
+                const retorno = await pegarRetorno(numeroContato, client, 33, null, 6, estado, carrinho);
+                const retorno1 = await pegarRetorno(numeroContato, client, 1, 6, null, estado, carrinho);// Nome do lanche
+                message.reply("*Extras disponíveis para seu* *" + retorno1 + "*\n\n" + retorno + "\n0️⃣ Voltar");
+                estado.resp0 = 1; // Menu inicial //
+                estado.resp1 = 11; // Carne
+                estado.resp2 = 11; // Ovo
+                estado.resp3 = 7; // Queijo
+                estado.resp4 = 5; // Presunto
+                estado.resp5 = 4; // Tomate
+                estado.resp6 = 4; // Alface
+
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+                message.reply("Algo deu errado!! Estou avisando ao meu chefe o erro. Desculpa")
+            }
+            break
+        case 8: // Extras do Burguer Especial
+            try {
+                const retorno = await pegarRetorno(numeroContato, client, 33, null, 7, estado, carrinho);
+                const retorno1 = await pegarRetorno(numeroContato, client, 1, 7, null, estado, carrinho);// Nome do lanche
+                message.reply("*Extras disponíveis para seu* *" + retorno1 + "*\n\n" + retorno + "\n0️⃣ Voltar");
+                estado.resp0 = 1; // Menu inicial //
+                estado.resp1 = 12; // Carne
+                estado.resp2 = 12; // Ovo
+                estado.resp3 = 8; // Queijo
+                estado.resp4 = 6; // Presunto
+                estado.resp5 = 5; // Tomate
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+                message.reply("Algo deu errado!! Estou avisando ao meu chefe o erro. Desculpa")
+            }
+            break
+        case 9: // Extras do X-Eggs Bacon
+            try {
+                const retorno = await pegarRetorno(numeroContato, client, 33, null, 8, estado, carrinho);
+                const retorno1 = await pegarRetorno(numeroContato, client, 1, 8, null, estado, carrinho);// Nome do lanche
+                message.reply("*Extras disponíveis para seu* *" + retorno1 + "*\n\n" + retorno + "\n0️⃣ Voltar");
+                estado.resp0 = 1; // Menu inicial //
+                estado.resp1 = 13; // Carne
+                estado.resp2 = 13; // Ovo
+                estado.resp3 = 9; // Queijo
+                estado.resp4 = 7; // Presunto
+                estado.resp5 = 6; // Tomate
+                estado.resp6 = 5;
+                estado.resp7 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+                message.reply("Algo deu errado!! Estou avisando ao meu chefe o erro. Desculpa")
+            }
+            break
+        case 10: // Extras do X-Tudo
+            try {
+                const retorno = await pegarRetorno(numeroContato, client, 33, null, 9, estado, carrinho);
+                const retorno1 = await pegarRetorno(numeroContato, client, 1, 9, null, estado, carrinho);// Nome do lanche
+                message.reply("*Extras disponíveis para seu* *" + retorno1 + "*\n\n" + retorno + "\n0️⃣ Voltar");
+                estado.resp0 = 1; // Menu inicial //
+                estado.resp1 = 14; // Carne
+                estado.resp2 = 14; // Calabresa
+                estado.resp3 = 10; // Bacon
+                estado.resp4 = 8; // Queijo
+                estado.resp5 = 7; // Presunto
+                estado.resp6 = 6; // Ovo
+                estado.resp7 = 3; // Frango
+                estado.resp8 = 3; // Tomate
+                estado.resp9 = 2; // Alface
+                estado.resp10 = 2; // Milho
+                estado.resp11 = 2; // Batata Palha
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+                message.reply("Algo deu errado!! Estou avisando ao meu chefe o erro. Desculpa")
+            }
+            break
+        case 11: // Extras do Especial Burguer Top 10
+            try {
+                const retorno = await pegarRetorno(numeroContato, client, 33, null, 10, estado, carrinho);
+                const retorno1 = await pegarRetorno(numeroContato, client, 1, 10, null, estado, carrinho);// Nome do lanche
+                message.reply("*Extras disponíveis para seu* *" + retorno1 + "*\n\n" + retorno + "\n0️⃣ Voltar");
+                estado.resp0 = 1; // Menu inicial //
+                estado.resp1 = 15; // Carne
+                estado.resp2 = 15; // Calabresa
+                estado.resp3 = 11; // Bacon
+                estado.resp4 = 9; // Queijo
+                estado.resp5 = 8; // Presunto
+                estado.resp6 = 7; // Ovo
+                estado.resp7 = 4; // Frango
+                estado.resp8 = 3; // Tomate
+                estado.resp9 = 3; // Alface
+                estado.resp10 = 3; // Milho
+                estado.resp11 = 3; // Batata Palha
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+                message.reply("Algo deu errado!! Estou avisando ao meu chefe o erro. Desculpa")
+            }
+            break
+        case 999:
+            message.reply("Repassei seu atendimento para alguém, só aguardar.");
+            resetarStatus(numeroContato);
+            break
         default:
             // Lidar com estado desconhecido, se necessário
             break;
@@ -544,11 +748,18 @@ async function avaliarresp0(numeroContato, message) {
     const estado = getEstadoIndividual(numeroContato);
     const carrinho = getCardapioIndividual(numeroContato);
     switch (estado.resp0) {
+        case 0:
+            avaliarrespx(numeroContato, message);
         case 1: // Não quer nada, quer voltar ao cardapio com todos os item da loja
             message.reply(respostas.maisAlgoPedido);
             estado.resp1 = 1;
             estado.resp2 = 1;
             estado.resp3 = 1;
+            break
+        case 999:
+            message.reply("Repassei seu atendimento para alguém, só aguardar.");
+            resetarStatus(numeroContato);
+            break
     }
 }
 async function avaliarresp1(numeroContato, message) {
@@ -556,8 +767,7 @@ async function avaliarresp1(numeroContato, message) {
     const carrinho = getCardapioIndividual(numeroContato);
     switch (estado.resp1) {
         case 0: // Manda o menu do cardápio
-            await client.sendMessage(numeroContato, respostas.menu);
-            estado.menu = 1;
+            avaliarrespx(numeroContato, message);
             break;
         case 1: // Menu do cardapio de produtos existente
             estado.respx = 1;
@@ -573,6 +783,7 @@ async function avaliarresp1(numeroContato, message) {
                 const retorno2 = await pegarRetorno(numeroContato, client, 32, 1, 1, estado, carrinho);// Valor do lanche
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
+                adicionarIdPedidoAoCarrinho(numeroContato);
                 message.reply("Perfeito, o produto " + retorno1 + " foi adicionado ao seu pedido.");
                 setTimeout(() => {
                     client.sendMessage(numeroContato, respostas.adicionais);
@@ -587,7 +798,7 @@ async function avaliarresp1(numeroContato, message) {
         case 4: // Chamada do respx
             avaliarrespx(numeroContato, message);
             break
-        case 5: // Adicionando o extra no carrinho
+        case 5: // Adicionando o extra no carrinho (Misto)
             try {
                 const retorno1 = await pegarRetorno(numeroContato, client, 23, 1, "1", estado, carrinho);// Valor do extra
                 const retorno2 = await pegarRetorno(numeroContato, client, 27, 1, 1, estado, carrinho);// Nome do extra
@@ -603,21 +814,187 @@ async function avaliarresp1(numeroContato, message) {
             }
             break
         case 6: // Confirmar o pedido e enviar No pv ou grupo 
-            client.sendMessage(numeroContato, "Pedido confirmado e enviado, basta aguardar. Qualquer atualização. Você será avisado aqui.")
+            try {
+                const carrinho = getCardapioIndividual(numeroContato);
+                // Inicialize a mensagem
+                let mensagem = '┌─── Pedido recebido ───┐\n\n';
+                // Adicione detalhes do pedido
+                mensagem += `ID do Pedido: ${carrinho.idPedido}\n`
+                mensagem += `Pedido         (${Object.keys(carrinho.produtos).length} item no carrinho)\n`;
+                // Itera sobre os produtos e seus extras
+                for (const [idProduto, produto] of Object.entries(carrinho.produtos)) {
+                    mensagem += `*${produto}*\n`;
+
+                    // Verifica se há extras para o produto
+                    if (carrinho.extras.hasOwnProperty(idProduto) && Object.keys(carrinho.extras[idProduto]).length > 0) {
+                        Object.entries(carrinho.extras[idProduto]).forEach(([extra, quantidade]) => {
+                            mensagem += `  *↳ ${extra}: ${quantidade}*\n`;
+                        });
+                    } else {
+                        mensagem += `  *↳ Nenhum extra*\n`;
+                    }
+                }
+                mensagem += `└─── Pedido recebido ───┘`
+                const idGrupo = await obterIdGrupo();
+                //.log('ID do grupo atual:', idGrupo);
+                client.sendMessage(idGrupo, mensagem)
+                client.sendMessage(numeroContato, "Pedido confirmado e enviado, basta aguardar. Qualquer atualização. Você será avisado aqui.");
+            } catch (error) {
+                console.error('Erro ao obter o ID do grupo:', error);
+            }
+            break
+        case 7: // Adicionando o extra carne (Hamburguer)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 1, 2, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 1, 2, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 2, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 3;
+                estado.resp1 = 4; // Chamar RESPX quando digitar->Mais algo no hamburguer
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 8: // Adicionando o extra carne (X-Burguer)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 1, 3, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 1, 3, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 3, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 4;
+                estado.resp1 = 4; // Chamar RESPX quando digitar->Mais algo no hamburguer
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 9: // Adicionando o extra carne (X-Eggs)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 1, 4, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 1, 4, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 4, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 5;
+                estado.resp1 = 4; // Chamar RESPX quando digitar->Mais algo no hamburguer
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 10: // Adicionando o extra carne (X-Calabresa)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 1, 5, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 1, 5, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 5, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 6;
+                estado.resp1 = 4; // Chamar RESPX quando digitar->Mais algo no hamburguer
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 11: // Adicionando o extra carne (X-Frango)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 1, 6, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 1, 6, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 6, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 7;
+                estado.resp1 = 4; // Chamar RESPX quando digitar->Mais algo no hamburguer
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 12: // Adicionando o extra carne (Burguer Especial)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 1, 7, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 1, 7, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 7, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 8;
+                estado.resp1 = 4; // Chamar RESPX quando digitar->Mais algo no hamburguer
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 13: // Adicionando o extra carne (X-Eggs Bacon)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 1, 8, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 1, 8, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 8, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 9;
+                estado.resp1 = 4; // Chamar RESPX quando digitar->Mais algo no hamburguer
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 14: // Adicionando o extra carne (X-Tudo)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 1, 9, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 1, 9, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 9, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 10;
+                estado.resp1 = 4; // Chamar RESPX quando digitar->Mais algo no hamburguer
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 15: // Adicionando o extra carne (Especial Burguer Top 10)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 1, 10, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 1, 10, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 10, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 11;
+                estado.resp1 = 4; // Chamar RESPX quando digitar->Mais algo no hamburguer
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 999:
+            message.reply("Repassei seu atendimento para alguém, só aguardar.");
+            resetarStatus(numeroContato);
             break
         default:
             // Lidar com estado desconhecido, se necessário
             break;
     }
 }
-
 async function avaliarresp2(numeroContato, message) {
     const estado = getEstadoIndividual(numeroContato);
+    const carrinho = getCardapioIndividual(numeroContato);
     switch (estado.resp2) {
-        case 0: // Manda o menu do cardápio
-            await client.sendMessage(numeroContato, respostas.menu);
-            break;
-        case 1: // Manda o cardapio de leitura para os produtos da lanchonete
+        case 0:
+            avaliarrespx(numeroContato, message);
+            break
+        case 1: // Manda o cardápio de leitura para os produtos da lanchonete
             await client.sendMessage(numeroContato, respostas.cardapiover);
             estado.respx = 3;
             break;
@@ -625,20 +1002,13 @@ async function avaliarresp2(numeroContato, message) {
             message.reply(respostas.maisAlgoPedido);
             estado.resp1 = 1;
             estado.resp2 = 3;
-            break
+            break;
         case 3: // Manda o carrinho depois de recusar tudo
             message.reply(respostas.verCarrinho);
-            // Obtenha o carrinho do contato
-            const carrinho = getCardapioIndividual(numeroContato);
-            // Inicialize a mensagem
-            let mensagem = 'Seu pedido                     xxxxxxx\n\n';
-            // Adicione detalhes do pedido
+            let mensagem = `Seu pedido                     ${carrinho.idPedido}\n\n`;
             mensagem += `Pedido         (${Object.keys(carrinho.produtos).length} item no carrinho)\n`;
-            // Itera sobre os produtos e seus extras
             for (const [idProduto, produto] of Object.entries(carrinho.produtos)) {
                 mensagem += `*${produto}*\n`;
-
-                // Verifica se há extras para o produto
                 if (carrinho.extras.hasOwnProperty(idProduto) && Object.keys(carrinho.extras[idProduto]).length > 0) {
                     Object.entries(carrinho.extras[idProduto]).forEach(([extra, quantidade]) => {
                         mensagem += `  *↳ ${extra}: ${quantidade}*\n`;
@@ -647,24 +1017,193 @@ async function avaliarresp2(numeroContato, message) {
                     mensagem += `  *↳ Nenhum extra*\n`;
                 }
             }
-            // Adiciona detalhes de pagamento
             mensagem += '\n*Pagamento*\n';
             mensagem += `subtotal                 *R$* ${carrinho.preco}\n`;
             mensagem += `taxa de entrega    *R$* ${carrinho.taxaEntrega || '1,00'}\n`;
             mensagem += `total                        *R$* ${carrinho.total + 1}\n`;
-
-            // Envia a mensagem com os detalhes formatados
             setTimeout(() => {
                 client.sendMessage(numeroContato, mensagem);
                 client.sendMessage(numeroContato, respostas.confimacao);
                 estado.resp1 = 6;
                 estado.resp2 = 4;
-            }, 500);
-            break
-        case 4:
+            }, 1000);
+            break;
+        case 4: // Cancelamento do pedido
+            message.reply(respostas.cancelar);
             resetarStatus(numeroContato);
-            cl
-        // Outros casos de estado...
+            break;
+        case 5: // Presunto como extra do misto
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 2, 1, estado, carrinho); // Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 2, 1, estado, carrinho); // Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 1, null, estado, carrinho); // Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`);
+                estado.respx = 2;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break;
+        case 6: // Pegar o Hamburguer na lista
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 1, 2, null, estado, carrinho); // Nome do lanche
+                const retorno2 = await pegarRetorno(numeroContato, client, 32, 1, 2, estado, carrinho); // Valor do lanche
+                adicionarProdutoNoCart(numeroContato, retorno1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
+                adicionarIdPedidoAoCarrinho(numeroContato);
+                message.reply(`Perfeito, o produto ${retorno1} foi adicionado ao seu pedido.`);
+                setTimeout(() => {
+                    client.sendMessage(numeroContato, respostas.adicionais);
+                }, 500);
+                estado.respx = 3;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break;
+        case 7: // Adicionando o extra tomate (Hamburguer)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 2, 2, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 2, 2, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 2, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 3;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 8: // Adicionando o extra Queijo (X-Burguer)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 2, 3, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 2, 3, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 3, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 4;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 9: // Adicionando o extra Ovo (X-Eggs)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 2, 4, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 2, 4, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 3, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 5;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 10: // Adicionando o extra Calabresa (X-Calabresa)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 2, 5, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 2, 5, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 5, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 6;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 11: // Adicionando o extra Calabresa (X-Frango)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 2, 6, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 2, 6, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 6, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 7;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 12: // Adicionando o extra Calabresa (Burguer Especial)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 2, 7, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 2, 7, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 7, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 8;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 13: // Adicionando o extra Calabresa (X-Eggs Bacon)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 2, 8, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 2, 8, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 8, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 9;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 14: // Adicionando o extra Calabresa (X-Tudo)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 2, 9, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 2, 9, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 9, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 10;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 15: // Adicionando o extra Calabresa (Especial Burguer Top 10)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 2, 10, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 2, 10, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 10, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 11;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 999:
+            message.reply("Repassei seu atendimento para alguém, só aguardar.");
+            resetarStatus(numeroContato);
+            break
         default:
             // Lidar com estado desconhecido, se necessário
             break;
@@ -673,14 +1212,912 @@ async function avaliarresp2(numeroContato, message) {
 
 async function avaliarresp3(numeroContato, message) {
     const estado = getEstadoIndividual(numeroContato);
-    switch (estado.resp2) {
+    const carrinho = getCardapioIndividual(numeroContato);
+    switch (estado.resp3) {
         case 0: // Manda o menu do cardápio
-            await client.sendMessage(numeroContato, respostas.menu);
+            avaliarrespx(numeroContato, message);
             break;
         case 1: // Mandando o atendimento ao cliente
+            const propriedades = ['resp1', 'resp2', 'resp4', 'resp5', 'resp6', 'resp7', 'resp8', 'resp9', 'resp10'];
+            propriedades.forEach(prop => {
+                estado[prop] = 999;
+            });
             await client.sendMessage(numeroContato, respostas.atendimento);
             break;
-        // Outros casos de estado...
+        case 2: // Alface do hamburguer
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 3, 2, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 3, 2, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 3, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 3;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 3: // Pegar o X-Burguer na lista
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 1, 3, null, estado, carrinho); // Nome do lanche
+                const retorno2 = await pegarRetorno(numeroContato, client, 32, 1, 3, estado, carrinho); // Valor do lanche
+                adicionarProdutoNoCart(numeroContato, retorno1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
+                adicionarIdPedidoAoCarrinho(numeroContato);
+                message.reply(`Perfeito, o produto ${retorno1} foi adicionado ao seu pedido.`);
+                setTimeout(() => {
+                    client.sendMessage(numeroContato, respostas.adicionais);
+                }, 500);
+                estado.respx = 4;
+                estado.resp1 = 4; // chamar o respx
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break;
+        case 4: // Adicionando o extra Presunto (X-Burguer)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 3, 3, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 3, 3, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 3, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 4;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 5: // Adicionando o extra Queijo (X-eggs)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 3, 4, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 3, 4, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 3, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 5;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 6: // Adicionando o extra Queijo (X-Calabresa)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 3, 5, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 3, 5, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 3, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 6;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 7: // Adicionando o extra Queijo (X-Frango)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 3, 6, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 3, 6, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 6, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 7;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 8: // Adicionando o extra Queijo (Burguer Especial)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 3, 7, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 3, 7, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 7, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 8;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 9: // Adicionando o extra Queijo (X-Eggs Bacon)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 3, 8, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 3, 8, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 8, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 9;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 10: // Adicionando o extra Queijo (X-Tudo)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 3, 9, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 3, 9, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 9, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 10;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 11: // Adicionando o extra Queijo (Especial Burguer Top 10)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 3, 10, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 3, 10, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 10, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 11;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 999:
+            message.reply("Repassei seu atendimento para alguém, só aguardar.");
+            resetarStatus(numeroContato);
+            break
+        default:
+            // Lidar com estado desconhecido, se necessário
+            break;
+    }
+}
+async function avaliarresp4(numeroContato, message) {
+    const estado = getEstadoIndividual(numeroContato);
+    const carrinho = getCardapioIndividual(numeroContato);
+    switch (estado.resp4) {
+        case 0: // Manda o menu do cardápio
+            avaliarrespx(numeroContato, message);
+            break;
+        case 1: // Mandando o atendimento ao cliente
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 4, 3, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 4, 3, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 4, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 4;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 2: // Pegar o X-Eggs na lista
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 1, 4, null, estado, carrinho); // Nome do lanche
+                const retorno2 = await pegarRetorno(numeroContato, client, 32, 1, 4, estado, carrinho); // Valor do lanche
+                adicionarProdutoNoCart(numeroContato, retorno1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
+                adicionarIdPedidoAoCarrinho(numeroContato);
+                message.reply(`Perfeito, o produto ${retorno1} foi adicionado ao seu pedido.`);
+                setTimeout(() => {
+                    client.sendMessage(numeroContato, respostas.adicionais);
+                }, 500);
+                estado.respx = 5;
+                estado.resp1 = 4; // chamar o respx
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 3: // Mandando o atendimento ao cliente
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 4, 4, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 4, 4, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 4, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 5;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 4: // Adicionando o extra Presunto (X-Calabresa)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 4, 5, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 4, 5, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 5, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 6;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 5: // Adicionando o extra Presunto (X-Frango)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 4, 6, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 4, 6, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 6, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 7;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 6: // Adicionando o extra Presunto (Burguer Especial)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 4, 7, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 4, 7, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 7, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 8;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 7: // Adicionando o extra Presunto (X-Eggs Bacon)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 4, 8, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 4, 8, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 8, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 9;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 8: // Adicionando o extra Presunto (X-Tudo)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 4, 9, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 4, 9, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 9, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 10;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 9: // Adicionando o extra Presunto (Especial Burguer Top 10)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 4, 10, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 4, 10, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 10, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 11;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 999:
+            message.reply("Repassei seu atendimento para alguém, só aguardar.");
+            resetarStatus(numeroContato);
+            break
+        default:
+            // Lidar com estado desconhecido, se necessário
+            break;
+    }
+}
+async function avaliarresp5(numeroContato, message) {
+    const estado = getEstadoIndividual(numeroContato);
+    const carrinho = getCardapioIndividual(numeroContato);
+    switch (estado.resp5) {
+        case 0: // Manda o menu do cardápio
+            avaliarrespx(numeroContato, message);
+            break;
+        case 1: // Adicionando o extra Tomate (X-Eggs)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 5, 4, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 5, 4, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 4, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 5;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 2: // Pegar o X-Calabresa na lista
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 1, 5, null, estado, carrinho); // Nome do lanche
+                const retorno2 = await pegarRetorno(numeroContato, client, 32, 1, 5, estado, carrinho); // Valor do lanche
+                adicionarProdutoNoCart(numeroContato, retorno1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
+                adicionarIdPedidoAoCarrinho(numeroContato);
+                message.reply(`Perfeito, o produto ${retorno1} foi adicionado ao seu pedido.`);
+                setTimeout(() => {
+                    client.sendMessage(numeroContato, respostas.adicionais);
+                }, 500);
+                estado.respx = 6;
+                estado.resp1 = 4; // chamar o respx
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 3: // Adicionando o extra Presunto (X-Calabresa)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 5, 5, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 5, 5, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 5, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 6;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 4: // Adicionando o extra Presunto (X-Frango)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 5, 6, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 5, 6, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 6, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 7;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 5: // Adicionando o extra Presunto (Burguer Especial)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 5, 7, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 5, 7, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 7, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 8;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 6: // Adicionando o extra Presunto (X-Eggs Bacon)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 5, 8, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 5, 8, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 8, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 9;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 7: // Adicionando o extra Presunto (X-Tudo)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 5, 9, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 5, 9, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 9, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 10;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 8: // Adicionando o extra Presunto (Especial Burguer Top 10)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 5, 10, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 5, 10, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 10, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 11;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 999:
+            message.reply("Repassei seu atendimento para alguém, só aguardar.");
+            resetarStatus(numeroContato);
+            break
+        default:
+            // Lidar com estado desconhecido, se necessário
+            break;
+    }
+}
+async function avaliarresp6(numeroContato, message) {
+    const estado = getEstadoIndividual(numeroContato);
+    const carrinho = getCardapioIndividual(numeroContato);
+    switch (estado.resp6) {
+        case 0: // Manda o menu do cardápio
+            avaliarrespx(numeroContato, message);
+            break;
+        case 1: // Adicionando o extra Alface (X-Eggs)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 6, 4, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 6, 4, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 4, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 5;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 2: // Adicionando o extra Alface (X-Calabresa)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 6, 5, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 6, 5, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 5, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 6;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 3: // Pegar o X-Frango na lista
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 1, 6, null, estado, carrinho); // Nome do lanche
+                const retorno2 = await pegarRetorno(numeroContato, client, 32, 1, 6, estado, carrinho); // Valor do lanche
+                adicionarProdutoNoCart(numeroContato, retorno1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
+                adicionarIdPedidoAoCarrinho(numeroContato);
+                message.reply(`Perfeito, o produto ${retorno1} foi adicionado ao seu pedido.`);
+                setTimeout(() => {
+                    client.sendMessage(numeroContato, respostas.adicionais);
+                }, 500);
+                estado.respx = 6;
+                estado.resp1 = 4; // chamar o respx
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 4: // Adicionando o extra Alface (X-Frango)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 6, 6, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 6, 6, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 6, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 7;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 5: // Adicionando o extra Alface (X-Eggs Bacon)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 6, 8, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 6, 8, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 8, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 9;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 6: // Adicionando o extra Alface (X-Tudo)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 6, 9, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 6, 9, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 9, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 10;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 7: // Adicionando o extra Alface (Especial Burguer Top 10)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 6, 10, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 6, 10, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 10, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 11;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 999:
+            message.reply("Repassei seu atendimento para alguém, só aguardar.");
+            resetarStatus(numeroContato);
+            break
+        default:
+            // Lidar com estado desconhecido, se necessário
+            break;
+    }
+}
+async function avaliarresp7(numeroContato, message) {
+    const estado = getEstadoIndividual(numeroContato);
+    const carrinho = getCardapioIndividual(numeroContato);
+    switch (estado.resp7) {
+        case 0: // Manda o menu do cardápio
+            avaliarrespx(numeroContato, message);
+            break;
+        case 1: // Pegar o Burguer Especial na lista
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 1, 7, null, estado, carrinho); // Nome do lanche
+                const retorno2 = await pegarRetorno(numeroContato, client, 32, 1, 7, estado, carrinho); // Valor do lanche
+                adicionarProdutoNoCart(numeroContato, retorno1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
+                adicionarIdPedidoAoCarrinho(numeroContato);
+                message.reply(`Perfeito, o produto ${retorno1} foi adicionado ao seu pedido.`);
+                setTimeout(() => {
+                    client.sendMessage(numeroContato, respostas.adicionais);
+                }, 500);
+                estado.respx = 8;
+                estado.resp1 = 4; // chamar o respx
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 2: // Adicionando o extra Alface (X-Eggs Bacon)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 7, 8, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 7, 8, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 8, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 9;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 3: // Adicionando o extra Alface (X-Tudo)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 7, 9, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 7, 9, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 9, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 10;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 4: // Adicionando o extra Alface (Especial Burguer Top 10)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 7, 10, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 7, 10, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 10, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 11;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 999:
+            message.reply("Repassei seu atendimento para alguém, só aguardar.");
+            resetarStatus(numeroContato);
+            break
+        default:
+            // Lidar com estado desconhecido, se necessário
+            break;
+    }
+}
+async function avaliarresp8(numeroContato, message) {
+    const estado = getEstadoIndividual(numeroContato);
+    const carrinho = getCardapioIndividual(numeroContato);
+    switch (estado.resp8) {
+        case 0: // Manda o menu do cardápio
+            avaliarrespx(numeroContato, message);
+            break;
+        case 1: // Pegar o Burguer Especial na lista
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 1, 8, null, estado, carrinho); // Nome do lanche
+                const retorno2 = await pegarRetorno(numeroContato, client, 32, 1, 8, estado, carrinho); // Valor do lanche
+                adicionarProdutoNoCart(numeroContato, retorno1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
+                adicionarIdPedidoAoCarrinho(numeroContato);
+                message.reply(`Perfeito, o produto ${retorno1} foi adicionado ao seu pedido.`);
+                setTimeout(() => {
+                    client.sendMessage(numeroContato, respostas.adicionais);
+                }, 500);
+                estado.respx = 9;
+                estado.resp1 = 4; // chamar o respx
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 2: // Adicionando o extra Alface (X-Tudo)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 8, 9, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 8, 9, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 9, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 10;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 3: // Adicionando o extra Alface (Especial Burguer Top 10)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 8, 10, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 8, 10, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 8, 10, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 11;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 999:
+            message.reply("Repassei seu atendimento para alguém, só aguardar.");
+            resetarStatus(numeroContato);
+            break
+        default:
+            // Lidar com estado desconhecido, se necessário
+            break;
+    }
+}
+async function avaliarresp9(numeroContato, message) {
+    const estado = getEstadoIndividual(numeroContato);
+    const carrinho = getCardapioIndividual(numeroContato);
+    switch (estado.resp9) {
+        case 0: // Manda o menu do cardápio
+            avaliarrespx(numeroContato, message);
+            break;
+        case 1: // Pegar o X-Tudo na lista
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 1, 9, null, estado, carrinho); // Nome do lanche
+                const retorno2 = await pegarRetorno(numeroContato, client, 32, 1, 9, estado, carrinho); // Valor do lanche
+                adicionarProdutoNoCart(numeroContato, retorno1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
+                adicionarIdPedidoAoCarrinho(numeroContato);
+                message.reply(`Perfeito, o produto ${retorno1} foi adicionado ao seu pedido.`);
+                setTimeout(() => {
+                    client.sendMessage(numeroContato, respostas.adicionais);
+                }, 500);
+                estado.respx = 10;
+                estado.resp1 = 4; // chamar o respx
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 2: // Adicionando o extra Alface (X-Tudo)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 9, 9, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 9, 9, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 9, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 10;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 3: // Adicionando o extra Alface (Especial Burguer Top 10)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 9, 10, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 9, 10, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 10, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 11;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 999:
+            message.reply("Repassei seu atendimento para alguém, só aguardar.");
+            resetarStatus(numeroContato);
+            break
+        default:
+            // Lidar com estado desconhecido, se necessário
+            break;
+    }
+}
+async function avaliarresp10(numeroContato, message) {
+    const estado = getEstadoIndividual(numeroContato);
+    const carrinho = getCardapioIndividual(numeroContato);
+    switch (estado.resp10) {
+        case 0: // Manda o menu do cardápio
+            avaliarrespx(numeroContato, message);
+            break;
+        case 1: // Pegar o X-Tudo na lista
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 1, 10, null, estado, carrinho); // Nome do lanche
+                const retorno2 = await pegarRetorno(numeroContato, client, 32, 1, 10, estado, carrinho); // Valor do lanche
+                adicionarProdutoNoCart(numeroContato, retorno1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
+                adicionarIdPedidoAoCarrinho(numeroContato);
+                message.reply(`Perfeito, o produto ${retorno1} foi adicionado ao seu pedido.`);
+                setTimeout(() => {
+                    client.sendMessage(numeroContato, respostas.adicionais);
+                }, 500);
+                estado.respx = 11;
+                estado.resp1 = 4; // chamar o respx
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 2: // Adicionando o extra Alface (X-Tudo)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 10, 9, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 10, 9, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 9, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 10;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 3: // Adicionando o extra Alface (Especial Burguer Top 10)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 10, 10, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 10, 10, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 10, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 11;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 999:
+            message.reply("Repassei seu atendimento para alguém, só aguardar.");
+            resetarStatus(numeroContato);
+            break
+        default:
+            // Lidar com estado desconhecido, se necessário
+            break;
+    }
+}
+async function avaliarresp11(numeroContato, message) {
+    const estado = getEstadoIndividual(numeroContato);
+    const carrinho = getCardapioIndividual(numeroContato);
+    switch (estado.resp11) {
+        case 0: // Manda o menu do cardápio
+            avaliarrespx(numeroContato, message);
+            break;
+        case 1: // Pegar o Especial Burguer Top 10 na lista
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 1, 10, null, estado, carrinho); // Nome do lanche
+                const retorno2 = await pegarRetorno(numeroContato, client, 32, 1, 10, estado, carrinho); // Valor do lanche
+                adicionarProdutoNoCart(numeroContato, retorno1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
+                adicionarIdPedidoAoCarrinho(numeroContato);
+                message.reply(`Perfeito, o produto ${retorno1} foi adicionado ao seu pedido.`);
+                setTimeout(() => {
+                    client.sendMessage(numeroContato, respostas.adicionais);
+                }, 500);
+                estado.respx = 11;
+                estado.resp1 = 4; // chamar o respx
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 2: // Adicionando o extra Alface (X-Tudo)
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 23, 11, 9, estado, carrinho);// Valor do extra
+                const retorno2 = await pegarRetorno(numeroContato, client, 27, 11, 9, estado, carrinho);// Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 9, null, estado, carrinho);// Nome do lanche
+                adicionarExtraNoCart(numeroContato, retorno2, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(`Perfeito, extra adicionado ao lanche.\n${respostas.maisUmAdicional}`)
+                estado.respx = 10;
+                estado.resp1 = 4;
+                estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 999:
+            message.reply("Repassei seu atendimento para alguém, só aguardar.");
+            resetarStatus(numeroContato);
+            break
         default:
             // Lidar com estado desconhecido, se necessário
             break;
@@ -688,65 +2125,3 @@ async function avaliarresp3(numeroContato, message) {
 }
 
 client.initialize();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//async function buscarTaxaEntregaEspecifica(chaveEspecifica) {
-/*    try {
-        const taxaEntregaEspecifica = await obterTaxaEntregaEspecifica(chaveEspecifica);
-
-        if (taxaEntregaEspecifica) {
-            console.log(`Taxa de Entrega para '${chaveEspecifica}':`, taxaEntregaEspecifica);
-            // Aqui você pode manipular a taxa de entrega como desejar
-            // Exemplo: enviar para um cliente, armazenar em uma variável global, etc.
-            return taxaEntregaEspecifica;
-        } else {
-            console.log(`Taxa de entrega para '${chaveEspecifica}' não encontrada no arquivo JSON.`);
-            return null;
-        }
-    } catch (erro) {
-        console.error('Erro ao obter a taxa de entrega específica:', erro.message);
-        return null;
-    }
-}
-
-// Exemplo de uso da função
-(async () => {
-    const chave = 'a'; // Substitua pela chave específica que você está procurando
-    const taxa = await buscarTaxaEntregaEspecifica(chave);
-    //console.log(taxa);
-    // Use a taxa conforme necessário
-})();*/

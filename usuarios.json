@@ -68,5 +68,15 @@
     "referencia": "",
     "complemento": "",
     "estado": 0
+  },
+  "557998048282@c.us": {
+    "concluido": "sim",
+    "fidelidade": "0",
+    "endereco": "rua do alambique",
+    "bairro": "centro",
+    "numeroCasa": "181",
+    "referencia": "final da rua sem saida",
+    "complemento": "nao",
+    "estado": 6
   }
 }
