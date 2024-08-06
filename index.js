@@ -7,7 +7,7 @@ const puppeteer = require('puppeteer');
 const { Client, MessageMedia, Poll, LocalAuth } = require('whatsapp-web.js');
 const { criarPagamento, criarPagamentoRenovacao } = require('./criarCompra.js');
 const { dataFormatada, horaFormatada } = require('./funcoes/pegardata.js');
-const { atualizarIdGrupo, obterIdGrupo } = require('./funcoes/funcao.js');
+const { atualizarIdGrupo, obterIdGrupo, atualizarIdSuporte, obterIdGrupoSuporte } = require('./funcoes/funcao.js');
 const { cardapioIndividual, cardapioCompleto, cardapioExtras, valorExtraEspecifico, sandubaCompleto, nomeExtraEspecifico,
     pizzasCompleto1, pizzasCompleto2, cardapioIndividualPizza1, nomeExtraEspecificoAcai, nomeExtraEspecificoBatatas,
     nomeExtraEspecificBebidas, nomeExtraEspecificoPizza2, nomeExtraEspecificoPizza1, valorExtraEspecificoAcai,
@@ -37,6 +37,7 @@ const respostas = {
     maisAlgoPedido: 'Quer complementar seu pedido com algo a mais? Ex.: Com uma batata, refrigerante, sorvete?\n1️⃣ Sim\n2️⃣ Não',
     pizzasTipos: 'Qual tipo de pizza deseja?\n1️⃣ Especiais\n2️⃣ Tradicionais',
     confimacao: '1️⃣ Confimar\n2️⃣ Cancelar pedido',
+    voltar: `Se quiser voltar ao menu principal envie *"menu"*.\n0️⃣ Menu anterior`,
     extraSanduba: 'Escolha abaixo o que deseja adicionar em seu sanduíche.',
     quantidade: 'Poderia me falar quantos desse lanche você deseja? EX: *1, 2, 3*',
     voltarMenu: 'Digite *"menu"* para voltar ao menu principal.',
@@ -135,6 +136,7 @@ function verificarInatividade(numeroContato) {
         estado.atendimento = 0;
         estado.menu = 0; // Reinicia o estado do menu
         client.sendMessage(numeroContato, `Estarei encerrando seu atendimento.\nAgradecemos seu contato.🙂\nQualquer dúvida, sinta-se à vontade em entrar em contato usando "menu"`);
+        resetarStatus(numeroContato);
     }
 
     // Limpa o indicador de mensagem recebida após verificar a inatividade
@@ -266,19 +268,7 @@ async function adicionarValorProdutoAoCarrinho(numeroContato, valorProdutoNovo) 
     carrinho.preco = (parseFloat(carrinho.preco) || 0) + parseFloat(valorProdutoNovo);
 
 }
-// Consultar extras disponivel
-async function obterExtrasDoLanche(numeroContato, message) {
-    try {
-        const carrinho = getCardapioIndividual(numeroContato);
-        const estado = getEstadoIndividual(numeroContato);
-        const lanche = carrinho.idProduto;
-        const extras = await cardapioExtras(lanche);
-        client.sendMessage(numeroContato, extras);
-        estado.resp1 = 4
-    } catch (error) {
-        console.error("Erro ao obter os extras do lanche:", error);
-    }
-}
+
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -321,13 +311,9 @@ client.on('message', async (message) => {
     /* AAAA -> (1-> parametro do seletor do switch )
       BBBB -> (10->id do lanche na mensagem de 1 a X)
       CCCC -> (10-> indice X a ser buscado no lanche escolhido) */
-
-
-
     if (estado.atendimento === 0) {
         iniciarAtendimento(numeroContato);
     }
-
     const statusConclusao = await verificarConcluido(numeroContato);
     estado.conclusao = statusConclusao;
     const carrinho = getCardapioIndividual(numeroContato);
@@ -453,6 +439,7 @@ client.on('message', async (message) => {
 
                     break;
                 case '/id':
+                    client.sendMessage(numeroContato, "Pegando o id do seu grupo");
                     message.reply("ID: " + respostas.idgrupo);
                     break
                 default:
@@ -496,7 +483,23 @@ client.on('message', async (message) => {
                             message.reply(`Erro ao obter o retorno: ${error.message}`);
                         }
                     } else {
-                        message.reply('Formato incorreto. Use: /gpedidos [idgrupo]');
+                        message.reply(`Formato incorreto. Use: /gpedidos [idgrupo]\n*>>* Para pegar o ID, me adicione no grupo e envie */id* e eu te enviarei o id de seu grupo`);
+                    }
+                    break;
+                case '/gajuda':
+                    if (parts.length === 2) {
+                        let param1 = parts[1];
+                        console.log(`[!] Id do grupo: param1=${param1}`);
+
+                        try {
+                            const mensagemRetorno = await atualizarIdSuporte(param1);
+                            message.reply(mensagemRetorno);
+                        } catch (error) {
+                            console.error('Erro ao obter o retorno:', error);
+                            message.reply(`Erro ao obter o retorno: ${error.message}`);
+                        }
+                    } else {
+                        message.reply(`Formato incorreto. Use: /gajuda [idgrupo]\n*>>* Para pegar o ID, me adicione no grupo e envie */id* e eu te enviarei o id de seu grupo`);
                     }
                     break;
                 default:
@@ -756,6 +759,15 @@ async function avaliarresp0(numeroContato, message) {
             estado.resp2 = 1;
             estado.resp3 = 1;
             break
+        case 2: // Voltar do menu de ver as bebidas da loja MENU-> 2 -> 5
+            message.reply(respostas.cardapiover);
+            estado.respx = 12;
+            estado.resp1 = 16; // Ver cardapio dos sanduiches
+            estado.resp2 = 16; // Ver cardapio das pizzas que tem 
+            estado.resp3 = 12; // Ver cardapio dos açaí
+            estado.resp4 = 10; // Ver cardapio das batatas
+            estado.resp5 = 9; // Ver cardapio das Bebidas
+            break
         case 999:
             message.reply("Repassei seu atendimento para alguém, só aguardar.");
             resetarStatus(numeroContato);
@@ -978,6 +990,42 @@ async function avaliarresp1(numeroContato, message) {
                 console.error('Erro ao obter o retorno:', error);
             }
             break
+        case 16: // Ver cardapio dos sanduiches 
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 2, null, null, estado, carrinho); // Nome do lanche
+                message.reply(`*Nossos sanduíches*\n\n${retorno1}`);
+                setTimeout(() => {
+                    client.sendMessage(numeroContato, respostas.voltar);
+                    estado.resp0 = 2;
+                    estado.respx = 0;
+                    estado.resp1 = 1000;
+                    estado.resp2 = 1000;
+                    estado.resp3 = 1000;
+                    estado.resp4 = 1000;
+                    estado.resp5 = 1000;
+                }, 500);
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 17: // Pizza especial
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 8, null, null, estado, carrinho); // Nome do lanche
+                message.reply(`*Nossas pizzas especiais*\n\n${retorno1}`);
+                setTimeout(() => {
+                    client.sendMessage(numeroContato, respostas.voltar);
+                    estado.resp0 = 2;
+                    estado.respx = 0;
+                    estado.resp1 = 1000;
+                    estado.resp2 = 1000;
+                    estado.resp3 = 1000;
+                    estado.resp4 = 1000;
+                    estado.resp5 = 1000;
+                }, 500);
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
         case 999:
             message.reply("Repassei seu atendimento para alguém, só aguardar.");
             resetarStatus(numeroContato);
@@ -996,7 +1044,12 @@ async function avaliarresp2(numeroContato, message) {
             break
         case 1: // Manda o cardápio de leitura para os produtos da lanchonete
             await client.sendMessage(numeroContato, respostas.cardapiover);
-            estado.respx = 3;
+            estado.respx = 12;
+            estado.resp1 = 16; // Ver cardapio dos sanduiches
+            estado.resp2 = 16; // Ver cardapio das pizzas que tem 
+            estado.resp3 = 12; // Ver cardapio dos açaí
+            estado.resp4 = 10; // Ver cardapio das batatas
+            estado.resp5 = 9; // Ver cardapio das Bebidas
             break;
         case 2: // Recusa de algum extra
             message.reply(respostas.maisAlgoPedido);
@@ -1200,6 +1253,32 @@ async function avaliarresp2(numeroContato, message) {
                 console.error('Erro ao obter o retorno:', error);
             }
             break
+        case 16: // Ver cardapio das pizzas que tem 
+            message.reply(respostas.pizzasTipos);
+            estado.resp1 = 17; // Pizza especial
+            estado.resp2 = 17; // Pizza tradicional
+            estado.resp3 = 1000;
+            estado.resp4 = 1000;
+            estado.resp5 = 1000;
+            break
+        case 17: // Ver as pizzas tradicionais
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 9, null, null, estado, carrinho); // Nome do lanche
+                message.reply(`*Nossas pizzas tradicionais*\n\n${retorno1}`);
+                setTimeout(() => {
+                    client.sendMessage(numeroContato, respostas.voltar);
+                    estado.resp0 = 2;
+                    estado.respx = 0;
+                    estado.resp1 = 1000;
+                    estado.resp2 = 1000;
+                    estado.resp3 = 1000;
+                    estado.resp4 = 1000;
+                    estado.resp5 = 1000;
+                }, 500);
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
         case 999:
             message.reply("Repassei seu atendimento para alguém, só aguardar.");
             resetarStatus(numeroContato);
@@ -1223,6 +1302,16 @@ async function avaliarresp3(numeroContato, message) {
                 estado[prop] = 999;
             });
             await client.sendMessage(numeroContato, respostas.atendimento);
+            const formatar = "@";
+            const formatado = numeroContato.split(formatar)[0];
+            let mensagem = '┌─── Pedido de atendimento ───┐\n';
+            // Adicione detalhes do pedido
+            mensagem += `*▸* *Contato:* ${formatado}\n`
+            mensagem += `▸ Alguém poderia entrar em contato com esse cliente? Por favor, ele está possivelmente com alguma dúvida.\n`;
+            mensagem += `└─── Pedido de atendimento ───┘`
+            const idGrupo = await obterIdGrupo();
+            //.log('ID do grupo atual:', idGrupo);
+            client.sendMessage(idGrupo, mensagem)
             break;
         case 2: // Alface do hamburguer
             try {
@@ -1373,6 +1462,24 @@ async function avaliarresp3(numeroContato, message) {
                 estado.respx = 11;
                 estado.resp1 = 4;
                 estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 12: // Ver todos os açaí
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 12, null, null, estado, carrinho); // Nome do lanche
+                message.reply(`*Açaís disponíveis*\n\n${retorno1}`);
+                setTimeout(() => {
+                    client.sendMessage(numeroContato, respostas.voltar);
+                    estado.resp0 = 2;
+                    estado.respx = 0;
+                    estado.resp1 = 1000;
+                    estado.resp2 = 1000;
+                    estado.resp3 = 1000;
+                    estado.resp4 = 1000;
+                    estado.resp5 = 1000;
+                }, 500);
             } catch (error) {
                 console.error('Erro ao obter o retorno:', error);
             }
@@ -1531,6 +1638,24 @@ async function avaliarresp4(numeroContato, message) {
                 console.error('Erro ao obter o retorno:', error);
             }
             break
+        case 10: //Ver cardapio das batatas
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 11, null, null, estado, carrinho); // Nome do lanche
+                message.reply(`*Batatas disponíveis*\n\n${retorno1}`);
+                setTimeout(() => {
+                    client.sendMessage(numeroContato, respostas.voltar);
+                    estado.resp0 = 2;
+                    estado.respx = 0;
+                    estado.resp1 = 1000;
+                    estado.resp2 = 1000;
+                    estado.resp3 = 1000;
+                    estado.resp4 = 1000;
+                    estado.resp5 = 1000;
+                }, 500);
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
         case 999:
             message.reply("Repassei seu atendimento para alguém, só aguardar.");
             resetarStatus(numeroContato);
@@ -1666,6 +1791,24 @@ async function avaliarresp5(numeroContato, message) {
                 estado.respx = 11;
                 estado.resp1 = 4;
                 estado.resp2 = 2;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 9: // Ver cardapio das Bebidas
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 10, null, null, estado, carrinho); // Nome do lanche
+                message.reply(`*Bidas disponíveis*\n\n${retorno1}`);
+                setTimeout(() => {
+                    client.sendMessage(numeroContato, respostas.voltar);
+                    estado.resp0 = 2;
+                    estado.respx = 0;
+                    estado.resp1 = 1000;
+                    estado.resp2 = 1000;
+                    estado.resp3 = 1000;
+                    estado.resp4 = 1000;
+                    estado.resp5 = 1000;
+                }, 500);
             } catch (error) {
                 console.error('Erro ao obter o retorno:', error);
             }

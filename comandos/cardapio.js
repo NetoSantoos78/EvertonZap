@@ -184,8 +184,8 @@ async function cardapioCompletoPizzas1(callback) {
             let output = "";
             Object.keys(cardapio).forEach((indice, i) => {
                 const emoji = emojisNumeros[i];
-                const { produto, valor, ingredientes } = cardapio[indice];
-                output += `${emoji} ${produto}\n   ❯ ${ingredientes.join(", ")}\n   ❯ R$: ${valor}\n\n`;
+                const { produto, valor, sabores } = cardapio[indice];
+                output += `${emoji} ${produto}\n   ❯ ${sabores.join(", ")}\n   ❯ ${valor}\n\n`;
             });
             callback(output, null);
         } else {
@@ -202,8 +202,8 @@ async function cardapioCompletoPizzas2(callback) {
             let output = "";
             Object.keys(cardapio).forEach((indice, i) => {
                 const emoji = emojisNumeros[i];
-                const { produto, valor, ingredientes } = cardapio[indice];
-                output += `${emoji} ${produto}\n   ❯ ${ingredientes.join(", ")}\n   ❯ R$: ${valor}\n\n`;
+                const { produto, valor, sabores } = cardapio[indice];
+                output += `${emoji} ${produto}\n   ❯ ${sabores.join(", ")}\n   ❯ R$: ${valor}\n\n`;
             });
             callback(output, null);
         } else {
@@ -256,8 +256,9 @@ async function cardapioCompletoAcai(callback) {
             let output = "";
             Object.keys(cardapio).forEach((indice, i) => {
                 const emoji = emojisNumeros[i];
-                const { produto, valor, ingredientes } = cardapio[indice];
-                output += `${emoji} ${produto}\n   ❯ ${ingredientes.join(", ")}\n   ❯ R$: ${valor}\n`;
+                const { produto, valor, complementos } = cardapio[indice];
+                const complementosTexto = complementos ? complementos.join(", ") : "Sem complementos";
+                output += `${emoji} *${produto}*\n   *❯* *${complementosTexto}*\n   *❯* *R$:* _${valor}_\n\n`;
             });
             callback(output, null);
         } else {
@@ -267,6 +268,7 @@ async function cardapioCompletoAcai(callback) {
         callback(null, error);
     }
 }
+
 
 //####################################
 async function sandubaCompleto(callback) {

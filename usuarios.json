@@ -78,5 +78,25 @@
     "referencia": "final da rua sem saida",
     "complemento": "nao",
     "estado": 6
+  },
+  "557996487919@c.us": {
+    "concluido": "sim",
+    "fidelidade": "0",
+    "endereco": "povoado pastinho",
+    "bairro": "pastinho",
+    "numeroCasa": "293",
+    "referencia": "em frente a uma mercearia",
+    "complemento": "do lado de uma casa de andar",
+    "estado": 6
+  },
+  "557998704401@c.us": {
+    "concluido": "nao",
+    "fidelidade": "0",
+    "endereco": "",
+    "bairro": "",
+    "numeroCasa": "",
+    "referencia": "",
+    "complemento": "",
+    "estado": 1
   }
 }

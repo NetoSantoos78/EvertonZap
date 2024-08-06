@@ -49,7 +49,7 @@ async function pegarRetorno(numeroContato, client, parametros, ids, lanches, est
                         }
                     });
                 });
-                return `Cardápio completo:\n${resultado}`;
+                return `${resultado}`;
             } catch (error) {
                 return `Erro ao obter o cardápio: ${error.message}`;
             }
@@ -99,7 +99,7 @@ async function pegarRetorno(numeroContato, client, parametros, ids, lanches, est
                         }
                     });
                 });
-                return `Cardápio completo:\n${resultado}`;
+                return `${resultado}`;
             } catch (error) {
                 return `Erro ao obter o cardápio: ${error.message}`;
             }
@@ -114,7 +114,7 @@ async function pegarRetorno(numeroContato, client, parametros, ids, lanches, est
                         }
                     });
                 });
-                return `Cardápio completo:\n${resultado}`;
+                return `${resultado}`;
             } catch (error) {
                 return `Erro ao obter o cardápio: ${error.message}`;
             }
@@ -129,7 +129,7 @@ async function pegarRetorno(numeroContato, client, parametros, ids, lanches, est
                         }
                     });
                 });
-                return `Cardápio completo:\n${resultado}`;
+                return `${resultado}`;
             } catch (error) {
                 return `Erro ao obter o cardápio: ${error.message}`;
             }
@@ -144,7 +144,7 @@ async function pegarRetorno(numeroContato, client, parametros, ids, lanches, est
                         }
                     });
                 });
-                return `Cardápio completo:\n${resultado}`;
+                return `${resultado}`;
             } catch (error) {
                 return `Erro ao obter o cardápio: ${error.message}`;
             }
@@ -159,7 +159,7 @@ async function pegarRetorno(numeroContato, client, parametros, ids, lanches, est
                         }
                     });
                 });
-                return `Cardápio completo:\n${resultado}`;
+                return `${resultado}`;
             } catch (error) {
                 return `Erro ao obter o cardápio: ${error.message}`;
             }
@@ -174,7 +174,7 @@ async function pegarRetorno(numeroContato, client, parametros, ids, lanches, est
                         }
                     });
                 });
-                return `Cardápio completo:\n${resultado}`;
+                return `${resultado}`;
             } catch (error) {
                 return `Erro ao obter o cardápio: ${error.message}`;
             }
@@ -189,7 +189,7 @@ async function pegarRetorno(numeroContato, client, parametros, ids, lanches, est
                         }
                     });
                 });
-                return `Cardápio completo:\n${resultado}`;
+                return `${resultado}`;
             } catch (error) {
                 return `Erro ao obter o cardápio: ${error.message}`;
             }
@@ -204,7 +204,7 @@ async function pegarRetorno(numeroContato, client, parametros, ids, lanches, est
                         }
                     });
                 });
-                return `Cardápio completo:\n${resultado}`;
+                return `${resultado}`;
             } catch (error) {
                 return `Erro ao obter o cardápio: ${error.message}`;
             }
@@ -219,7 +219,7 @@ async function pegarRetorno(numeroContato, client, parametros, ids, lanches, est
                         }
                     });
                 });
-                return `Cardápio completo:\n${resultado}`;
+                return `${resultado}`;
             } catch (error) {
                 return `Erro ao obter o cardápio: ${error.message}`;
             }
@@ -234,7 +234,7 @@ async function pegarRetorno(numeroContato, client, parametros, ids, lanches, est
                         }
                     });
                 });
-                return `Cardápio completo:\n${resultado}`;
+                return `${resultado}`;
             } catch (error) {
                 return `Erro ao obter o cardápio: ${error.message}`;
             }
