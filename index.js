@@ -300,6 +300,30 @@ function resetarStatus(numeroContato) {
         carrinho.idProduto = 0
     console.log("[!] Dados de " + numeroContato + " foram resetados")
 }
+function resetarStatusMenu(numeroContato) {
+    //const numeroContato = message.from;
+    const estado = getEstadoIndividual(numeroContato);
+    estado.resp1 = 0,
+        estado.resp2 = 0,
+        estado.resp3 = 0,
+        estado.resp4 = 0,
+        estado.resp5 = 0,
+        estado.resp6 = 0,
+        estado.resp7 = 0,
+        estado.resp8 = 0,
+        estado.resp9 = 0,
+        estado.resp10 = 0,
+        estado.resp11 = 0,
+        estado.resp12 = 0,
+        estado.resp13 = 0,
+        estado.resp14 = 0,
+        estado.respx = 0,
+        estado.cliente = '',
+        estado.escolha = '',
+        estado.conclusao = '',
+        estado.msg = '',
+    console.log("[!] Menu de " + numeroContato + " foi resetados")
+}
 
 client.on('message', async (message) => {
     const numeroContato = message.from;
@@ -371,6 +395,7 @@ client.on('message', async (message) => {
                     break
                 case 'menu':
                     avaliarrespx(numeroContato, message);
+                    resetarStatusMenu(numeroContato);
                     break;
                 case '0':
                     avaliarresp0(numeroContato, message);
@@ -1055,6 +1080,7 @@ async function avaliarresp2(numeroContato, message) {
             message.reply(respostas.maisAlgoPedido);
             estado.resp1 = 1;
             estado.resp2 = 3;
+            estado.respx = 1000;
             break;
         case 3: // Manda o carrinho depois de recusar tudo
             message.reply(respostas.verCarrinho);
