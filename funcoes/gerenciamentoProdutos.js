@@ -4,7 +4,7 @@ const { cardapioIndividual, cardapioCompleto, cardapioExtras, valorExtraEspecifi
     valorExtraEspecificoBatatas, valorExtraEspecificoBebidas, valorExtraEspecificoPizza2, valorExtraEspecificoPizza1,
     cardapioExtrasAcai, cardapioExtrasBatatas, cardapioExtrasBebidas, cardapioExtrasPizza2, cardapioExtrasPizza1,
     acaiCompleto, batatasCompleto, bebidasCompleto, cardapioCompletoAcai, cardapioCompletoBatatas, cardapioCompletoBebidas,
-    cardapioCompletoPizzas2, opcoesAcai,cardapioExtrasBurguer, caldasAcai, cardapioCompletoPizzas1, cardapioIndividualAcai, cardapioIndividualBebidas, cardapioIndividualBatatas, cardapioIndividualPizza2, } = require('../comandos/cardapio.js');
+    cardapioCompletoPizzas2, tamanhoEspecicoPizzaEspecial, tamanhoEspecicoPizzaTradicional, opcoesAcai, cardapioExtrasBurguer, caldasAcai, cardapioCompletoPizzas1, cardapioIndividualAcai, cardapioIndividualBebidas, cardapioIndividualBatatas, cardapioIndividualPizza2, } = require('../comandos/cardapio.js');
 
 const respostas = {
     menu: '',
@@ -248,14 +248,14 @@ async function pegarRetorno(numeroContato, client, parametros, ids, lanches, est
         case 19: // Valor dos tamanhos das pizzas especiais
             try {
                 const resultado = await cardapioExtrasPizza1(id);
-                return `Pizzas:\n${resultado}`;
+                return `${resultado}`;
             } catch (error) {
                 return `Erro ao obter o produto: ${error.message}`;
             }
         case 20: // Valor dos tamanhos das pizzas tradicionais
             try {
                 const resultado = await cardapioExtrasPizza2(id);
-                return `Pizzas:\n${resultado}`;
+                return `${resultado}`;
             } catch (error) {
                 return `Erro ao obter o produto: ${error.message}`;
             }
@@ -360,7 +360,21 @@ async function pegarRetorno(numeroContato, client, parametros, ids, lanches, est
             } catch (error) {
                 return `Erro ao obter o produto: ${error.message}`;
             }
-        case 34:
+        case 34: // Pegar valor do tamanho de uma pizza especial
+            try {
+                const resultado = await tamanhoEspecicoPizzaEspecial(lanche, id);
+                return `${resultado}`;
+            } catch (error) {
+                return `Erro ao obter o produto: ${error.message}`;
+            }
+        case 35: // Pegar valor do tamanho de uma pizza tradicional
+            try {
+                const resultado = await tamanhoEspecicoPizzaTradicional(lanche, id);
+                return `${resultado}`;
+            } catch (error) {
+                return `Erro ao obter o produto: ${error.message}`;
+            }
+            break
         default:
             return `[!] Parâmetro de seleção desconhecido. :${parametro, id, lanche}`;
     }

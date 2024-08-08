@@ -3,48 +3,55 @@
         "produto": "Calabresa",
         "sabores": ["Molho", "Mussarela", "Calabresa", "Cebola", "Orégano"],
         "valor": "Pequena: R$:20,00, Média R$:30,00, Grande: R$:40,00",
-        "tam": ["20,00","30,00","40,00"]
+        "tam": ["20,00","30,00","40,00"],
+        "ntam": ["Pequena: R$:20,00","Média R$:30,00","Grande: R$:40,00"]
     },
     "2": {
         "produto": "Calabresa",
         "sabores": ["Molho", "Mussarela", "Presunto", "Orégano"],
         "valor": "Pequena: R$:20,00, Média R$:30,00, Grande: R$:40,00",
-        "tam": ["20,00","30,00","40,00"]
+        "tam": ["20,00","30,00","40,00"],
+        "ntam": ["Pequena: R$:20,00","Média R$:30,00","Grande: R$:40,00"]
         
     },
     "3": {
         "produto": "4 Queijo",
         "sabores": ["Molho", "Mussarela", "Catupiry", "Cheddar", "Azeitona", "Orégano"],
         "valor": "Pequena: R$:20,00, Média R$:30,00, Grande: R$:40,00",
-        "tam": ["20,00","30,00","40,00"]
+        "tam": ["20,00","30,00","40,00"],
+        "ntam": ["Pequena: R$:20,00","Média R$:30,00","Grande: R$:40,00"]
         
     },
     "4": {
         "produto": "Bacon",
         "sabores": ["Molho", "Mussarela", "Bacon", "Cebola", "Orégano"],
         "valor": "Pequena: R$:20,00, Média R$:30,00, Grande: R$:40,00",
-        "tam": ["20,00","30,00","40,00"]
+        "tam": ["20,00","30,00","40,00"],
+        "ntam": ["Pequena: R$:20,00","Média R$:30,00","Grande: R$:40,00"]
         
     },
     "5": {
         "produto": "Frango",
         "sabores": ["Molho", "Mussarela", "Frango", "Orégano"],
         "valor": "Pequena: R$:20,00, Média R$:30,00, Grande: R$:40,00",
-        "tam": ["20,00","30,00","40,00"]
+        "tam": ["20,00","30,00","40,00"],
+        "ntam": ["Pequena: R$:20,00","Média R$:30,00","Grande: R$:40,00"]
         
     },
     "6": {
         "produto": "4 Queijo",
         "sabores": ["Molho", "Mussarela", "Presunto", "Tomate", "Cebola", "Milho", "Ovo", "Azeitona", "Orégano"],
         "valor": "Pequena: R$:20,00, Média R$:30,00, Grande: R$:40,00",
-        "tam": ["20,00","30,00","40,00"]
+        "tam": ["20,00","30,00","40,00"],
+        "ntam": ["Pequena: R$:20,00","Média R$:30,00","Grande: R$:40,00"]
         
     },
     "7": {
         "produto": "4 Queijo",
         "sabores": ["Molho", "Mussarela", "Frango", "Catupiry", "Orégano"],
         "valor": "Pequena: R$:20,00, Média R$:30,00, Grande: R$:40,00",
-        "tam": ["20,00","30,00","40,00"]
+        "tam": ["20,00","30,00","40,00"],
+        "ntam": ["Pequena: R$:20,00","Média R$:30,00","Grande: R$:40,00"]
         
     }
 }

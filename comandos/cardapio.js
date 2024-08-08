@@ -923,8 +923,58 @@ async function caldasAcai(lanches, indiceExtras) {
         throw error;
     }
 }
-
-
+async function tamanhoEspecicoPizzaEspecial(lanches, indiceExtras) {
+    const indiceExtra = indiceExtras;
+    const lanche = lanches;
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoPizza1);
+        if (cardapio) {
+            const produto = cardapio[lanche];
+            if (produto) {
+                const extrasNomes = Object.values(produto.ntam); // Obtém os nomes dos extras
+                const nomeItem = produto.produto; // Obtém o nome do item do cardápio
+                const nomeExtra = extrasNomes[indiceExtra - 1]; // Subtrai 1 para obter o índice correto
+                if (nomeExtra) {
+                    return { nomeExtra, nomeItem };
+                } else {
+                    throw new Error(`Extra no índice '${indiceExtra}' não encontrado no lanche ${lanche}.`);
+                }
+            } else {
+                throw new Error("Lanche não encontrado: " + lanche);
+            }
+        } else {
+            throw new Error("Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+async function tamanhoEspecicoPizzaTradicional(lanches, indiceExtras) {
+    const indiceExtra = indiceExtras;
+    const lanche = lanches;
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoPizza2);
+        if (cardapio) {
+            const produto = cardapio[lanche];
+            if (produto) {
+                const extrasNomes = Object.values(produto.ntam); // Obtém os nomes dos extras
+                const nomeItem = produto.produto; // Obtém o nome do item do cardápio
+                const nomeExtra = extrasNomes[indiceExtra - 1]; // Subtrai 1 para obter o índice correto
+                if (nomeExtra) {
+                    return { nomeExtra, nomeItem };
+                } else {
+                    throw new Error(`Extra no índice '${indiceExtra}' não encontrado no lanche ${lanche}.`);
+                }
+            } else {
+                throw new Error("Lanche não encontrado: " + lanche);
+            }
+        } else {
+            throw new Error("Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        throw error;
+    }
+}
 
 const emojisNumeros = [
     "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", 
@@ -973,4 +1023,6 @@ module.exports = {
     cardapioIndividualPizza2,
     cardapioIndividualBebidas,
     cardapioExtrasBurguer,
+    tamanhoEspecicoPizzaEspecial,
+    tamanhoEspecicoPizzaTradicional
 };

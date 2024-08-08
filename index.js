@@ -37,6 +37,8 @@ const respostas = {
     maisAlgoPedido: 'Quer complementar seu pedido com algo a mais? Ex.: Com uma batata, refrigerante, sorvete?\n1️⃣ Sim\n2️⃣ Não',
     pizzasTipos: 'Qual tipo de pizza deseja?\n1️⃣ Especiais\n2️⃣ Tradicionais',
     confimacao: '1️⃣ Confimar\n2️⃣ Cancelar pedido',
+    tam1: `\n*Pequena: R$:28,00*\n*Média R$:38,00*\n*Grande: R$:48,00*`,
+    tam2: `\nPequena: R$:20,00\nMédia R$:30,00\nGrande: R$:40,00`,
     voltar: `Se quiser voltar ao menu principal envie *"menu"*.\n0️⃣ Menu anterior`,
     extraSanduba: 'Escolha abaixo o que deseja adicionar em seu sanduíche.',
     quantidade: 'Poderia me falar quantos desse lanche você deseja? EX: *1, 2, 3*',
@@ -322,7 +324,7 @@ function resetarStatusMenu(numeroContato) {
         estado.escolha = '',
         estado.conclusao = '',
         estado.msg = '',
-    console.log("[!] Menu de " + numeroContato + " foi resetados")
+        console.log("[!] Menu de " + numeroContato + " foi resetados")
 }
 
 client.on('message', async (message) => {
@@ -763,6 +765,34 @@ async function avaliarrespx(numeroContato, message) {
                 message.reply("Algo deu errado!! Estou avisando ao meu chefe o erro. Desculpa")
             }
             break
+        case 12: // Menu do cardapio de pizza especial
+            try {
+                const retorno = await pegarRetorno(numeroContato, client, 14, null, null, estado, carrinho);
+                message.reply(retorno);
+                estado.resp1 = 19;
+                estado.resp2 = xx;
+                estado.resp3 = xx;
+                estado.resp4 = xx;
+                estado.resp5 = xx;
+                estado.resp6 = xx;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 132: // Menu do cardapio de pizza tradicional
+            try {
+                const retorno = await pegarRetorno(numeroContato, client, 15, null, null, estado, carrinho);
+                message.reply(retorno);
+                estado.resp1 = xx;
+                estado.resp2 = xx;
+                estado.resp3 = xx;
+                estado.resp4 = xx;
+                estado.resp5 = xx;
+                estado.resp6 = xx;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
         case 999:
             message.reply("Repassei seu atendimento para alguém, só aguardar.");
             resetarStatus(numeroContato);
@@ -809,6 +839,7 @@ async function avaliarresp1(numeroContato, message) {
         case 1: // Menu do cardapio de produtos existente
             estado.respx = 1;
             estado.resp1 = 2;
+            estado.resp2 = 18;
             await client.sendMessage(numeroContato, respostas.cardapio);
             break
         case 2: // Chamada do respx
@@ -1047,6 +1078,57 @@ async function avaliarresp1(numeroContato, message) {
                     estado.resp4 = 1000;
                     estado.resp5 = 1000;
                 }, 500);
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 18: // Mostrar as Pizza especial
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 8, null, null, estado, carrinho); // Nome do lanche
+                message.reply(`*Nossas pizzas especiais*\n\n${retorno1}`);
+                setTimeout(() => {
+                    client.sendMessage(numeroContato, `0️⃣ Menu anterior`);
+                    estado.resp0 = 2;
+                    estado.respx = 0;
+                    estado.resp1 = 1000;
+                    estado.resp2 = 1000;
+                    estado.resp3 = 1000;
+                    estado.resp4 = 1000;
+                    estado.resp5 = 1000;
+                }, 500);
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 19: // Pizza de ATUM
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 3, 1, null, estado, carrinho);// Nome do  lanche
+                message.reply("Perfeito, você escolheu pizza sabor " + retorno1 + ".");
+                setTimeout(() => {
+                    client.sendMessage(numeroContato, "Agora por favor escolha o tamanho da pizza\n" + respostas.tam1);
+                }, 500);
+                estado.respx = 1000;
+                estado.resp1 = 20; // Pizza P
+                estado.resp2 = 20; // Pizza M
+                estado.resp3 = 13; // Pizza G
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 20: // Add pizza de atum e tamanho P no carrinho 
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 3, 1, null, estado, carrinho);// Nome do  lanche
+                const retorno2 = await pegarRetorno(numeroContato, client, 31, 1, 1, estado, carrinho); // Tamanho
+                adicionarProdutoNoCart(numeroContato, retorno1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
+                message.reply("Perfeito, você escolheu pizza sabor " + retorno1 + ".");
+                setTimeout(() => {
+                    client.sendMessage(numeroContato, "Agora por favor escolha o tamanho da pizza\n" + respostas.tam1);
+                }, 500);
+                estado.respx = 1000;
+                estado.resp1 = 20; // Pizza P
+                estado.resp2 = 20; // Pizza M
+                estado.resp3 = 13; // Pizza G
             } catch (error) {
                 console.error('Erro ao obter o retorno:', error);
             }
@@ -1304,6 +1386,14 @@ async function avaliarresp2(numeroContato, message) {
             } catch (error) {
                 console.error('Erro ao obter o retorno:', error);
             }
+            break
+        case 18: // Ver cardapio das pizzas que tem
+            message.reply(respostas.pizzasTipos);
+            estado.respx = 12;
+            estado.resp1 = 18; // Pizza especial
+            estado.resp2 = 19; // Pizza tradicional
+            break
+        case 19: // Mostrar as Pizza tradicional
             break
         case 999:
             message.reply("Repassei seu atendimento para alguém, só aguardar.");
