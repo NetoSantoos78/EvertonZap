@@ -1,6 +1,6 @@
-2024/05/09-14:40:52.134 1974 Reusing MANIFEST C:\Users\kanec\Desktop\Meu Git\EvertonZap\.wwebjs_auth\session\Default\Local Storage\leveldb/MANIFEST-000001
-2024/05/09-14:40:52.135 1974 Recovering log #32
-2024/05/09-14:40:52.135 1974 Reusing old log C:\Users\kanec\Desktop\Meu Git\EvertonZap\.wwebjs_auth\session\Default\Local Storage\leveldb/000032.log 
-2024/05/09-19:41:24.086 39f4 Level-0 table #37: started
-2024/05/09-19:41:24.089 39f4 Level-0 table #37: 13686 bytes OK
-2024/05/09-19:41:24.090 39f4 Delete type=0 #32
+2024/08/07-10:13:56.166 a68 Reusing MANIFEST C:\Users\kanec\Desktop\Meu Git\EvertonZap\.wwebjs_auth\session\Default\Local Storage\leveldb/MANIFEST-000001
+2024/08/07-10:13:56.178 a68 Recovering log #144
+2024/08/07-10:13:56.178 a68 Reusing old log C:\Users\kanec\Desktop\Meu Git\EvertonZap\.wwebjs_auth\session\Default\Local Storage\leveldb/000144.log 
+2024/08/07-10:15:00.930 2b94 Level-0 table #148: started
+2024/08/07-10:15:00.934 2b94 Level-0 table #148: 13755 bytes OK
+2024/08/07-10:15:00.935 2b94 Delete type=0 #144
