@@ -519,7 +519,7 @@ async function cardapioExtrasBatatas(lanche) {
                 const extrasAdicionais = produto.adicionais;
                 Object.keys(extrasAdicionais).forEach((extra, index) => {
                     const numeroEmoji = emojisNumeros[index]; // Obter emoji do número
-                    extrasString += `${extrasAdicionais[extra]}\n`;
+                    extrasString += `\n${numeroEmoji} ${extrasAdicionais[extra]}`;
                 });
                 return extrasString;
             } else {
@@ -811,24 +811,38 @@ async function nomeExtraEspecificBebidas(lanches, indiceExtras) {
         throw error;
     }
 }
-async function nomeExtraEspecificoBatatas(lanches, indiceExtras) {
-    const indiceExtra = indiceExtras;
+async function nomeExtraEspecificoBatatas(lanche, indiceExtras) {
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoBatatas);
+        if (cardapio) {
+            const produto = cardapio[lanche];
+            if (produto) {
+                const nomeExtra = produto.adicionais[indiceExtras - 1]; // Subtrai 1 para o índice correto
+                if (nomeExtra) {
+                    return nomeExtra; // Retorna apenas o nome do extra
+                } else {
+                    throw new Error(`Extra no índice '${indiceExtras}' não encontrado no lanche ${lanche}.`);
+                }
+            } else {
+                throw new Error(`Lanche não encontrado: ${lanche}`);
+            }
+        } else {
+            throw new Error("Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+async function precoExtraEspecificoBatatas(lanches) {
     const lanche = lanches;
     try {
         const cardapio = await lerCardapio(caminhoArquivoBatatas);
         if (cardapio) {
             const produto = cardapio[lanche];
             if (produto) {
-                const extrasNomes = Object.values(produto.adicionais); // Obtém os nomes dos extras
-                const nomeItem = produto.produto; // Obtém o nome do item do cardápio
-                const nomeExtra = extrasNomes[indiceExtra - 1]; // Subtrai 1 para obter o índice correto
-                if (nomeExtra) {
-                    return { nomeExtra, nomeItem };
-                } else {
-                    throw new Error(`Extra no índice '${indiceExtra}' não encontrado no lanche ${lanche}.`);
-                }
+                return produto.valor;
             } else {
-                throw new Error("Lanche não encontrado: " + lanche);
+                throw new Error("Índice não encontrado: " + lanche);
             }
         } else {
             throw new Error("Erro ao ler o cardápio.");
@@ -901,7 +915,7 @@ async function caldasAcai(lanches, indiceExtras) {
             if (produto) {
                 const caldas = produto.calda; // Obtém o array de caldas
                 const nomeItem = produto.produto; // Obtém o nome do item do cardápio
-                
+
                 if (caldas && caldas.length > 0) {
                     const caldaEscolhida = caldas[indiceExtra - 1]; // Acessa a calda com base no índice fornecido
 
@@ -973,7 +987,7 @@ async function tamanhoEspecicoPizzaTradicional(lanches, indiceExtras) {
         throw error;
     }
 }
-async function  nomesTamanhoEspecicoPizzaTradicional(lanches, indiceExtras) {
+async function nomesTamanhoEspecicoPizzaTradicional(lanches, indiceExtras) {
     const indiceExtra = indiceExtras;
     const lanche = lanches;
     try {
@@ -981,15 +995,15 @@ async function  nomesTamanhoEspecicoPizzaTradicional(lanches, indiceExtras) {
         if (cardapio) {
             const produto = cardapio[lanche];
             if (produto) {
-                const extrasNomes = produto.tamanhos; // `tam` já é uma lista de strings
-                const nomeExtra = extrasNomes[indiceExtra - 1]; // Subtrai 1 para obter o índice correto
+                const tamanhos = produto.tamanhos; // `tamanhos` deve ser uma lista de strings
+                const nomeExtra = tamanhos[indiceExtra - 1]; // Subtrai 1 para obter o índice correto
                 if (nomeExtra) {
                     return nomeExtra;
                 } else {
-                    throw new Error(`Extra no índice '${indiceExtra}' não encontrado no lanche ${lanche}.`);
+                    throw new Error(`Tamanho no índice '${indiceExtra}' não encontrado no lanche ${lanche}.`);
                 }
             } else {
-                throw new Error("Lanche não encontrado: " + lanche);
+                throw new Error(`Lanche não encontrado: ${lanche}`);
             }
         } else {
             throw new Error("Erro ao ler o cardápio.");
@@ -999,8 +1013,9 @@ async function  nomesTamanhoEspecicoPizzaTradicional(lanches, indiceExtras) {
     }
 }
 
+
 const emojisNumeros = [
-    "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", 
+    "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣",
     "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟",
     "1️⃣1️⃣", "1️⃣2️⃣", "1️⃣3️⃣", "1️⃣4️⃣", "1️⃣5️⃣",
     "1️⃣6️⃣", "1️⃣7️⃣", "1️⃣8️⃣", "1️⃣9️⃣", "2️⃣0️⃣"
@@ -1029,6 +1044,7 @@ module.exports = {
     valorExtraEspecificoPizza2,
     valorExtraEspecificoPizza1,
     cardapioExtrasAcai,
+    precoExtraEspecificoBatatas,
     cardapioExtrasBatatas,
     cardapioExtrasBebidas,
     cardapioExtrasPizza2,

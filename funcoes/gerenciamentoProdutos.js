@@ -4,7 +4,7 @@ const { cardapioIndividual, cardapioCompleto, cardapioExtras, valorExtraEspecifi
     valorExtraEspecificoBatatas, valorExtraEspecificoBebidas, valorExtraEspecificoPizza2, valorExtraEspecificoPizza1,
     cardapioExtrasAcai, cardapioExtrasBatatas, cardapioExtrasBebidas, cardapioExtrasPizza2, cardapioExtrasPizza1,
     acaiCompleto, batatasCompleto, bebidasCompleto, cardapioCompletoAcai, cardapioCompletoBatatas, cardapioCompletoBebidas,
-    cardapioCompletoPizzas2, tamanhoEspecicoPizzaEspecial, nomesTamanhoEspecicoPizzaTradicional, tamanhoEspecicoPizzaTradicional, opcoesAcai, cardapioExtrasBurguer, caldasAcai, cardapioCompletoPizzas1, cardapioIndividualAcai, cardapioIndividualBebidas, cardapioIndividualBatatas, cardapioIndividualPizza2, } = require('../comandos/cardapio.js');
+    cardapioCompletoPizzas2, tamanhoEspecicoPizzaEspecial,precoExtraEspecificoBatatas, nomesTamanhoEspecicoPizzaTradicional, tamanhoEspecicoPizzaTradicional, opcoesAcai, cardapioExtrasBurguer, caldasAcai, cardapioCompletoPizzas1, cardapioIndividualAcai, cardapioIndividualBebidas, cardapioIndividualBatatas, cardapioIndividualPizza2, } = require('../comandos/cardapio.js');
 
 const respostas = {
     menu: '',
@@ -76,7 +76,7 @@ async function pegarRetorno(numeroContato, client, parametros, ids, lanches, est
             }
         case 6: // Batatas individuais
             try {
-                const resultado = await sandubaIndividualBatatas(id);
+                const resultado = await sandubaIndividualBatatas(lanche);
                 return `${resultado}`;
             } catch (error) {
                 return `Erro ao obter o produto: ${error.message}`;
@@ -259,10 +259,10 @@ async function pegarRetorno(numeroContato, client, parametros, ids, lanches, est
             } catch (error) {
                 return `Erro ao obter o produto: ${error.message}`;
             }
-        case 21: // Valor dos extras das batatas
+        case 21: // Nome dos adicionais das batatas
             try {
-                const resultado = await cardapioExtrasBatatas(id);
-                return `${resultado}`;
+                const extras = await cardapioExtrasBatatas(lanche);
+                return `${extras}`;
             } catch (error) {
                 return `Erro ao obter o produto: ${error.message}`;
             }
@@ -311,7 +311,7 @@ async function pegarRetorno(numeroContato, client, parametros, ids, lanches, est
         case 28: // Nome de um extra especifico das batatas
             try {
                 const resultado = await nomeExtraEspecificoBatatas(lanche, id);
-                return `Extra: ${resultado}`;
+                return `${resultado}`;
             } catch (error) {
                 return `Erro ao obter o produto: ${error.message}`;
             }
@@ -327,7 +327,7 @@ async function pegarRetorno(numeroContato, client, parametros, ids, lanches, est
                 const resultado = await opcoesAcai(lanche, id);
                 if (resultado && typeof resultado === 'object') {
                     const { nomeExtra, nomeItem } = resultado;
-                    return `Item: ${nomeItem}, Extra: ${nomeExtra}`;
+                    return `Item: ${nomeItem}, ${nomeExtra}`;
                 } else {
                     return `Resultado inesperado: ${resultado}`;
                 }
@@ -377,6 +377,13 @@ async function pegarRetorno(numeroContato, client, parametros, ids, lanches, est
         case 36: // Nomes dos tamanhos das pizzas
             try {
                 const resultado = await nomesTamanhoEspecicoPizzaTradicional(lanche, id);
+                return `${resultado}`;
+            } catch (error) {
+                return `Erro ao obter o produto: ${error.message}`;
+            }
+        case 37: // Valor da batata
+            try {
+                const resultado = await precoExtraEspecificoBatatas(lanche);
                 return `${resultado}`;
             } catch (error) {
                 return `Erro ao obter o produto: ${error.message}`;

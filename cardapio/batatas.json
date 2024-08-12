@@ -3,13 +3,13 @@
         "produto": "Batata P",
         "opcoes": "2",
         "adicionais": ["Calabresa", "Queijo Cheddar", "Bacon"],
-        "valor": "10,00"
+        "valor": "10.00"
         
     },
     "2": {
         "produto": "Batata M",
         "opcoes": "2",
         "adicionais": ["Calabresa", "Queijo Cheddar", "Bacon"],
-        "valor": "15,00"
+        "valor": "15.00"
     }
 }

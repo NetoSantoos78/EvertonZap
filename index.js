@@ -94,6 +94,7 @@ function getEstadoIndividual(numeroContato) {
             escolha: '',
             conclusao: '',
             msg: '',
+            batatas: 0
         };
     }
     return estadosIndividuais[numeroContato];
@@ -299,6 +300,7 @@ function resetarStatus(numeroContato) {
         estado.escolha = '',
         estado.conclusao = '',
         estado.msg = '',
+        estado.batatas = 0,
         carrinho.contato = '',
         carrinho.comprador = '',
         carrinho.idPedido = '',
@@ -916,6 +918,7 @@ async function avaliarresp1(numeroContato, message) {
             estado.respx = 1;
             estado.resp1 = 2;
             estado.resp2 = 18;
+            estado.resp4 = 13;
             await client.sendMessage(numeroContato, respostas.cardapio);
             break
         case 2: // Chamada do respx
@@ -1240,7 +1243,7 @@ async function avaliarresp1(numeroContato, message) {
             try {
                 const retorno1 = await pegarRetorno(numeroContato, client, 3, 2, null, estado, carrinho);// Nome do  lanche
                 const retorno2 = await pegarRetorno(numeroContato, client, 34, 1, 2, estado, carrinho); // Tamanho M
-                const retorno3 = await pegarRetorno(numeroContato, client, 36, 1, 2, estado, carrinho); // Tamanho da Pizza
+                const retorno3 = await pegarRetorno(numeroContato, client, 36, 1, 1, estado, carrinho); // Tamanho da Pizza
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
                 adicionarExtraNoCart(numeroContato, retorno3, 1);
@@ -1276,7 +1279,7 @@ async function avaliarresp1(numeroContato, message) {
             try {
                 const retorno1 = await pegarRetorno(numeroContato, client, 3, 3, null, estado, carrinho);// Nome do  lanche
                 const retorno2 = await pegarRetorno(numeroContato, client, 34, 1, 3, estado, carrinho); // Tamanho M
-                const retorno3 = await pegarRetorno(numeroContato, client, 36, 1, 3, estado, carrinho); // Tamanho da Pizza
+                const retorno3 = await pegarRetorno(numeroContato, client, 36, 1, 1, estado, carrinho); // Tamanho da Pizza
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
                 adicionarExtraNoCart(numeroContato, retorno3, 1);
@@ -1312,7 +1315,7 @@ async function avaliarresp1(numeroContato, message) {
             try {
                 const retorno1 = await pegarRetorno(numeroContato, client, 3, 4, null, estado, carrinho);// Nome do  lanche
                 const retorno2 = await pegarRetorno(numeroContato, client, 34, 1, 4, estado, carrinho); // Tamanho M
-                const retorno3 = await pegarRetorno(numeroContato, client, 36, 1, 4, estado, carrinho); // Tamanho da Pizza
+                const retorno3 = await pegarRetorno(numeroContato, client, 36, 1, 1, estado, carrinho); // Tamanho da Pizza
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
                 adicionarExtraNoCart(numeroContato, retorno3, 1);
@@ -1348,7 +1351,7 @@ async function avaliarresp1(numeroContato, message) {
             try {
                 const retorno1 = await pegarRetorno(numeroContato, client, 3, 5, null, estado, carrinho);// Nome do  lanche
                 const retorno2 = await pegarRetorno(numeroContato, client, 34, 1, 5, estado, carrinho); // Tamanho M
-                const retorno3 = await pegarRetorno(numeroContato, client, 36, 1, 5, estado, carrinho); // Tamanho da Pizza
+                const retorno3 = await pegarRetorno(numeroContato, client, 36, 1, 1, estado, carrinho); // Tamanho da Pizza
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
                 adicionarExtraNoCart(numeroContato, retorno3, 1);
@@ -1384,7 +1387,7 @@ async function avaliarresp1(numeroContato, message) {
             try {
                 const retorno1 = await pegarRetorno(numeroContato, client, 3, 6, null, estado, carrinho);// Nome do  lanche
                 const retorno2 = await pegarRetorno(numeroContato, client, 34, 1, 6, estado, carrinho); // Tamanho P
-                const retorno3 = await pegarRetorno(numeroContato, client, 36, 1, 6, estado, carrinho); // Tamanho da Pizza
+                const retorno3 = await pegarRetorno(numeroContato, client, 36, 1, 1, estado, carrinho); // Tamanho da Pizza
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
                 adicionarExtraNoCart(numeroContato, retorno3, 1);
@@ -1471,7 +1474,7 @@ async function avaliarresp1(numeroContato, message) {
             try {
                 const retorno1 = await pegarRetorno(numeroContato, client, 4, 2, null, estado, carrinho);// Nome do  lanche
                 const retorno2 = await pegarRetorno(numeroContato, client, 35, 1, 2, estado, carrinho); // Tamanho M
-                const retorno3 = await pegarRetorno(numeroContato, client, 36, 1, 2, estado, carrinho); // Tamanho da Pizza
+                const retorno3 = await pegarRetorno(numeroContato, client, 36, 1, 1, estado, carrinho); // Tamanho da Pizza
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
                 adicionarExtraNoCart(numeroContato, retorno3, 1);
@@ -1507,7 +1510,7 @@ async function avaliarresp1(numeroContato, message) {
             try {
                 const retorno1 = await pegarRetorno(numeroContato, client, 4, 3, null, estado, carrinho);// Nome do  lanche
                 const retorno2 = await pegarRetorno(numeroContato, client, 35, 1, 3, estado, carrinho); // Tamanho P
-                const retorno3 = await pegarRetorno(numeroContato, client, 36, 1, 3, estado, carrinho); // Tamanho da Pizza
+                const retorno3 = await pegarRetorno(numeroContato, client, 36, 1, 1, estado, carrinho); // Tamanho da Pizza
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
                 adicionarExtraNoCart(numeroContato, retorno3, 1);
@@ -1543,7 +1546,7 @@ async function avaliarresp1(numeroContato, message) {
             try {
                 const retorno1 = await pegarRetorno(numeroContato, client, 4, 4, null, estado, carrinho);// Nome do  lanche
                 const retorno2 = await pegarRetorno(numeroContato, client, 35, 1, 4, estado, carrinho); // Tamanho P
-                const retorno3 = await pegarRetorno(numeroContato, client, 36, 1, 4, estado, carrinho); // Tamanho da Pizza
+                const retorno3 = await pegarRetorno(numeroContato, client, 36, 1, 1, estado, carrinho); // Tamanho da Pizza
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
                 adicionarExtraNoCart(numeroContato, retorno3, 1);
@@ -1579,7 +1582,7 @@ async function avaliarresp1(numeroContato, message) {
             try {
                 const retorno1 = await pegarRetorno(numeroContato, client, 4, 5, null, estado, carrinho);// Nome do  lanche
                 const retorno2 = await pegarRetorno(numeroContato, client, 35, 1, 5, estado, carrinho); // Tamanho P
-                const retorno3 = await pegarRetorno(numeroContato, client, 36, 1, 5, estado, carrinho); // Tamanho da Pizza
+                const retorno3 = await pegarRetorno(numeroContato, client, 36, 1, 1, estado, carrinho); // Tamanho da Pizza
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
                 adicionarExtraNoCart(numeroContato, retorno3, 1);
@@ -1615,7 +1618,7 @@ async function avaliarresp1(numeroContato, message) {
             try {
                 const retorno1 = await pegarRetorno(numeroContato, client, 4, 6, null, estado, carrinho);// Nome do  lanche
                 const retorno2 = await pegarRetorno(numeroContato, client, 35, 1, 6, estado, carrinho); // Tamanho P
-                const retorno3 = await pegarRetorno(numeroContato, client, 36, 1, 6, estado, carrinho); // Tamanho da Pizza
+                const retorno3 = await pegarRetorno(numeroContato, client, 36, 1, 1, estado, carrinho); // Tamanho da Pizza
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
                 adicionarExtraNoCart(numeroContato, retorno3, 1);
@@ -1651,7 +1654,7 @@ async function avaliarresp1(numeroContato, message) {
             try {
                 const retorno1 = await pegarRetorno(numeroContato, client, 4, 7, null, estado, carrinho);// Nome do  lanche
                 const retorno2 = await pegarRetorno(numeroContato, client, 35, 1, 7, estado, carrinho); // Tamanho P
-                const retorno3 = await pegarRetorno(numeroContato, client, 36, 1, 7, estado, carrinho); // Tamanho da Pizza
+                const retorno3 = await pegarRetorno(numeroContato, client, 36, 1, 1, estado, carrinho); // Tamanho da Pizza
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
                 adicionarExtraNoCart(numeroContato, retorno3, 1);
@@ -1681,6 +1684,139 @@ async function avaliarresp1(numeroContato, message) {
                 }, 1000);
             } catch (error) {
                 console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 35: // Batata P
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 6, null, 1, estado, carrinho);// Nome do  lanche
+                const retorno2 = await pegarRetorno(numeroContato, client, 21, null, 1, estado, carrinho);
+                message.reply("Perfeito, você escolheu " + retorno1 + ".");
+                setTimeout(() => {
+                    client.sendMessage(numeroContato, "Agora, escolha o que deseja acrescentar à batata.\nVocê pode escolher 2 itens\n" + retorno2);
+                }, 500);
+                estado.respx = 1000;
+                estado.resp1 = 36; // Calabresa 1/2
+                estado.resp2 = 36; // Cheddar 1/2
+                estado.resp3 = 28; // Bacon 1/2
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 36: // Loop dos adicionais Batata P
+            switch (estado.batatas) {
+                case 0: // Primeiro adicional
+                    try {
+                        const retorno1 = await pegarRetorno(numeroContato, client, 6, null, 1, estado, carrinho);// Nome do  lanche
+                        const retorno2 = await pegarRetorno(numeroContato, client, 28, 1, 1, estado, carrinho); // Extra selecionado
+                        const retorno3 = await pegarRetorno(numeroContato, client, 21, null, 1, estado, carrinho); // Adicionais disponivel
+                        const retorno4 = await pegarRetorno(numeroContato, client, 37, null, 1, estado, carrinho);// preço da batata                     
+                        adicionarProdutoNoCart(numeroContato, retorno1); // Nome ADD cart
+                        adicionarValorProdutoAoCarrinho(numeroContato, retorno4); // Preço ADD cart
+                        adicionarExtraNoCart(numeroContato, retorno2, 1); // Extra ADD cart
+                        message.reply("Perfeito, você escolheu " + retorno2 + ".");
+                        setTimeout(() => {
+                            client.sendMessage(numeroContato, "Escolha o segundo adicional.\n" + retorno3);
+                        }, 500);
+                        estado.respx = 1000;
+                        estado.batatas = 1;
+                        estado.resp1 = 36; // Calabresa 1/2
+                        estado.resp2 = 36; // Cheddar 1/2
+                        estado.resp3 = 28; // Bacon 1/2
+                    } catch (error) {
+                        console.error('Erro ao obter o retorno:', error);
+                    }
+                    break
+                case 1: // Segundo adicional
+                    try {
+                        const retorno2 = await pegarRetorno(numeroContato, client, 28, 1, 1, estado, carrinho); // Extra selecionado                
+                        adicionarExtraNoCart(numeroContato, retorno2, 1); // Extra ADD cart
+                        message.reply("Perfeito, você escolheu " + retorno2 + ". Confira seu pedido e confirme se está tudo certo antes de confirmá-lo.");
+                        let mensagem = `Seu pedido                     ${carrinho.idPedido}\n\n`;
+                        mensagem += `Pedido         (${Object.keys(carrinho.produtos).length} item no carrinho)\n`;
+                        for (const [idProduto, produto] of Object.entries(carrinho.produtos)) {
+                            mensagem += `*${produto}*\n`;
+                            if (carrinho.extras.hasOwnProperty(idProduto) && Object.keys(carrinho.extras[idProduto]).length > 0) {
+                                Object.entries(carrinho.extras[idProduto]).forEach(([extra, quantidade]) => {
+                                    mensagem += `  *↳ ${extra}: ${quantidade}*\n`;
+                                });
+                            } else {
+                                mensagem += `  *↳ Nenhum extra*\n`;
+                            }
+                        }
+                        mensagem += '\n*Pagamento*\n';
+                        mensagem += `subtotal                 *R$* ${carrinho.preco}\n`;
+                        mensagem += `taxa de entrega    *R$* ${carrinho.taxaEntrega || '1,00'}\n`;
+                        mensagem += `total                        *R$* ${carrinho.total + 1}\n`;
+                        setTimeout(() => {
+                            client.sendMessage(numeroContato, mensagem);
+                            setTimeout(() => {
+                                client.sendMessage(numeroContato, respostas.maisAlgoPedido);
+                            }, 200);
+                        }, 500);
+                    } catch (error) {
+                        console.error('Erro ao obter o retorno:', error);
+                    }
+                    break
+            }
+            break
+        case 37: // Loop dos adicionais Batata M
+            switch (estado.batatas) {
+                case 0: // Primeiro adicional
+                    try {
+                        const retorno1 = await pegarRetorno(numeroContato, client, 6, null, 2, estado, carrinho);// Nome do  lanche
+                        const retorno2 = await pegarRetorno(numeroContato, client, 28, 1, 2, estado, carrinho); // Extra selecionado
+                        const retorno3 = await pegarRetorno(numeroContato, client, 21, null, 2, estado, carrinho); // Adicionais disponivel
+                        const retorno4 = await pegarRetorno(numeroContato, client, 37, null, 2, estado, carrinho);// preço da batata                     
+                        adicionarProdutoNoCart(numeroContato, retorno1); // Nome ADD cart
+                        adicionarValorProdutoAoCarrinho(numeroContato, retorno4); // Preço ADD cart
+                        adicionarExtraNoCart(numeroContato, retorno2, 1); // Extra ADD cart
+                        message.reply("Perfeito, você escolheu " + retorno2 + ".");
+                        setTimeout(() => {
+                            client.sendMessage(numeroContato, "Escolha o segundo adicional.\n" + retorno3);
+                        }, 500);
+                        estado.respx = 1000;
+                        estado.batatas = 1;
+                        estado.resp1 = 36; // Calabresa 1/2
+                        estado.resp2 = 36; // Cheddar 1/2
+                        estado.resp3 = 28; // Bacon 1/2
+                    } catch (error) {
+                        console.error('Erro ao obter o retorno:', error);
+                    }
+                    break
+                case 1: // Segundo adicional
+                    try {
+                        const retorno2 = await pegarRetorno(numeroContato, client, 28, 1, 2, estado, carrinho); // Extra selecionado                
+                        adicionarExtraNoCart(numeroContato, retorno2, 1); // Extra ADD cart
+                        message.reply("Perfeito, você escolheu " + retorno2 + ". Confira seu pedido e confirme se está tudo certo antes de confirmá-lo.");
+                        let mensagem = `Seu pedido                     ${carrinho.idPedido}\n\n`;
+                        mensagem += `Pedido         (${Object.keys(carrinho.produtos).length} item no carrinho)\n`;
+                        for (const [idProduto, produto] of Object.entries(carrinho.produtos)) {
+                            mensagem += `*${produto}*\n`;
+                            if (carrinho.extras.hasOwnProperty(idProduto) && Object.keys(carrinho.extras[idProduto]).length > 0) {
+                                Object.entries(carrinho.extras[idProduto]).forEach(([extra, quantidade]) => {
+                                    mensagem += `  *↳ ${extra}: ${quantidade}*\n`;
+                                });
+                            } else {
+                                mensagem += `  *↳ Nenhum extra*\n`;
+                            }
+                        }
+                        mensagem += '\n*Pagamento*\n';
+                        mensagem += `subtotal                 *R$* ${carrinho.preco}\n`;
+                        mensagem += `taxa de entrega    *R$* ${carrinho.taxaEntrega || '1,00'}\n`;
+                        mensagem += `total                        *R$* ${carrinho.total + 1}\n`;
+                        setTimeout(() => {
+                            client.sendMessage(numeroContato, mensagem);
+                            client.sendMessage(numeroContato, respostas.maisAlgoPedido);
+                        }, 500);
+                        estado.respx = 14;
+                        estado.batatas = 0;
+                        estado.resp1 = 1; // Calabresa 2/2
+                        estado.resp2 = 21; // Cheddar 2/2
+                        estado.resp3 = 1000; // Bacon 2/2
+                    } catch (error) {
+                        console.error('Erro ao obter o retorno:', error);
+                    }
+                    break
             }
             break
         case 999:
@@ -2021,7 +2157,7 @@ async function avaliarresp2(numeroContato, message) {
             try {
                 const retorno1 = await pegarRetorno(numeroContato, client, 3, 2, null, estado, carrinho);// Nome do  lanche
                 const retorno2 = await pegarRetorno(numeroContato, client, 34, 2, 2, estado, carrinho); // Tamanho M
-                const retorno3 = await pegarRetorno(numeroContato, client, 36, 2, 2, estado, carrinho); // Tamanho da Pizza
+                const retorno3 = await pegarRetorno(numeroContato, client, 36, 2, 1, estado, carrinho); // Tamanho da Pizza
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
                 adicionarExtraNoCart(numeroContato, retorno3, 1);
@@ -2057,7 +2193,7 @@ async function avaliarresp2(numeroContato, message) {
             try {
                 const retorno1 = await pegarRetorno(numeroContato, client, 3, 3, null, estado, carrinho);// Nome do  lanche
                 const retorno2 = await pegarRetorno(numeroContato, client, 34, 2, 3, estado, carrinho); // Tamanho M
-                const retorno3 = await pegarRetorno(numeroContato, client, 36, 2, 3, estado, carrinho); // Tamanho da Pizza
+                const retorno3 = await pegarRetorno(numeroContato, client, 36, 2, 1, estado, carrinho); // Tamanho da Pizza
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
                 adicionarExtraNoCart(numeroContato, retorno3, 1);
@@ -2093,7 +2229,7 @@ async function avaliarresp2(numeroContato, message) {
             try {
                 const retorno1 = await pegarRetorno(numeroContato, client, 3, 4, null, estado, carrinho);// Nome do  lanche
                 const retorno2 = await pegarRetorno(numeroContato, client, 34, 2, 4, estado, carrinho); // Tamanho M
-                const retorno3 = await pegarRetorno(numeroContato, client, 36, 2, 4, estado, carrinho); // Tamanho da Pizza
+                const retorno3 = await pegarRetorno(numeroContato, client, 36, 2, 1, estado, carrinho); // Tamanho da Pizza
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
                 adicionarExtraNoCart(numeroContato, retorno3, 1);
@@ -2129,7 +2265,7 @@ async function avaliarresp2(numeroContato, message) {
             try {
                 const retorno1 = await pegarRetorno(numeroContato, client, 3, 5, null, estado, carrinho);// Nome do  lanche
                 const retorno2 = await pegarRetorno(numeroContato, client, 34, 2, 5, estado, carrinho); // Tamanho M
-                const retorno3 = await pegarRetorno(numeroContato, client, 36, 2, 5, estado, carrinho); // Tamanho da Pizza
+                const retorno3 = await pegarRetorno(numeroContato, client, 36, 2, 1, estado, carrinho); // Tamanho da Pizza
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
                 adicionarExtraNoCart(numeroContato, retorno3, 1);
@@ -2165,7 +2301,7 @@ async function avaliarresp2(numeroContato, message) {
             try {
                 const retorno1 = await pegarRetorno(numeroContato, client, 3, 6, null, estado, carrinho);// Nome do  lanche
                 const retorno2 = await pegarRetorno(numeroContato, client, 34, 2, 6, estado, carrinho); // Tamanho M
-                const retorno3 = await pegarRetorno(numeroContato, client, 36, 2, 6, estado, carrinho); // Tamanho da Pizza
+                const retorno3 = await pegarRetorno(numeroContato, client, 36, 2, 1, estado, carrinho); // Tamanho da Pizza
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
                 adicionarExtraNoCart(numeroContato, retorno3, 1);
@@ -2252,7 +2388,7 @@ async function avaliarresp2(numeroContato, message) {
             try {
                 const retorno1 = await pegarRetorno(numeroContato, client, 4, 2, null, estado, carrinho);// Nome do  lanche
                 const retorno2 = await pegarRetorno(numeroContato, client, 35, 2, 2, estado, carrinho); // Tamanho M
-                const retorno3 = await pegarRetorno(numeroContato, client, 36, 2, 2, estado, carrinho); // Tamanho da Pizza
+                const retorno3 = await pegarRetorno(numeroContato, client, 36, 2, 1, estado, carrinho); // Tamanho da Pizza
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
                 adicionarExtraNoCart(numeroContato, retorno3, 1);
@@ -2288,7 +2424,7 @@ async function avaliarresp2(numeroContato, message) {
             try {
                 const retorno1 = await pegarRetorno(numeroContato, client, 4, 3, null, estado, carrinho);// Nome do  lanche
                 const retorno2 = await pegarRetorno(numeroContato, client, 35, 2, 3, estado, carrinho); // Tamanho M
-                const retorno3 = await pegarRetorno(numeroContato, client, 36, 2, 3, estado, carrinho); // Tamanho da Pizza
+                const retorno3 = await pegarRetorno(numeroContato, client, 36, 2, 1, estado, carrinho); // Tamanho da Pizza
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
                 adicionarExtraNoCart(numeroContato, retorno3, 1);
@@ -2324,7 +2460,7 @@ async function avaliarresp2(numeroContato, message) {
             try {
                 const retorno1 = await pegarRetorno(numeroContato, client, 4, 4, null, estado, carrinho);// Nome do  lanche
                 const retorno2 = await pegarRetorno(numeroContato, client, 35, 2, 4, estado, carrinho); // Tamanho M
-                const retorno3 = await pegarRetorno(numeroContato, client, 36, 2, 4, estado, carrinho); // Tamanho da Pizza
+                const retorno3 = await pegarRetorno(numeroContato, client, 36, 2, 1, estado, carrinho); // Tamanho da Pizza
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
                 adicionarExtraNoCart(numeroContato, retorno3, 1);
@@ -2360,7 +2496,7 @@ async function avaliarresp2(numeroContato, message) {
             try {
                 const retorno1 = await pegarRetorno(numeroContato, client, 4, 5, null, estado, carrinho);// Nome do  lanche
                 const retorno2 = await pegarRetorno(numeroContato, client, 35, 2, 5, estado, carrinho); // Tamanho P
-                const retorno3 = await pegarRetorno(numeroContato, client, 36, 2, 5, estado, carrinho); // Tamanho da Pizza
+                const retorno3 = await pegarRetorno(numeroContato, client, 36, 2, 1, estado, carrinho); // Tamanho da Pizza
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
                 adicionarExtraNoCart(numeroContato, retorno3, 1);
@@ -2396,7 +2532,7 @@ async function avaliarresp2(numeroContato, message) {
             try {
                 const retorno1 = await pegarRetorno(numeroContato, client, 4, 6, null, estado, carrinho);// Nome do  lanche
                 const retorno2 = await pegarRetorno(numeroContato, client, 35, 2, 6, estado, carrinho); // Tamanho P
-                const retorno3 = await pegarRetorno(numeroContato, client, 36, 2, 6, estado, carrinho); // Tamanho da Pizza
+                const retorno3 = await pegarRetorno(numeroContato, client, 36, 2, 1, estado, carrinho); // Tamanho da Pizza
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
                 adicionarExtraNoCart(numeroContato, retorno3, 1);
@@ -2432,7 +2568,7 @@ async function avaliarresp2(numeroContato, message) {
             try {
                 const retorno1 = await pegarRetorno(numeroContato, client, 4, 7, null, estado, carrinho);// Nome do  lanche
                 const retorno2 = await pegarRetorno(numeroContato, client, 35, 2, 7, estado, carrinho); // Tamanho P
-                const retorno3 = await pegarRetorno(numeroContato, client, 36, 2, 7, estado, carrinho); // Tamanho da Pizza
+                const retorno3 = await pegarRetorno(numeroContato, client, 36, 2, 1, estado, carrinho); // Tamanho da Pizza
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
                 adicionarExtraNoCart(numeroContato, retorno3, 1);
@@ -2462,6 +2598,122 @@ async function avaliarresp2(numeroContato, message) {
                 }, 1000);
             } catch (error) {
                 console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 36: // Loop dos adicionais Batata P
+            switch (estado.batatas) {
+                case 0: // Primeiro adicional
+                    try {
+                        const retorno1 = await pegarRetorno(numeroContato, client, 6, null, 1, estado, carrinho);// Nome do  lanche
+                        const retorno2 = await pegarRetorno(numeroContato, client, 28, 2, 1, estado, carrinho); // Extra selecionado
+                        const retorno3 = await pegarRetorno(numeroContato, client, 21, null, 1, estado, carrinho); // Adicionais disponivel
+                        const retorno4 = await pegarRetorno(numeroContato, client, 37, null, 1, estado, carrinho);// preço da batata                     
+                        adicionarProdutoNoCart(numeroContato, retorno1); // Nome ADD cart
+                        adicionarValorProdutoAoCarrinho(numeroContato, retorno4); // Preço ADD cart
+                        adicionarExtraNoCart(numeroContato, retorno2, 1); // Extra ADD cart
+                        message.reply("Perfeito, você escolheu " + retorno2 + ".");
+                        setTimeout(() => {
+                            client.sendMessage(numeroContato, "Escolha o segundo adicional.\n" + retorno3);
+                        }, 500);
+                        estado.respx = 1000;
+                        estado.batatas = 1;
+                        estado.resp1 = 36; // Calabresa 1/2
+                        estado.resp2 = 36; // Cheddar 1/2
+                        estado.resp3 = 28; // Bacon 1/2
+                    } catch (error) {
+                        console.error('Erro ao obter o retorno:', error);
+                    }
+                    break
+                case 1: // Segundo adicional
+                    try {
+                        const retorno2 = await pegarRetorno(numeroContato, client, 28, 2, 1, estado, carrinho); // Extra selecionado                
+                        adicionarExtraNoCart(numeroContato, retorno2, 1); // Extra ADD cart
+                        message.reply("Perfeito, você escolheu " + retorno2 + ".");
+                        setTimeout(() => {
+                            client.sendMessage(numeroContato, respostas.maisAlgoPedido);
+                        }, 500);
+                        estado.respx = 14;
+                        estado.batatas = 0;
+                        estado.resp1 = 1; // Calabresa 2/2
+                        estado.resp2 = 21; // Cheddar 2/2
+                        estado.resp3 = 1000; // Bacon 2/2
+                    } catch (error) {
+                        console.error('Erro ao obter o retorno:', error);
+                    }
+                    break
+            }
+            break
+        case 37: // Batata M
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 6, null, 2, estado, carrinho);// Nome do  lanche
+                const retorno2 = await pegarRetorno(numeroContato, client, 21, null, 2, estado, carrinho);
+                message.reply("Perfeito, você escolheu " + retorno1 + ".");
+                setTimeout(() => {
+                    client.sendMessage(numeroContato, "Agora, escolha o que deseja acrescentar à batata.\nVocê pode escolher 2 itens\n" + retorno2);
+                }, 500);
+                estado.respx = 1000;
+                estado.resp1 = 37; // Calabresa 1/2
+                estado.resp2 = 38; // Cheddar 1/2
+                estado.resp3 = 29; // Bacon 1/2
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 38: // Loop dos adicionais Batata M
+            switch (estado.batatas) {
+                case 0: // Primeiro adicional
+                    try {
+                        const retorno1 = await pegarRetorno(numeroContato, client, 6, null, 2, estado, carrinho);// Nome do  lanche
+                        const retorno2 = await pegarRetorno(numeroContato, client, 28, 2, 2, estado, carrinho); // Extra selecionado
+                        const retorno3 = await pegarRetorno(numeroContato, client, 21, null, 2, estado, carrinho); // Adicionais disponivel
+                        const retorno4 = await pegarRetorno(numeroContato, client, 37, null, 2, estado, carrinho);// preço da batata                     
+                        adicionarProdutoNoCart(numeroContato, retorno1); // Nome ADD cart
+                        adicionarValorProdutoAoCarrinho(numeroContato, retorno4); // Preço ADD cart
+                        adicionarExtraNoCart(numeroContato, retorno2, 1); // Extra ADD cart
+                        message.reply("Perfeito, você escolheu " + retorno2 + ".");
+                        setTimeout(() => {
+                            client.sendMessage(numeroContato, "Escolha o segundo adicional.\n" + retorno3);
+                        }, 500);
+                        estado.respx = 1000;
+                        estado.batatas = 1;
+                        estado.resp1 = 36; // Calabresa 1/2
+                        estado.resp2 = 36; // Cheddar 1/2
+                        estado.resp3 = 28; // Bacon 1/2
+                    } catch (error) {
+                        console.error('Erro ao obter o retorno:', error);
+                    }
+                    break
+                case 1: // Segundo adicional
+                    try {
+                        const retorno2 = await pegarRetorno(numeroContato, client, 28, 2, 2, estado, carrinho); // Extra selecionado                
+                        adicionarExtraNoCart(numeroContato, retorno2, 1); // Extra ADD cart
+                        message.reply("Perfeito, você escolheu " + retorno2 + ". Confira seu pedido e confirme se está tudo certo antes de confirmá-lo.");
+                        let mensagem = `Seu pedido                     ${carrinho.idPedido}\n\n`;
+                        mensagem += `Pedido         (${Object.keys(carrinho.produtos).length} item no carrinho)\n`;
+                        for (const [idProduto, produto] of Object.entries(carrinho.produtos)) {
+                            mensagem += `*${produto}*\n`;
+                            if (carrinho.extras.hasOwnProperty(idProduto) && Object.keys(carrinho.extras[idProduto]).length > 0) {
+                                Object.entries(carrinho.extras[idProduto]).forEach(([extra, quantidade]) => {
+                                    mensagem += `  *↳ ${extra}: ${quantidade}*\n`;
+                                });
+                            } else {
+                                mensagem += `  *↳ Nenhum extra*\n`;
+                            }
+                        }
+                        mensagem += '\n*Pagamento*\n';
+                        mensagem += `subtotal                 *R$* ${carrinho.preco}\n`;
+                        mensagem += `taxa de entrega    *R$* ${carrinho.taxaEntrega || '1,00'}\n`;
+                        mensagem += `total                        *R$* ${carrinho.total + 1}\n`;
+                        setTimeout(() => {
+                            client.sendMessage(numeroContato, mensagem);
+                            setTimeout(() => {
+                                client.sendMessage(numeroContato, respostas.maisAlgoPedido);
+                            }, 200);
+                        }, 500);
+                    } catch (error) {
+                        console.error('Erro ao obter o retorno:', error);
+                    }
+                    break
             }
             break
         case 999:
@@ -2709,7 +2961,7 @@ async function avaliarresp3(numeroContato, message) {
             try {
                 const retorno1 = await pegarRetorno(numeroContato, client, 3, 2, null, estado, carrinho);// Nome do  lanche
                 const retorno2 = await pegarRetorno(numeroContato, client, 34, 3, 2, estado, carrinho); // Tamanho M
-                const retorno3 = await pegarRetorno(numeroContato, client, 36, 3, 2, estado, carrinho); // Tamanho da Pizza
+                const retorno3 = await pegarRetorno(numeroContato, client, 36, 3, 1, estado, carrinho); // Tamanho da Pizza
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
                 adicionarExtraNoCart(numeroContato, retorno3, 1);
@@ -2760,7 +3012,7 @@ async function avaliarresp3(numeroContato, message) {
             try {
                 const retorno1 = await pegarRetorno(numeroContato, client, 3, 3, null, estado, carrinho);// Nome do  lanche
                 const retorno2 = await pegarRetorno(numeroContato, client, 34, 3, 3, estado, carrinho); // Tamanho M
-                const retorno3 = await pegarRetorno(numeroContato, client, 36, 3, 3, estado, carrinho); // Tamanho da Pizza
+                const retorno3 = await pegarRetorno(numeroContato, client, 36, 3, 1, estado, carrinho); // Tamanho da Pizza
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
                 adicionarExtraNoCart(numeroContato, retorno3, 1);
@@ -2796,7 +3048,7 @@ async function avaliarresp3(numeroContato, message) {
             try {
                 const retorno1 = await pegarRetorno(numeroContato, client, 3, 4, null, estado, carrinho);// Nome do  lanche
                 const retorno2 = await pegarRetorno(numeroContato, client, 34, 3, 4, estado, carrinho); // Tamanho M
-                const retorno3 = await pegarRetorno(numeroContato, client, 36, 3, 4, estado, carrinho); // Tamanho da Pizza
+                const retorno3 = await pegarRetorno(numeroContato, client, 36, 3, 1, estado, carrinho); // Tamanho da Pizza
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
                 adicionarExtraNoCart(numeroContato, retorno3, 1);
@@ -2832,7 +3084,7 @@ async function avaliarresp3(numeroContato, message) {
             try {
                 const retorno1 = await pegarRetorno(numeroContato, client, 3, 5, null, estado, carrinho);// Nome do  lanche
                 const retorno2 = await pegarRetorno(numeroContato, client, 34, 3, 5, estado, carrinho); // Tamanho M
-                const retorno3 = await pegarRetorno(numeroContato, client, 36, 3, 5, estado, carrinho); // Tamanho da Pizza
+                const retorno3 = await pegarRetorno(numeroContato, client, 36, 3, 1, estado, carrinho); // Tamanho da Pizza
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
                 adicionarExtraNoCart(numeroContato, retorno3, 1);
@@ -2868,7 +3120,7 @@ async function avaliarresp3(numeroContato, message) {
             try {
                 const retorno1 = await pegarRetorno(numeroContato, client, 3, 6, null, estado, carrinho);// Nome do  lanche
                 const retorno2 = await pegarRetorno(numeroContato, client, 34, 3, 6, estado, carrinho); // Tamanho M
-                const retorno3 = await pegarRetorno(numeroContato, client, 36, 3, 6, estado, carrinho); // Tamanho da Pizza
+                const retorno3 = await pegarRetorno(numeroContato, client, 36, 3, 1, estado, carrinho); // Tamanho da Pizza
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
                 adicionarExtraNoCart(numeroContato, retorno3, 1);
@@ -2955,7 +3207,7 @@ async function avaliarresp3(numeroContato, message) {
             try {
                 const retorno1 = await pegarRetorno(numeroContato, client, 4, 2, null, estado, carrinho);// Nome do  lanche
                 const retorno2 = await pegarRetorno(numeroContato, client, 35, 3, 2, estado, carrinho); // Tamanho M
-                const retorno3 = await pegarRetorno(numeroContato, client, 36, 3, 2, estado, carrinho); // Tamanho da Pizza
+                const retorno3 = await pegarRetorno(numeroContato, client, 36, 3, 1, estado, carrinho); // Tamanho da Pizza
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
                 adicionarExtraNoCart(numeroContato, retorno3, 1);
@@ -2991,7 +3243,7 @@ async function avaliarresp3(numeroContato, message) {
             try {
                 const retorno1 = await pegarRetorno(numeroContato, client, 4, 3, null, estado, carrinho);// Nome do  lanche
                 const retorno2 = await pegarRetorno(numeroContato, client, 35, 3, 3, estado, carrinho); // Tamanho M
-                const retorno3 = await pegarRetorno(numeroContato, client, 36, 3, 3, estado, carrinho); // Tamanho da Pizza
+                const retorno3 = await pegarRetorno(numeroContato, client, 36, 3, 1, estado, carrinho); // Tamanho da Pizza
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
                 adicionarExtraNoCart(numeroContato, retorno3, 1);
@@ -3027,7 +3279,7 @@ async function avaliarresp3(numeroContato, message) {
             try {
                 const retorno1 = await pegarRetorno(numeroContato, client, 4, 4, null, estado, carrinho);// Nome do  lanche
                 const retorno2 = await pegarRetorno(numeroContato, client, 35, 3, 4, estado, carrinho); // Tamanho M
-                const retorno3 = await pegarRetorno(numeroContato, client, 36, 3, 4, estado, carrinho); // Tamanho da Pizza
+                const retorno3 = await pegarRetorno(numeroContato, client, 36, 3, 1, estado, carrinho); // Tamanho da Pizza
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
                 adicionarExtraNoCart(numeroContato, retorno3, 1);
@@ -3099,7 +3351,7 @@ async function avaliarresp3(numeroContato, message) {
             try {
                 const retorno1 = await pegarRetorno(numeroContato, client, 4, 6, null, estado, carrinho);// Nome do  lanche
                 const retorno2 = await pegarRetorno(numeroContato, client, 35, 3, 6, estado, carrinho); // Tamanho P
-                const retorno3 = await pegarRetorno(numeroContato, client, 36, 3, 6, estado, carrinho); // Tamanho da Pizza
+                const retorno3 = await pegarRetorno(numeroContato, client, 36, 3, 1, estado, carrinho); // Tamanho da Pizza
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
                 adicionarExtraNoCart(numeroContato, retorno3, 1);
@@ -3135,7 +3387,7 @@ async function avaliarresp3(numeroContato, message) {
             try {
                 const retorno1 = await pegarRetorno(numeroContato, client, 4, 7, null, estado, carrinho);// Nome do  lanche
                 const retorno2 = await pegarRetorno(numeroContato, client, 35, 3, 7, estado, carrinho); // Tamanho P
-                const retorno3 = await pegarRetorno(numeroContato, client, 36, 3, 7, estado, carrinho); // Tamanho da Pizza
+                const retorno3 = await pegarRetorno(numeroContato, client, 36, 3, 1, estado, carrinho); // Tamanho da Pizza
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
                 adicionarExtraNoCart(numeroContato, retorno3, 1);
@@ -3165,6 +3417,107 @@ async function avaliarresp3(numeroContato, message) {
                 }, 1000);
             } catch (error) {
                 console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 28: // Loop dos adicionais Batata P
+            console.log(estado.batatas)
+            switch (estado.batatas) {
+                case 0: // Primeiro adicional
+                    try {
+                        const retorno1 = await pegarRetorno(numeroContato, client, 6, null, 1, estado, carrinho);// Nome do  lanche
+                        const retorno2 = await pegarRetorno(numeroContato, client, 28, 3, 1, estado, carrinho); // Extra selecionado
+                        const retorno3 = await pegarRetorno(numeroContato, client, 21, null, 1, estado, carrinho); // Adicionais disponivel
+                        const retorno4 = await pegarRetorno(numeroContato, client, 37, null, 1, estado, carrinho);// preço da batata                     
+                        adicionarProdutoNoCart(numeroContato, retorno1); // Nome ADD cart
+                        adicionarValorProdutoAoCarrinho(numeroContato, retorno4); // Preço ADD cart
+                        adicionarExtraNoCart(numeroContato, retorno2, 1); // Extra ADD cart
+                        message.reply("Perfeito, você escolheu " + retorno2 + ".");
+                        setTimeout(() => {
+                            client.sendMessage(numeroContato, "Escolha o segundo adicional.\n" + retorno3);
+                        }, 500);
+                        estado.respx = 1000;
+                        estado.batatas = 1;
+                        estado.resp1 = 36; // Calabresa 1/2
+                        estado.resp2 = 36; // Cheddar 1/2
+                        estado.resp3 = 28; // Bacon 1/2
+                    } catch (error) {
+                        console.error('Erro ao obter o retorno:', error);
+                    }
+                    break
+                case 1: // Segundo adicional
+                    try {
+                        const retorno2 = await pegarRetorno(numeroContato, client, 28, 3, 1, estado, carrinho); // Extra selecionado                
+                        adicionarExtraNoCart(numeroContato, retorno2, 1); // Extra ADD cart
+                        message.reply("Perfeito, você escolheu " + retorno2 + ".");
+                        setTimeout(() => {
+                            client.sendMessage(numeroContato, respostas.maisAlgoPedido);
+                        }, 500);
+                        estado.respx = 14;
+                        estado.batatas = 0;
+                        estado.resp1 = 1; // Calabresa 2/2
+                        estado.resp2 = 21; // Cheddar 2/2
+                        estado.resp3 = 1000; // Bacon 2/2
+                    } catch (error) {
+                        console.error('Erro ao obter o retorno:', error);
+                    }
+                    break
+            }
+            break
+        case 29: // Loop dos adicionais Batata M
+            switch (estado.batatas) {
+                case 0: // Primeiro adicional
+                    try {
+                        const retorno1 = await pegarRetorno(numeroContato, client, 6, null, 2, estado, carrinho);// Nome do  lanche
+                        const retorno2 = await pegarRetorno(numeroContato, client, 28, 3, 2, estado, carrinho); // Extra selecionado
+                        const retorno3 = await pegarRetorno(numeroContato, client, 21, null, 2, estado, carrinho); // Adicionais disponivel
+                        const retorno4 = await pegarRetorno(numeroContato, client, 37, null, 2, estado, carrinho);// preço da batata                     
+                        adicionarProdutoNoCart(numeroContato, retorno1); // Nome ADD cart
+                        adicionarValorProdutoAoCarrinho(numeroContato, retorno4); // Preço ADD cart
+                        adicionarExtraNoCart(numeroContato, retorno2, 1); // Extra ADD cart
+                        message.reply("Perfeito, você escolheu " + retorno2 + ".");
+                        setTimeout(() => {
+                            client.sendMessage(numeroContato, "Escolha o segundo adicional.\n" + retorno3);
+                        }, 500);
+                        estado.respx = 1000;
+                        estado.batatas = 1;
+                        estado.resp1 = 36; // Calabresa 1/2
+                        estado.resp2 = 36; // Cheddar 1/2
+                        estado.resp3 = 28; // Bacon 1/2
+                    } catch (error) {
+                        console.error('Erro ao obter o retorno:', error);
+                    }
+                    break
+                case 1: // Segundo adicional
+                    try {
+                        const retorno2 = await pegarRetorno(numeroContato, client, 28, 3, 2, estado, carrinho); // Extra selecionado                
+                        adicionarExtraNoCart(numeroContato, retorno2, 1); // Extra ADD cart
+                        message.reply("Perfeito, você escolheu " + retorno2 + ". Confira seu pedido e confirme se está tudo certo antes de confirmá-lo.");
+                        let mensagem = `Seu pedido                     ${carrinho.idPedido}\n\n`;
+                        mensagem += `Pedido         (${Object.keys(carrinho.produtos).length} item no carrinho)\n`;
+                        for (const [idProduto, produto] of Object.entries(carrinho.produtos)) {
+                            mensagem += `*${produto}*\n`;
+                            if (carrinho.extras.hasOwnProperty(idProduto) && Object.keys(carrinho.extras[idProduto]).length > 0) {
+                                Object.entries(carrinho.extras[idProduto]).forEach(([extra, quantidade]) => {
+                                    mensagem += `  *↳ ${extra}: ${quantidade}*\n`;
+                                });
+                            } else {
+                                mensagem += `  *↳ Nenhum extra*\n`;
+                            }
+                        }
+                        mensagem += '\n*Pagamento*\n';
+                        mensagem += `subtotal                 *R$* ${carrinho.preco}\n`;
+                        mensagem += `taxa de entrega    *R$* ${carrinho.taxaEntrega || '1,00'}\n`;
+                        mensagem += `total                        *R$* ${carrinho.total + 1}\n`;
+                        setTimeout(() => {
+                            client.sendMessage(numeroContato, mensagem);
+                            setTimeout(() => {
+                                client.sendMessage(numeroContato, respostas.maisAlgoPedido);
+                            }, 200);
+                        }, 500);
+                    } catch (error) {
+                        console.error('Erro ao obter o retorno:', error);
+                    }
+                    break
             }
             break
         case 999:
@@ -3368,6 +3721,29 @@ async function avaliarresp4(numeroContato, message) {
             } catch (error) {
                 console.error('Erro ao obter o retorno:', error);
             }
+            break
+        case 13: // Batatas Disponivel
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 11, null, null, estado, carrinho);// Nome do  lanche
+                message.reply("Aqui estão as melhores batatas que já foram vistas.");
+                setTimeout(() => {
+                    client.sendMessage(numeroContato, retorno1);
+                }, 500);
+                estado.respx = 1000;
+                estado.resp1 = 35; // Batata P
+                estado.resp2 = 37; // Batata M
+                estado.resp3 = 1000;
+                estado.resp4 = 1000;
+                estado.resp5 = 1000;
+                estado.resp6 = 1000;
+                estado.resp7 = 1000;
+                estado.resp8 = 1000;
+                estado.resp9 = 1000;
+                estado.resp10 = 1000;
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
             break
         case 999:
             message.reply("Repassei seu atendimento para alguém, só aguardar.");

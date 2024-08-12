@@ -4,23 +4,24 @@
         "sabores": ["Molho", "Mussarela", "Calabresa", "Cebola", "Orégano"],
         "valor": "Pequena: R$:20.00, Média R$:30.00, Grande: R$:40.00",
         "tam": ["20.00","30.00","40.00"],
-        "ntam": ["Pequena: R$:20.00","Média R$:30.00","Grande: R$:40.00"]
+        "ntam": ["Pequena: R$:20.00","Média R$:30.00","Grande: R$:40.00"],
+        "tamanhos": ["Pequena", "Média", "Grande"]
     },
     "2": {
         "produto": "Pizza Mista",
         "sabores": ["Molho", "Mussarela", "Presunto", "Orégano"],
         "valor": "Pequena: R$:20.00, Média R$:30.00, Grande: R$:40.00",
         "tam": ["20.00","30.00","40.00"],
-        "ntam": ["Pequena: R$:20.00","Média R$:30.00","Grande: R$:40.00"]
-        
+        "ntam": ["Pequena: R$:20.00","Média R$:30.00","Grande: R$:40.00"],
+        "tamanhos": ["Pequena", "Média", "Grande"]
     },
     "3": {
         "produto": "Pizza de 4 Queijo",
         "sabores": ["Molho", "Mussarela", "Catupiry", "Cheddar", "Azeitona", "Orégano"],
         "valor": "Pequena: R$:20.00, Média R$:30.00, Grande: R$:40.00",
         "tam": ["20.00","30.00","40.00"],
-        "ntam": ["Pequena: R$:20.00","Média R$:30.00","Grande: R$:40.00"]
-        
+        "ntam": ["Pequena: R$:20.00","Média R$:30.00","Grande: R$:40.00"],
+        "tamanhos": ["Pequena", "Média", "Grande"]
     },
     "4": {
         "produto": "Pizza de Bacon",
@@ -29,7 +30,6 @@
         "tam": ["20.00","30.00","40.00"],
         "ntam": ["Pequena: R$:20.00","Média R$:30.00","Grande: R$:40.00"],
         "tamanhos": ["Pequena", "Média", "Grande"]
-        
     },
     "5": {
         "produto": "Pizza de Frango",
@@ -38,7 +38,6 @@
         "tam": ["20.00","30.00","40.00"],
         "ntam": ["Pequena: R$:20.00","Média R$:30.00","Grande: R$:40.00"],
         "tamanhos": ["Pequena", "Média", "Grande"]
-        
     },
     "6": {
         "produto": "Pizza Portuguêsa",
@@ -47,7 +46,6 @@
         "tam": ["20.00","30.00","40.00"],
         "ntam": ["Pequena: R$:20.00","Média R$:30.00","Grande: R$:40.00"],
         "tamanhos": ["Pequena", "Média", "Grande"]
-        
     },
     "7": {
         "produto": "Frango Catupiry",
@@ -56,6 +54,5 @@
         "tam": ["20.00","30.00","40.00"],
         "ntam": ["Pequena: R$:20.00","Média R$:30.00","Grande: R$:40.00"],
         "tamanhos": ["Pequena", "Média", "Grande"]
-        
     }
 }
