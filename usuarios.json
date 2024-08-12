@@ -88,5 +88,25 @@
     "referencia": "em frente a uma mercearia",
     "complemento": "do lado de uma casa de andar",
     "estado": 6
+  },
+  "551128386699@c.us": {
+    "concluido": "sim",
+    "fidelidade": "0",
+    "endereco": "",
+    "bairro": "um minutinho, estou chamando um consultor pra te ajudar!\n\nassim que alguem da equipe estiver disponivel, voce recebera uma notificacao.",
+    "numeroCasa": "nosso horario de atendimento e de segunda a sexta, das 09h as 18h.\nassim que alguem da equipe estiver disponivel, voce recebera uma notificacao.",
+    "referencia": "nosso horario de atendimento e de segunda a sexta, das 09h as 18h.\nassim que alguem da equipe estiver disponivel, voce recebera uma notificacao.",
+    "complemento": "nosso horario de atendimento e de segunda a sexta, das 09h as 18h.\nassim que alguem da equipe estiver disponivel, voce recebera uma notificacao.",
+    "estado": 6
+  },
+  "5519999304457@c.us": {
+    "concluido": "nao",
+    "fidelidade": "0",
+    "endereco": "",
+    "bairro": "",
+    "numeroCasa": "",
+    "referencia": "",
+    "complemento": "",
+    "estado": 1
   }
 }

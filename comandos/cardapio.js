@@ -60,7 +60,7 @@ async function cardapioIndividual(lanche) {
 }
 async function cardapioIndividualPizza1(lanche) {
     try {
-        const cardapio = await lerCardapio(caminhoArquivo);
+        const cardapio = await lerCardapio(caminhoArquivoPizza1);
         if (cardapio) {
             const produto = cardapio[lanche];
             if (produto) {
@@ -80,7 +80,7 @@ async function cardapioIndividualPizza1(lanche) {
 }
 async function cardapioIndividualPizza2(lanche) {
     try {
-        const cardapio = await lerCardapio(caminhoArquivo);
+        const cardapio = await lerCardapio(caminhoArquivoPizza2);
         if (cardapio) {
             const produto = cardapio[lanche];
             if (produto) {
@@ -931,11 +931,10 @@ async function tamanhoEspecicoPizzaEspecial(lanches, indiceExtras) {
         if (cardapio) {
             const produto = cardapio[lanche];
             if (produto) {
-                const extrasNomes = Object.values(produto.ntam); // Obtém os nomes dos extras
-                const nomeItem = produto.produto; // Obtém o nome do item do cardápio
+                const extrasNomes = produto.tam; // `tam` já é uma lista de strings
                 const nomeExtra = extrasNomes[indiceExtra - 1]; // Subtrai 1 para obter o índice correto
                 if (nomeExtra) {
-                    return { nomeExtra, nomeItem };
+                    return nomeExtra;
                 } else {
                     throw new Error(`Extra no índice '${indiceExtra}' não encontrado no lanche ${lanche}.`);
                 }
@@ -957,11 +956,35 @@ async function tamanhoEspecicoPizzaTradicional(lanches, indiceExtras) {
         if (cardapio) {
             const produto = cardapio[lanche];
             if (produto) {
-                const extrasNomes = Object.values(produto.ntam); // Obtém os nomes dos extras
-                const nomeItem = produto.produto; // Obtém o nome do item do cardápio
+                const extrasNomes = produto.tam; // `tam` já é uma lista de strings
                 const nomeExtra = extrasNomes[indiceExtra - 1]; // Subtrai 1 para obter o índice correto
                 if (nomeExtra) {
-                    return { nomeExtra, nomeItem };
+                    return nomeExtra;
+                } else {
+                    throw new Error(`Extra no índice '${indiceExtra}' não encontrado no lanche ${lanche}.`);
+                }
+            } else {
+                throw new Error("Lanche não encontrado: " + lanche);
+            }
+        } else {
+            throw new Error("Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+async function  nomesTamanhoEspecicoPizzaTradicional(lanches, indiceExtras) {
+    const indiceExtra = indiceExtras;
+    const lanche = lanches;
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoPizza2);
+        if (cardapio) {
+            const produto = cardapio[lanche];
+            if (produto) {
+                const extrasNomes = produto.tamanhos; // `tam` já é uma lista de strings
+                const nomeExtra = extrasNomes[indiceExtra - 1]; // Subtrai 1 para obter o índice correto
+                if (nomeExtra) {
+                    return nomeExtra;
                 } else {
                     throw new Error(`Extra no índice '${indiceExtra}' não encontrado no lanche ${lanche}.`);
                 }
@@ -1024,5 +1047,6 @@ module.exports = {
     cardapioIndividualBebidas,
     cardapioExtrasBurguer,
     tamanhoEspecicoPizzaEspecial,
-    tamanhoEspecicoPizzaTradicional
+    tamanhoEspecicoPizzaTradicional,
+    nomesTamanhoEspecicoPizzaTradicional
 };

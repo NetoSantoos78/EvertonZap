@@ -1,48 +1,53 @@
 {
     "1": {
-        "produto": "Atum",
+        "produto": "Pizza de Atum",
         "sabores": ["Molho", "Mussarela", "Atum", "Tomate", "Cebola", "Orégano"],
-        "valor": "Pequena: R$:28,00, Média R$:38,00, Grande: R$:48,00",
-        "tam": ["28,00","38,00","48,00"],
-        "ntam": ["Pequena: R$:28,00","Média R$:38,00","Grande: R$:48,00"]
+        "valor": "Pequena: R$:28.00, Média R$:38.00, Grande: R$:48.00",
+        "tam": ["28.00","38.00","48.00"],
+        "ntam": ["Pequena: R$:28.00","Média R$:38.00","Grande: R$:48.00"],
+        "tamanhos": ["Pequena", "Média", "Grande"]
     },
     "2": {
-        "produto": "Carne Seca",
+        "produto": "Pizza de Carne Seca",
         "sabores": ["Molho", "Mussarela", "Carne Seca", "Cebola", "Azeitona", "Orégano"],
-        "valor": "Pequena: R$:28,00, Média R$:38,00, Grande: R$:48,00",
-        "tam": ["28,00","38,00","48,00"],
-        "ntam": ["Pequena: R$:28,00","Média R$:38,00","Grande: R$:48,00"]
+        "valor": "Pequena: R$:28.00, Média R$:38.00, Grande: R$:48.00",
+        "tam": ["28.00","38.00","48.00"],
+        "ntam": ["Pequena: R$:28.00","Média R$:38.00","Grande: R$:48.00"],
+        "tamanhos": ["Pequena", "Média", "Grande"]
     },
     "3": {
-        "produto": "Strogonoff",
+        "produto": "Pizza de Strogonoff",
         "sabores": ["Molho", "Mussarela", "Frango", "Batata Palha", "Orégano"],
-        "valor": "Pequena: R$:28,00, Média R$:38,00, Grande: R$:48,00",
-        "tam": ["28,00","38,00","48,00"],
-        "ntam": ["Pequena: R$:28,00","Média R$:38,00","Grande: R$:48,00"]
-        
+        "valor": "Pequena: R$:28.00, Média R$:38.00, Grande: R$:48.00",
+        "tam": ["28.00","38.00","48.00"],
+        "ntam": ["Pequena: R$:28.00","Média R$:38.00","Grande: R$:48.00"],
+        "tamanhos": ["Pequena", "Média", "Grande"]
     },
     "4": {
-        "produto": "FranBacon",
+        "produto": "Pizza de FranBacon",
         "sabores": ["Molho", "Mussarela", "Frango", "Bacon", "Azeitona", "Orégano"],
-        "valor": "Pequena: R$:28,00, Média R$:38,00, Grande: R$:48,00",
-        "tam": ["28,00","38,00","48,00"],
-        "ntam": ["Pequena: R$:28,00","Média R$:38,00","Grande: R$:48,00"]
+        "valor": "Pequena: R$:28.00, Média R$:38.00, Grande: R$:48.00",
+        "tam": ["28.00","38.00","48.00"],
+        "ntam": ["Pequena: R$:28.00","Média R$:38.00","Grande: R$:48.00"],
+        "tamanhos": ["Pequena", "Média", "Grande"]
         
     },
     "5": {
-        "produto": "Bacon Cheddar",
+        "produto": "Pizza de Bacon Cheddar",
         "sabores": ["Molho", "Mussarela", "Bacon", "Cheddar", "Milho", "Cebola", "Orégano"],
-        "valor": "Pequena: R$:28,00, Média R$:38,00, Grande: R$:48,00",
-        "tam": ["28,00","38,00","48,00"],
-        "ntam": ["Pequena: R$:28,00","Média R$:38,00","Grande: R$:48,00"]
+        "valor": "Pequena: R$:28.00, Média R$:38.00, Grande: R$:48.00",
+        "tam": ["28.00","38.00","48.00"],
+        "ntam": ["Pequena: R$:28.00","Média R$:38.00","Grande: R$:48.00"],
+        "tamanhos": ["Pequena", "Média", "Grande"]
         
     },
     "6": {
-        "produto": "Calabresa Cheddar",
+        "produto": "Pizza de Calabresa Cheddar",
         "sabores": ["Molho", "Mussarela", "Calabresa", "Cheddar", "Cebola", "Orégano"],
-        "valor": "Pequena: R$:28,00, Média R$:38,00, Grande: R$:48,00",
-        "tam": ["28,00","38,00","48,00"],
-        "ntam": ["Pequena: R$:28,00","Média R$:38,00","Grande: R$:48,00"]
+        "valor": "Pequena: R$:28.00, Média R$:38.00, Grande: R$:48.00",
+        "tam": ["28.00","38.00","48.00"],
+        "ntam": ["Pequena: R$:28.00","Média R$:38.00","Grande: R$:48.00"],
+        "tamanhos": ["Pequena", "Média", "Grande"]
         
     }
 }

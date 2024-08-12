@@ -4,7 +4,7 @@ const { cardapioIndividual, cardapioCompleto, cardapioExtras, valorExtraEspecifi
     valorExtraEspecificoBatatas, valorExtraEspecificoBebidas, valorExtraEspecificoPizza2, valorExtraEspecificoPizza1,
     cardapioExtrasAcai, cardapioExtrasBatatas, cardapioExtrasBebidas, cardapioExtrasPizza2, cardapioExtrasPizza1,
     acaiCompleto, batatasCompleto, bebidasCompleto, cardapioCompletoAcai, cardapioCompletoBatatas, cardapioCompletoBebidas,
-    cardapioCompletoPizzas2, tamanhoEspecicoPizzaEspecial, tamanhoEspecicoPizzaTradicional, opcoesAcai, cardapioExtrasBurguer, caldasAcai, cardapioCompletoPizzas1, cardapioIndividualAcai, cardapioIndividualBebidas, cardapioIndividualBatatas, cardapioIndividualPizza2, } = require('../comandos/cardapio.js');
+    cardapioCompletoPizzas2, tamanhoEspecicoPizzaEspecial, nomesTamanhoEspecicoPizzaTradicional, tamanhoEspecicoPizzaTradicional, opcoesAcai, cardapioExtrasBurguer, caldasAcai, cardapioCompletoPizzas1, cardapioIndividualAcai, cardapioIndividualBebidas, cardapioIndividualBatatas, cardapioIndividualPizza2, } = require('../comandos/cardapio.js');
 
 const respostas = {
     menu: '',
@@ -56,35 +56,35 @@ async function pegarRetorno(numeroContato, client, parametros, ids, lanches, est
         case 3: // Pizza especial individual
             try {
                 const resultado = await sandubaIndividualPizza1(id);
-                return `Produto: ${resultado}`;
+                return `${resultado}`;
             } catch (error) {
                 return `Erro ao obter o produto: ${error.message}`;
             }
         case 4: // Pizza tradicional individual
             try {
                 const resultado = await sandubaIndividualPizza2(id);
-                return `Produto: ${resultado}`;
+                return `${resultado}`;
             } catch (error) {
                 return `Erro ao obter o produto: ${error.message}`;
             }
         case 5: // Bebidas individuais
             try {
                 const resultado = await sandubaIndividualBebidas(id);
-                return `Produto: ${resultado}`;
+                return `${resultado}`;
             } catch (error) {
                 return `Erro ao obter o produto: ${error.message}`;
             }
         case 6: // Batatas individuais
             try {
                 const resultado = await sandubaIndividualBatatas(id);
-                return `Produto: ${resultado}`;
+                return `${resultado}`;
             } catch (error) {
                 return `Erro ao obter o produto: ${error.message}`;
             }
         case 7: // Açaí individual
             try {
                 const resultado = await sandubaIndividualAcai(id);
-                return `Produto: ${resultado}`;
+                return `${resultado}`;
             } catch (error) {
                 return `Erro ao obter o produto: ${error.message}`;
             }
@@ -262,14 +262,14 @@ async function pegarRetorno(numeroContato, client, parametros, ids, lanches, est
         case 21: // Valor dos extras das batatas
             try {
                 const resultado = await cardapioExtrasBatatas(id);
-                return `Produto: ${resultado}`;
+                return `${resultado}`;
             } catch (error) {
                 return `Erro ao obter o produto: ${error.message}`;
             }
         case 22: // Valor dos extras dos açaí
             try {
                 const resultado = await cardapioExtrasAcai(id);
-                return `Produto: ${resultado}`;
+                return `${resultado}`;
             } catch (error) {
                 return `Erro ao obter o produto: ${error.message}`;
             }
@@ -374,7 +374,13 @@ async function pegarRetorno(numeroContato, client, parametros, ids, lanches, est
             } catch (error) {
                 return `Erro ao obter o produto: ${error.message}`;
             }
-            break
+        case 36: // Nomes dos tamanhos das pizzas
+            try {
+                const resultado = await nomesTamanhoEspecicoPizzaTradicional(lanche, id);
+                return `${resultado}`;
+            } catch (error) {
+                return `Erro ao obter o produto: ${error.message}`;
+            }
         default:
             return `[!] Parâmetro de seleção desconhecido. :${parametro, id, lanche}`;
     }
