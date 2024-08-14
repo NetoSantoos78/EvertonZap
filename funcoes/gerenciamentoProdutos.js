@@ -4,7 +4,7 @@ const { cardapioIndividual, cardapioCompleto, cardapioExtras, valorExtraEspecifi
     valorExtraEspecificoBatatas, valorExtraEspecificoBebidas, valorExtraEspecificoPizza2, valorExtraEspecificoPizza1,
     cardapioExtrasAcai, cardapioExtrasBatatas, cardapioExtrasBebidas, cardapioExtrasPizza2, cardapioExtrasPizza1,
     acaiCompleto, batatasCompleto, bebidasCompleto, cardapioCompletoAcai, cardapioCompletoBatatas, cardapioCompletoBebidas,
-    cardapioCompletoPizzas2, tamanhoEspecicoPizzaEspecial,precoExtraEspecificoBatatas, nomesTamanhoEspecicoPizzaTradicional, tamanhoEspecicoPizzaTradicional, opcoesAcai, cardapioExtrasBurguer, caldasAcai, cardapioCompletoPizzas1, cardapioIndividualAcai, cardapioIndividualBebidas, cardapioIndividualBatatas, cardapioIndividualPizza2, } = require('../comandos/cardapio.js');
+    cardapioCompletoPizzas2, valorBebidaEspecifico, tamanhoEspecicoPizzaEspecial, precoExtraEspecificoBatatas, nomesTamanhoEspecicoPizzaTradicional, tamanhoEspecicoPizzaTradicional, opcoesAcai, cardapioExtrasBurguer, caldasAcai, cardapioCompletoPizzas1, cardapioIndividualAcai, cardapioIndividualBebidas, cardapioIndividualBatatas, cardapioIndividualPizza2, } = require('../comandos/cardapio.js');
 
 const respostas = {
     menu: '',
@@ -69,7 +69,7 @@ async function pegarRetorno(numeroContato, client, parametros, ids, lanches, est
             }
         case 5: // Bebidas individuais
             try {
-                const resultado = await sandubaIndividualBebidas(id);
+                const resultado = await sandubaIndividualBebidas(lanche);
                 return `${resultado}`;
             } catch (error) {
                 return `Erro ao obter o produto: ${error.message}`;
@@ -384,6 +384,13 @@ async function pegarRetorno(numeroContato, client, parametros, ids, lanches, est
         case 37: // Valor da batata
             try {
                 const resultado = await precoExtraEspecificoBatatas(lanche);
+                return `${resultado}`;
+            } catch (error) {
+                return `Erro ao obter o produto: ${error.message}`;
+            }
+        case 38: // Valor de uma bebida
+            try {
+                const resultado = await valorBebidaEspecifico(lanche);
                 return `${resultado}`;
             } catch (error) {
                 return `Erro ao obter o produto: ${error.message}`;

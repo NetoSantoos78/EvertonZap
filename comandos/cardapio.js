@@ -221,7 +221,7 @@ async function cardapioCompletoBebidas(callback) {
             Object.keys(cardapio).forEach((indice, i) => {
                 const emoji = emojisNumeros[i];
                 const { produto, valor, ingredientes } = cardapio[indice];
-                output += `${emoji} ${produto}\n   ❯ R$: ${valor}\n`;
+                output += `\n\n${emoji} ${produto}\n   ❯ R$: ${valor}`;
             });
             callback(output, null);
         } else {
@@ -905,6 +905,27 @@ async function opcoesAcai(lanches, indiceExtras) {
         throw error;
     }
 }
+async function valorBebidaEspecifico(lanches) {
+    const lanche = lanches;
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoAcai);
+        if (cardapio) {
+            const produto = cardapio[lanche];
+            if (produto) {
+                const nomeItem = produto.produto; // Obtém o nome do item do cardápio
+                const valorItem = produto.valor; // Obtém o valor do item
+                return { valorItem };
+            } else {
+                throw new Error("Produto não encontrado: " + lanche);
+            }
+        } else {
+            throw new Error("Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+
 async function caldasAcai(lanches, indiceExtras) {
     const indiceExtra = indiceExtras;
     const lanche = lanches;
@@ -1053,6 +1074,7 @@ module.exports = {
     batatasCompleto,
     bebidasCompleto,
     cardapioCompletoAcai,
+    valorBebidaEspecifico,
     cardapioCompletoBatatas,
     cardapioCompletoBebidas,
     cardapioCompletoPizzas2,
