@@ -1869,6 +1869,7 @@ async function avaliarresp1(numeroContato, message) {
                 const retorno1 = await pegarRetorno(numeroContato, client, 5, null, 1, estado, carrinho);// Nome do  lanche
                 const retorno3 = await pegarRetorno(numeroContato, client, 38, null, 1, estado, carrinho); // Tamanho da Pizza
                 adicionarProdutoNoCart(numeroContato, retorno1);
+                console.log(retorno3)
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno3);
                 message.reply(respostas.verCarrinho);
                 let mensagem = `Seu pedido                     ${carrinho.idPedido}\n\n`;
@@ -2795,6 +2796,41 @@ async function avaliarresp2(numeroContato, message) {
                     break
             }
             break
+        case 39: // Guarana 2L
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 5, null, 2, estado, carrinho);// Nome do  lanche
+                const retorno3 = await pegarRetorno(numeroContato, client, 38, null, 2, estado, carrinho); // Tamanho da Pizza
+                adicionarProdutoNoCart(numeroContato, retorno1);
+                console.log(retorno3)
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno3);
+                message.reply(respostas.verCarrinho);
+                let mensagem = `Seu pedido                     ${carrinho.idPedido}\n\n`;
+                mensagem += `Pedido         (${Object.keys(carrinho.produtos).length} item no carrinho)\n`;
+                for (const [idProduto, produto] of Object.entries(carrinho.produtos)) {
+                    mensagem += `*${produto}*\n`;
+                    if (carrinho.extras.hasOwnProperty(idProduto) && Object.keys(carrinho.extras[idProduto]).length > 0) {
+                        Object.entries(carrinho.extras[idProduto]).forEach(([extra, quantidade]) => {
+                            mensagem += `  *↳ ${extra}: ${quantidade}*\n`;
+                        });
+                    } else {
+                        mensagem += `  *↳ Nenhum extra*\n`;
+                    }
+                }
+                mensagem += '\n*Pagamento*\n';
+                mensagem += `subtotal                 *R$* ${carrinho.preco}\n`;
+                mensagem += `taxa de entrega    *R$* ${carrinho.taxaEntrega || '1,00'}\n`;
+                mensagem += `total                        *R$* ${carrinho.total + 1}\n`;
+                client.sendMessage(numeroContato, mensagem);
+                setTimeout(() => {
+                    client.sendMessage(numeroContato, respostas.confimacao);
+                    estado.resp1 = 21;
+                    estado.resp2 = 4;
+                    estado.resp3 = 1000;
+                }, 1000);
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
         case 999:
             message.reply("Repassei seu atendimento para alguém, só aguardar.");
             resetarStatus(numeroContato);
@@ -3599,6 +3635,41 @@ async function avaliarresp3(numeroContato, message) {
                     break
             }
             break
+        case 30: // Coca 1L
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 5, null, 3, estado, carrinho);// Nome do  lanche
+                const retorno3 = await pegarRetorno(numeroContato, client, 38, null, 3, estado, carrinho); // Tamanho da Pizza
+                adicionarProdutoNoCart(numeroContato, retorno1);
+                console.log(retorno3)
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno3);
+                message.reply(respostas.verCarrinho);
+                let mensagem = `Seu pedido                     ${carrinho.idPedido}\n\n`;
+                mensagem += `Pedido         (${Object.keys(carrinho.produtos).length} item no carrinho)\n`;
+                for (const [idProduto, produto] of Object.entries(carrinho.produtos)) {
+                    mensagem += `*${produto}*\n`;
+                    if (carrinho.extras.hasOwnProperty(idProduto) && Object.keys(carrinho.extras[idProduto]).length > 0) {
+                        Object.entries(carrinho.extras[idProduto]).forEach(([extra, quantidade]) => {
+                            mensagem += `  *↳ ${extra}: ${quantidade}*\n`;
+                        });
+                    } else {
+                        mensagem += `  *↳ Nenhum extra*\n`;
+                    }
+                }
+                mensagem += '\n*Pagamento*\n';
+                mensagem += `subtotal                 *R$* ${carrinho.preco}\n`;
+                mensagem += `taxa de entrega    *R$* ${carrinho.taxaEntrega || '1,00'}\n`;
+                mensagem += `total                        *R$* ${carrinho.total + 1}\n`;
+                client.sendMessage(numeroContato, mensagem);
+                setTimeout(() => {
+                    client.sendMessage(numeroContato, respostas.confimacao);
+                    estado.resp1 = 21;
+                    estado.resp2 = 4;
+                    estado.resp3 = 1000;
+                }, 1000);
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
         case 999:
             message.reply("Repassei seu atendimento para alguém, só aguardar.");
             resetarStatus(numeroContato);
@@ -3824,6 +3895,41 @@ async function avaliarresp4(numeroContato, message) {
             }
             break
             break
+        case 14: // Fanta 1L
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 5, null, 4, estado, carrinho);// Nome do  lanche
+                const retorno3 = await pegarRetorno(numeroContato, client, 38, null, 4, estado, carrinho); // Tamanho da Pizza
+                adicionarProdutoNoCart(numeroContato, retorno1);
+                console.log(retorno3)
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno3);
+                message.reply(respostas.verCarrinho);
+                let mensagem = `Seu pedido                     ${carrinho.idPedido}\n\n`;
+                mensagem += `Pedido         (${Object.keys(carrinho.produtos).length} item no carrinho)\n`;
+                for (const [idProduto, produto] of Object.entries(carrinho.produtos)) {
+                    mensagem += `*${produto}*\n`;
+                    if (carrinho.extras.hasOwnProperty(idProduto) && Object.keys(carrinho.extras[idProduto]).length > 0) {
+                        Object.entries(carrinho.extras[idProduto]).forEach(([extra, quantidade]) => {
+                            mensagem += `  *↳ ${extra}: ${quantidade}*\n`;
+                        });
+                    } else {
+                        mensagem += `  *↳ Nenhum extra*\n`;
+                    }
+                }
+                mensagem += '\n*Pagamento*\n';
+                mensagem += `subtotal                 *R$* ${carrinho.preco}\n`;
+                mensagem += `taxa de entrega    *R$* ${carrinho.taxaEntrega || '1,00'}\n`;
+                mensagem += `total                        *R$* ${carrinho.total + 1}\n`;
+                client.sendMessage(numeroContato, mensagem);
+                setTimeout(() => {
+                    client.sendMessage(numeroContato, respostas.confimacao);
+                    estado.resp1 = 21;
+                    estado.resp2 = 4;
+                    estado.resp3 = 1000;
+                }, 1000);
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
         case 999:
             message.reply("Repassei seu atendimento para alguém, só aguardar.");
             resetarStatus(numeroContato);
@@ -4020,11 +4126,48 @@ async function avaliarresp5(numeroContato, message) {
                     estado.resp0 = 2;
                     estado.respx = 0;
                     estado.resp1 = 38;
-                    estado.resp2 = 1000;
-                    estado.resp3 = 1000;
-                    estado.resp4 = 1000;
-                    estado.resp5 = 1000;
+                    estado.resp2 = 39;
+                    estado.resp3 = 30;
+                    estado.resp4 = 14;
+                    estado.resp5 = 13;
+                    estado.resp6 = 10;
+                    estado.ersp7 = 6;
                 }, 500);
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 13: // Guarana 1L
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 5, null, 5, estado, carrinho);// Nome do  lanche
+                const retorno3 = await pegarRetorno(numeroContato, client, 38, null, 5, estado, carrinho); // Tamanho da Pizza
+                adicionarProdutoNoCart(numeroContato, retorno1);
+                console.log(retorno3)
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno3);
+                message.reply(respostas.verCarrinho);
+                let mensagem = `Seu pedido                     ${carrinho.idPedido}\n\n`;
+                mensagem += `Pedido         (${Object.keys(carrinho.produtos).length} item no carrinho)\n`;
+                for (const [idProduto, produto] of Object.entries(carrinho.produtos)) {
+                    mensagem += `*${produto}*\n`;
+                    if (carrinho.extras.hasOwnProperty(idProduto) && Object.keys(carrinho.extras[idProduto]).length > 0) {
+                        Object.entries(carrinho.extras[idProduto]).forEach(([extra, quantidade]) => {
+                            mensagem += `  *↳ ${extra}: ${quantidade}*\n`;
+                        });
+                    } else {
+                        mensagem += `  *↳ Nenhum extra*\n`;
+                    }
+                }
+                mensagem += '\n*Pagamento*\n';
+                mensagem += `subtotal                 *R$* ${carrinho.preco}\n`;
+                mensagem += `taxa de entrega    *R$* ${carrinho.taxaEntrega || '1,00'}\n`;
+                mensagem += `total                        *R$* ${carrinho.total + 1}\n`;
+                client.sendMessage(numeroContato, mensagem);
+                setTimeout(() => {
+                    client.sendMessage(numeroContato, respostas.confimacao);
+                    estado.resp1 = 21;
+                    estado.resp2 = 4;
+                    estado.resp3 = 1000;
+                }, 1000);
             } catch (error) {
                 console.error('Erro ao obter o retorno:', error);
             }
@@ -4183,6 +4326,41 @@ async function avaliarresp6(numeroContato, message) {
                 console.error('Erro ao obter o retorno:', error);
             }
             break
+        case 10: // Refrigerante em lata
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 5, null, 6, estado, carrinho);// Nome do  lanche
+                const retorno3 = await pegarRetorno(numeroContato, client, 38, null, 6, estado, carrinho); // Tamanho da Pizza
+                adicionarProdutoNoCart(numeroContato, retorno1);
+                console.log(retorno3)
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno3);
+                message.reply(respostas.verCarrinho);
+                let mensagem = `Seu pedido                     ${carrinho.idPedido}\n\n`;
+                mensagem += `Pedido         (${Object.keys(carrinho.produtos).length} item no carrinho)\n`;
+                for (const [idProduto, produto] of Object.entries(carrinho.produtos)) {
+                    mensagem += `*${produto}*\n`;
+                    if (carrinho.extras.hasOwnProperty(idProduto) && Object.keys(carrinho.extras[idProduto]).length > 0) {
+                        Object.entries(carrinho.extras[idProduto]).forEach(([extra, quantidade]) => {
+                            mensagem += `  *↳ ${extra}: ${quantidade}*\n`;
+                        });
+                    } else {
+                        mensagem += `  *↳ Nenhum extra*\n`;
+                    }
+                }
+                mensagem += '\n*Pagamento*\n';
+                mensagem += `subtotal                 *R$* ${carrinho.preco}\n`;
+                mensagem += `taxa de entrega    *R$* ${carrinho.taxaEntrega || '1,00'}\n`;
+                mensagem += `total                        *R$* ${carrinho.total + 1}\n`;
+                client.sendMessage(numeroContato, mensagem);
+                setTimeout(() => {
+                    client.sendMessage(numeroContato, respostas.confimacao);
+                    estado.resp1 = 21;
+                    estado.resp2 = 4;
+                    estado.resp3 = 1000;
+                }, 1000);
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
         case 999:
             message.reply("Repassei seu atendimento para alguém, só aguardar.");
             resetarStatus(numeroContato);
@@ -4273,6 +4451,41 @@ async function avaliarresp7(numeroContato, message) {
                 estado.resp1 = 34; // Pizza P
                 estado.resp2 = 35; // Pizza M
                 estado.resp3 = 27; // Pizza G
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
+        case 6: // Refrigerante 250ml
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 5, null, 7, estado, carrinho);// Nome do  lanche
+                const retorno3 = await pegarRetorno(numeroContato, client, 38, null, 7, estado, carrinho); // Tamanho da Pizza
+                adicionarProdutoNoCart(numeroContato, retorno1);
+                console.log(retorno3)
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno3);
+                message.reply(respostas.verCarrinho);
+                let mensagem = `Seu pedido                     ${carrinho.idPedido}\n\n`;
+                mensagem += `Pedido         (${Object.keys(carrinho.produtos).length} item no carrinho)\n`;
+                for (const [idProduto, produto] of Object.entries(carrinho.produtos)) {
+                    mensagem += `*${produto}*\n`;
+                    if (carrinho.extras.hasOwnProperty(idProduto) && Object.keys(carrinho.extras[idProduto]).length > 0) {
+                        Object.entries(carrinho.extras[idProduto]).forEach(([extra, quantidade]) => {
+                            mensagem += `  *↳ ${extra}: ${quantidade}*\n`;
+                        });
+                    } else {
+                        mensagem += `  *↳ Nenhum extra*\n`;
+                    }
+                }
+                mensagem += '\n*Pagamento*\n';
+                mensagem += `subtotal                 *R$* ${carrinho.preco}\n`;
+                mensagem += `taxa de entrega    *R$* ${carrinho.taxaEntrega || '1,00'}\n`;
+                mensagem += `total                        *R$* ${carrinho.total + 1}\n`;
+                client.sendMessage(numeroContato, mensagem);
+                setTimeout(() => {
+                    client.sendMessage(numeroContato, respostas.confimacao);
+                    estado.resp1 = 21;
+                    estado.resp2 = 4;
+                    estado.resp3 = 1000;
+                }, 1000);
             } catch (error) {
                 console.error('Erro ao obter o retorno:', error);
             }

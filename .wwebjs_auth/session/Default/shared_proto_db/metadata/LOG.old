@@ -1,3 +1,4 @@
-2024/08/06-17:47:04.648 22d8 Reusing MANIFEST C:\Users\kanec\Desktop\Meu Git\EvertonZap\.wwebjs_auth\session\Default\shared_proto_db\metadata/MANIFEST-000001
-2024/08/06-17:47:04.653 22d8 Recovering log #3
-2024/08/06-17:47:04.654 22d8 Reusing old log C:\Users\kanec\Desktop\Meu Git\EvertonZap\.wwebjs_auth\session\Default\shared_proto_db\metadata/000003.log 
+2024/08/14-08:30:46.890 4338 Creating DB C:\Users\kanec\Desktop\Meu Git\EvertonZap\.wwebjs_auth\session\Default\shared_proto_db\metadata since it was missing.
+2024/08/14-08:30:47.600 4338 Reusing MANIFEST C:\Users\kanec\Desktop\Meu Git\EvertonZap\.wwebjs_auth\session\Default\shared_proto_db\metadata/MANIFEST-000001
+2024/08/14-08:30:47.605 4338 Recovering log #3
+2024/08/14-08:30:47.606 4338 Reusing old log C:\Users\kanec\Desktop\Meu Git\EvertonZap\.wwebjs_auth\session\Default\shared_proto_db\metadata/000003.log 

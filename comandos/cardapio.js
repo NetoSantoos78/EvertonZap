@@ -908,13 +908,11 @@ async function opcoesAcai(lanches, indiceExtras) {
 async function valorBebidaEspecifico(lanches) {
     const lanche = lanches;
     try {
-        const cardapio = await lerCardapio(caminhoArquivoAcai);
+        const cardapio = await lerCardapio(caminhoArquivoBebidas);
         if (cardapio) {
             const produto = cardapio[lanche];
             if (produto) {
-                const nomeItem = produto.produto; // Obtém o nome do item do cardápio
-                const valorItem = produto.valor; // Obtém o valor do item
-                return { valorItem };
+                return produto.valor; // Retorna apenas a string do valor
             } else {
                 throw new Error("Produto não encontrado: " + lanche);
             }
@@ -925,6 +923,7 @@ async function valorBebidaEspecifico(lanches) {
         throw error;
     }
 }
+
 
 async function caldasAcai(lanches, indiceExtras) {
     const indiceExtra = indiceExtras;

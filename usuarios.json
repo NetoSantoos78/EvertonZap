@@ -102,11 +102,21 @@
   "5519999304457@c.us": {
     "concluido": "nao",
     "fidelidade": "0",
-    "endereco": "",
+    "endereco": "hey, joao domingos santos neto !\nseu pedido 40157631 acabou de chegar 🎁🎉\n\n💥 curta ao maximo este momento e conte com o ninja pra tudo o que precisar.",
     "bairro": "",
     "numeroCasa": "",
     "referencia": "",
     "complemento": "",
-    "estado": 1
+    "estado": 2
+  },
+  "12068959058@c.us": {
+    "concluido": "nao",
+    "fidelidade": "0",
+    "endereco": "",
+    "bairro": "paypal: 784461 e o seu codigo de seguranca. nao compartilhe seu codigo.",
+    "numeroCasa": "",
+    "referencia": "",
+    "complemento": "",
+    "estado": 4
   }
 }
