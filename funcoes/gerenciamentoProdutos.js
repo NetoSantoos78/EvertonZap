@@ -4,7 +4,7 @@ const { cardapioIndividual, cardapioCompleto, cardapioExtras, valorExtraEspecifi
     valorExtraEspecificoBatatas, valorExtraEspecificoBebidas, valorExtraEspecificoPizza2, valorExtraEspecificoPizza1,
     cardapioExtrasAcai, cardapioExtrasBatatas, cardapioExtrasBebidas, cardapioExtrasPizza2, cardapioExtrasPizza1,
     acaiCompleto, batatasCompleto, bebidasCompleto, cardapioCompletoAcai, cardapioCompletoBatatas, cardapioCompletoBebidas,
-    cardapioCompletoPizzas2, valorBebidaEspecifico, tamanhoEspecicoPizzaEspecial, precoExtraEspecificoBatatas, nomesTamanhoEspecicoPizzaTradicional, tamanhoEspecicoPizzaTradicional, opcoesAcai, cardapioExtrasBurguer, caldasAcai, cardapioCompletoPizzas1, cardapioIndividualAcai, cardapioIndividualBebidas, cardapioIndividualBatatas, cardapioIndividualPizza2, } = require('../comandos/cardapio.js');
+    cardapioCompletoPizzas2, valorBebidaEspecifico, tamanhoEspecicoPizzaEspecial,nomeEspecificoAcai,valorEspecificoAcai, precoExtraEspecificoBatatas, nomesTamanhoEspecicoPizzaTradicional, tamanhoEspecicoPizzaTradicional, opcoesAcai, cardapioExtrasBurguer, caldasAcai, cardapioCompletoPizzas1, cardapioIndividualAcai, cardapioIndividualBebidas, cardapioIndividualBatatas, cardapioIndividualPizza2, } = require('../comandos/cardapio.js');
 
 const respostas = {
     menu: '',
@@ -296,8 +296,8 @@ async function pegarRetorno(numeroContato, client, parametros, ids, lanches, est
             }
         case 26: // Valor do açaí
             try {
-                const resultado = await valorExtraEspecificoAcai(lanche, id);
-                return `Valor: ${resultado}`;
+                const resultado = await valorEspecificoAcai(lanche);
+                return `${resultado}`;
             } catch (error) {
                 return `Erro ao obter o produto: ${error.message}`;
             }
@@ -322,12 +322,11 @@ async function pegarRetorno(numeroContato, client, parametros, ids, lanches, est
             } catch (error) {
                 return `Erro ao obter o produto: ${error.message}`;
             }
-        case 30: // Quantidade dos complementos de cada tamanho do açaí
+        case 30: // Complementos de cada tamanho do açaí
             try {
                 const resultado = await opcoesAcai(lanche, id);
-                if (resultado && typeof resultado === 'object') {
-                    const { nomeExtra, nomeItem } = resultado;
-                    return `Item: ${nomeItem}, ${nomeExtra}`;
+                if (resultado && typeof resultado === 'string') {
+                    return `${resultado}`;
                 } else {
                     return `Resultado inesperado: ${resultado}`;
                 }
@@ -391,6 +390,13 @@ async function pegarRetorno(numeroContato, client, parametros, ids, lanches, est
         case 38: // Valor de uma bebida
             try {
                 const resultado = await valorBebidaEspecifico(lanche);
+                return `${resultado}`;
+            } catch (error) {
+                return `Erro ao obter o produto: ${error.message}`;
+            }
+        case 39: // Nome de um açaí
+            try {
+                const resultado = await nomeEspecificoAcai(lanche);
                 return `${resultado}`;
             } catch (error) {
                 return `Erro ao obter o produto: ${error.message}`;

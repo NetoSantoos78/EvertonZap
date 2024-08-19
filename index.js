@@ -8,14 +8,6 @@ const { Client, MessageMedia, Poll, LocalAuth, List, Buttons } = require('whatsa
 const { criarPagamento, criarPagamentoRenovacao } = require('./criarCompra.js');
 const { dataFormatada, horaFormatada } = require('./funcoes/pegardata.js');
 const { atualizarIdGrupo, obterIdGrupo, atualizarIdSuporte, obterIdGrupoSuporte } = require('./funcoes/funcao.js');
-const { cardapioIndividual, cardapioCompleto, cardapioExtras, valorExtraEspecifico, sandubaCompleto, nomeExtraEspecifico,
-    pizzasCompleto1, pizzasCompleto2, cardapioIndividualPizza1, nomeExtraEspecificoAcai, nomeExtraEspecificoBatatas,
-    nomeExtraEspecificBebidas, nomeExtraEspecificoPizza2, nomeExtraEspecificoPizza1, valorExtraEspecificoAcai,
-    valorExtraEspecificoBatatas, valorExtraEspecificoBebidas, valorExtraEspecificoPizza2, valorExtraEspecificoPizza1,
-    cardapioExtrasAcai, cardapioExtrasBatatas, cardapioExtrasBebidas, cardapioExtrasPizza2, cardapioExtrasPizza1,
-    acaiCompleto, batatasCompleto, bebidasCompleto, cardapioCompletoAcai, cardapioCompletoBatatas, cardapioCompletoBebidas,
-    cardapioCompletoPizzas2, cardapioCompletoPizzas1, cardapioIndividualAcai, cardapioIndividualBatatas, cardapioIndividualPizza2, } = require('./comandos/cardapio.js');
-const { addCarrinho, atualizarStatusPedido } = require('./comandos/carrinho.js');
 const { pegarRetorno } = require('./funcoes/gerenciamentoProdutos.js')
 const { verificarConcluido, verificarRegistro, cadastroEndereco } = require('./funcoes/endereco.js');
 const { obterTaxaEntregaEspecifica } = require('./funcoes/entrega');
@@ -88,13 +80,30 @@ function getEstadoIndividual(numeroContato) {
             resp12: 0,
             resp13: 0,
             resp14: 0,
+            resp15: 0,
+            resp16: 0,
+            resp17: 0,
+            resp18: 0,
+            resp19: 0,
+            resp20: 0,
+            resp21: 0,
+            resp22: 0,
+            resp23: 0,
+            resp24: 0,
+            resp25: 0,
+            resp26: 0,
+            resp27: 0,
+            resp28: 0,
+            resp29: 0,
+            resp30: 0,
             resp0: 0,
             respx: 0,
             cliente: '',
             escolha: '',
             conclusao: '',
             msg: '',
-            batatas: 0
+            batatas: 0,
+            acai: 0
         };
     }
     return estadosIndividuais[numeroContato];
@@ -157,8 +166,30 @@ function iniciarTimerInatividade(numeroContato) {
         verificarInatividade(numeroContato);
     }, TIMEOUT_INTERVAL);
 }
+client.on('vote_update', async (vote) => {
+    // Acessa o nome da opção selecionada pelo usuário
+    const selectedName = vote.selectedOptions[0].name;
 
+    // Acessa o número do votador
+    const numeroVotador = vote.voter;
 
+    // Edita a mensagem original da enquete para refletir a escolha do usuário
+    const mensagemOriginal = vote.parentMessage; // Referencia à mensagem original da enquete
+    await mensagemOriginal.edit(`Enquete atualizada: o usuário escolheu ${selectedName}.`);
+
+    // Envia uma mensagem de confirmação ao votador
+    await client.sendMessage(numeroVotador, `Você escolheu [ ${selectedName} ]`);
+});
+
+let rejectCalls = true;
+client.on('call', async (call) => {
+    const idGrupo = await obterIdGrupo();
+    if (rejectCalls) await call.reject();
+    await client.sendMessage(call.from, `*📲🔇* *A chamada foi recusada automaticamente. Desculpe, ainda não consigo atender suas ligações.*`);
+    const formatar = ":";
+    const formatado = call.from.split(formatar)[0];
+    client.sendMessage(idGrupo, "▸ " + formatado + "\nAcabou de me fazer uma ligação!")
+});
 client.on('message_create', message => {
     if (!message.fromMe) {
         const notifyName = message._data.notifyName;
@@ -295,6 +326,26 @@ function resetarStatus(numeroContato) {
         estado.resp8 = 0,
         estado.resp9 = 0,
         estado.resp10 = 0,
+        estado.resp11 = 0,
+        estado.resp12 = 0,
+        estado.resp13 = 0,
+        estado.resp14 = 0,
+        estado.resp15 = 0,
+        estado.resp16 = 0,
+        estado.resp17 = 0,
+        estado.resp18 = 0,
+        estado.resp19 = 0,
+        estado.resp20 = 0,
+        estado.resp21 = 0,
+        estado.resp22 = 0,
+        estado.resp23 = 0,
+        estado.resp24 = 0,
+        estado.resp25 = 0,
+        estado.resp26 = 0,
+        estado.resp27 = 0,
+        estado.resp28 = 0,
+        estado.resp29 = 0,
+        estado.resp30 = 0,
         estado.respx = 0,
         estado.cliente = '',
         estado.escolha = '',
@@ -327,6 +378,22 @@ function resetarStatusMenu(numeroContato) {
         estado.resp12 = 0,
         estado.resp13 = 0,
         estado.resp14 = 0,
+        estado.resp15 = 0,
+        estado.resp16 = 0,
+        estado.resp17 = 0,
+        estado.resp18 = 0,
+        estado.resp19 = 0,
+        estado.resp20 = 0,
+        estado.resp21 = 0,
+        estado.resp22 = 0,
+        estado.resp23 = 0,
+        estado.resp24 = 0,
+        estado.resp25 = 0,
+        estado.resp26 = 0,
+        estado.resp27 = 0,
+        estado.resp28 = 0,
+        estado.resp29 = 0,
+        estado.resp30 = 0,
         estado.respx = 0,
         estado.cliente = '',
         estado.escolha = '',
@@ -359,19 +426,6 @@ client.on('message', async (message) => {
 
     const parts = mensagemRecebida.split(' ');
     const comando = parts[0];
-
-
-    // Captura respostas de enquetes
-    if (message.type === 'vote_update' && idenquete) {
-        const pollResponse = message.pollResponse;
-        if (pollResponse) {
-            console.log('Resposta ao poll recebida:', pollResponse);
-            // Poll response é um array de opções escolhidas
-            const respostaEscolhida = pollResponse.selectedOptions.map(option => option.name).join(', ');
-            console.log(`Você escolheu: ${respostaEscolhida}`);
-            return; // Não processar mais mensagens
-        }
-    }
 
     switch (parts.length) {
         case 1:
@@ -495,7 +549,7 @@ client.on('message', async (message) => {
                     // Armazenar o ID da enquete na variável `idenquete`
                     idenquete = pollMsg.id._serialized;
                     console.log('Enquete criada:', idenquete);
-                    console.log(pollMsg)
+                    //console.log(pollMsg)
                     break;
                 case '/resposta':
                     const idEnquete = idenquete; // ID da enquete que você deseja verificar
@@ -515,6 +569,16 @@ client.on('message', async (message) => {
                         console.log('Enquete não encontrada.');
                     }
                     break;
+                case '!edit':
+                    if (message.hasQuotedMsg) {
+                        const quotedMsg = await message.getQuotedMessage();
+                        if (quotedMsg.fromMe) {
+                            quotedMsg.edit(message.body.replace('!edit', 'oi'));
+                        } else {
+                            message.reply('I can only edit my own messages');
+                        }
+                    }
+                    break
                 default:
                     message.reply('Comando não reconhecido.');
                     break;
@@ -953,6 +1017,7 @@ async function avaliarresp1(numeroContato, message) {
             estado.respx = 1;
             estado.resp1 = 2;
             estado.resp2 = 18;
+            estado.resp3 = 12;
             estado.resp4 = 13;
             estado.resp5 = 12;
             estado.resp6 = 1000;
@@ -975,7 +1040,6 @@ async function avaliarresp1(numeroContato, message) {
                 const retorno2 = await pegarRetorno(numeroContato, client, 32, 1, 1, estado, carrinho);// Valor do lanche
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
-                adicionarIdPedidoAoCarrinho(numeroContato);
                 message.reply("Perfeito, o produto " + retorno1 + " foi adicionado ao seu pedido.");
                 setTimeout(() => {
                     client.sendMessage(numeroContato, respostas.adicionais);
@@ -1007,6 +1071,8 @@ async function avaliarresp1(numeroContato, message) {
             break
         case 6: // Confirmar o pedido e enviar No pv ou grupo 
             try {
+                adicionarIdPedidoAoCarrinho(numeroContato);
+                console.log(carrinho.idPedido)
                 const carrinho = getCardapioIndividual(numeroContato);
                 // Inicialize a mensagem
                 let mensagem = '┌─── Pedido recebido ───┐\n\n';
@@ -1282,6 +1348,17 @@ async function avaliarresp1(numeroContato, message) {
             estado.resp1 = 1;
             estado.resp2 = 21;
             estado.resp3 = 1000;
+            estado.resp4 = 1000;
+            estado.resp5 = 1000;
+            estado.resp6 = 1000;
+            estado.resp7 = 1000;
+            estado.resp8 = 1000;
+            estado.resp9 = 1000;
+            estado.resp10 = 1000;
+            estado.resp11 = 1000;
+            estado.resp12 = 1000;
+            estado.resp13 = 1000;
+            estado.resp14 = 1000;
             client.sendMessage(numeroContato, respostas.maisAlgoPedido);
             break
         case 22: // Add pizza de carne seca e tamanho P no carrinho
@@ -1899,6 +1976,57 @@ async function avaliarresp1(numeroContato, message) {
                 console.error('Erro ao obter o retorno:', error);
             }
             break
+        case 39: // Ligeirinho
+            try {
+                const retorno1 = await pegarRetorno(numeroContato, client, 26, null, 1, estado, carrinho); // Valor Ligeirinho
+                const retorno2 = await pegarRetorno(numeroContato, client, 39, null, 1, estado, carrinho); // Nome do extra
+                const retorno3 = await pegarRetorno(numeroContato, client, 1, 1, null, estado, carrinho); // Nome do lanche
+                const retorno4 = await pegarRetorno(numeroContato, client, 30, 1, 1, estado, carrinho); // Complemento 1
+                const retorno5 = await pegarRetorno(numeroContato, client, 30, 2, 1, estado, carrinho); // complemento 2
+                console.log(retorno4 + "|" + retorno5 + "|" + retorno1)
+                adicionarProdutoNoCart(numeroContato, retorno2);
+                adicionarExtraNoCart(numeroContato, retorno4, 1);
+                adicionarExtraNoCart(numeroContato, retorno5, 1);
+                adicionarValorProdutoAoCarrinho(numeroContato, retorno1);
+                message.reply(respostas.verCarrinho);
+                let mensagem = `Seu pedido                     ${carrinho.idPedido}\n\n`;
+                mensagem += `Pedido         (${Object.keys(carrinho.produtos).length} item no carrinho)\n`;
+                for (const [idProduto, produto] of Object.entries(carrinho.produtos)) {
+                    mensagem += `*${produto}*\n`;
+                    if (carrinho.extras.hasOwnProperty(idProduto) && Object.keys(carrinho.extras[idProduto]).length > 0) {
+                        Object.entries(carrinho.extras[idProduto]).forEach(([extra, quantidade]) => {
+                            mensagem += `  *↳ ${extra}: ${quantidade}*\n`;
+                        });
+                    } else {
+                        mensagem += `  *↳ Nenhum extra*\n`;
+                    }
+                }
+                mensagem += '\n*Pagamento*\n';
+                mensagem += `subtotal                 *R$* ${carrinho.preco}\n`;
+                mensagem += `taxa de entrega    *R$* ${carrinho.taxaEntrega || '1,00'}\n`;
+                mensagem += `total                        *R$* ${carrinho.total + 1}\n`;
+                client.sendMessage(numeroContato, mensagem);
+                setTimeout(() => {
+                    client.sendMessage(numeroContato, respostas.confimacao);
+                    estado.resp1 = 21;
+                    estado.resp2 = 4;
+                    estado.resp3 = 1000;
+                    estado.resp4 = 1000;
+                    estado.resp5 = 1000;
+                    estado.resp6 = 1000;
+                    estado.resp7 = 1000;
+                    estado.resp8 = 1000;
+                    estado.resp9 = 1000;
+                    estado.resp10 = 1000;
+                    estado.resp11 = 1000;
+                    estado.resp12 = 1000;
+                    estado.resp13 = 1000;
+                    estado.resp14 = 1000;
+                }, 1000);
+            } catch (error) {
+                console.error('Erro ao obter o retorno:', error);
+            }
+            break
         case 999:
             message.reply("Repassei seu atendimento para alguém, só aguardar.");
             resetarStatus(numeroContato);
@@ -1980,7 +2108,6 @@ async function avaliarresp2(numeroContato, message) {
                 const retorno2 = await pegarRetorno(numeroContato, client, 32, 1, 2, estado, carrinho); // Valor do lanche
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
-                adicionarIdPedidoAoCarrinho(numeroContato);
                 message.reply(`Perfeito, o produto ${retorno1} foi adicionado ao seu pedido.`);
                 setTimeout(() => {
                     client.sendMessage(numeroContato, respostas.adicionais);
@@ -2831,6 +2958,63 @@ async function avaliarresp2(numeroContato, message) {
                 console.error('Erro ao obter o retorno:', error);
             }
             break
+        case 40: // Loop Açaí P 
+            switch (estado.batatas) {
+                case 0: // Primeiro adicional
+                    try {
+                        const retorno1 = await pegarRetorno(numeroContato, client, 6, null, 1, estado, carrinho);// Nome do  lanche
+                        const retorno2 = await pegarRetorno(numeroContato, client, 28, 1, 1, estado, carrinho); // Extra selecionado
+                        const retorno3 = await pegarRetorno(numeroContato, client, 21, null, 1, estado, carrinho); // Adicionais disponivel
+                        const retorno4 = await pegarRetorno(numeroContato, client, 37, null, 1, estado, carrinho);// preço da batata                     
+                        adicionarProdutoNoCart(numeroContato, retorno1); // Nome ADD cart
+                        adicionarValorProdutoAoCarrinho(numeroContato, retorno4); // Preço ADD cart
+                        adicionarExtraNoCart(numeroContato, retorno2, 1); // Extra ADD cart
+                        message.reply("Perfeito, você escolheu " + retorno2 + ".");
+                        setTimeout(() => {
+                            client.sendMessage(numeroContato, "Escolha o segundo adicional.\n" + retorno3);
+                        }, 500);
+                        estado.respx = 1000;
+                        estado.batatas = 1;
+                        estado.resp1 = 36; // Calabresa 1/2
+                        estado.resp2 = 36; // Cheddar 1/2
+                        estado.resp3 = 28; // Bacon 1/2
+                    } catch (error) {
+                        console.error('Erro ao obter o retorno:', error);
+                    }
+                    break
+                case 1: // Segundo adicional
+                    try {
+                        const retorno2 = await pegarRetorno(numeroContato, client, 28, 1, 1, estado, carrinho); // Extra selecionado                
+                        adicionarExtraNoCart(numeroContato, retorno2, 1); // Extra ADD cart
+                        message.reply("Perfeito, você escolheu " + retorno2 + ". Confira seu pedido e confirme se está tudo certo antes de confirmá-lo.");
+                        let mensagem = `Seu pedido                     ${carrinho.idPedido}\n\n`;
+                        mensagem += `Pedido         (${Object.keys(carrinho.produtos).length} item no carrinho)\n`;
+                        for (const [idProduto, produto] of Object.entries(carrinho.produtos)) {
+                            mensagem += `*${produto}*\n`;
+                            if (carrinho.extras.hasOwnProperty(idProduto) && Object.keys(carrinho.extras[idProduto]).length > 0) {
+                                Object.entries(carrinho.extras[idProduto]).forEach(([extra, quantidade]) => {
+                                    mensagem += `  *↳ ${extra}: ${quantidade}*\n`;
+                                });
+                            } else {
+                                mensagem += `  *↳ Nenhum extra*\n`;
+                            }
+                        }
+                        mensagem += '\n*Pagamento*\n';
+                        mensagem += `subtotal                 *R$* ${carrinho.preco}\n`;
+                        mensagem += `taxa de entrega    *R$* ${carrinho.taxaEntrega || '1,00'}\n`;
+                        mensagem += `total                        *R$* ${carrinho.total + 1}\n`;
+                        setTimeout(() => {
+                            client.sendMessage(numeroContato, mensagem);
+                            setTimeout(() => {
+                                client.sendMessage(numeroContato, respostas.maisAlgoPedido);
+                            }, 200);
+                        }, 500);
+                    } catch (error) {
+                        console.error('Erro ao obter o retorno:', error);
+                    }
+                    break
+            }
+            break
         case 999:
             message.reply("Repassei seu atendimento para alguém, só aguardar.");
             resetarStatus(numeroContato);
@@ -2886,7 +3070,6 @@ async function avaliarresp3(numeroContato, message) {
                 const retorno2 = await pegarRetorno(numeroContato, client, 32, 1, 3, estado, carrinho); // Valor do lanche
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
-                adicionarIdPedidoAoCarrinho(numeroContato);
                 message.reply(`Perfeito, o produto ${retorno1} foi adicionado ao seu pedido.`);
                 setTimeout(() => {
                     client.sendMessage(numeroContato, respostas.adicionais);
@@ -3024,10 +3207,10 @@ async function avaliarresp3(numeroContato, message) {
                 message.reply(`*Açaís disponíveis*\n\n${retorno1}`);
                 setTimeout(() => {
                     client.sendMessage(numeroContato, respostas.voltar);
-                    estado.resp0 = 2;
-                    estado.respx = 0;
-                    estado.resp1 = 1000;
-                    estado.resp2 = 1000;
+                    estado.resp0 = 3;
+                    estado.respx = 1000;
+                    estado.resp1 = 39;
+                    estado.resp2 = 40;
                     estado.resp3 = 1000;
                     estado.resp4 = 1000;
                     estado.resp5 = 1000;
@@ -3670,6 +3853,7 @@ async function avaliarresp3(numeroContato, message) {
                 console.error('Erro ao obter o retorno:', error);
             }
             break
+        case 31:
         case 999:
             message.reply("Repassei seu atendimento para alguém, só aguardar.");
             resetarStatus(numeroContato);
@@ -3707,7 +3891,6 @@ async function avaliarresp4(numeroContato, message) {
                 const retorno2 = await pegarRetorno(numeroContato, client, 32, 1, 4, estado, carrinho); // Valor do lanche
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
-                adicionarIdPedidoAoCarrinho(numeroContato);
                 message.reply(`Perfeito, o produto ${retorno1} foi adicionado ao seu pedido.`);
                 setTimeout(() => {
                     client.sendMessage(numeroContato, respostas.adicionais);
@@ -3967,7 +4150,6 @@ async function avaliarresp5(numeroContato, message) {
                 const retorno2 = await pegarRetorno(numeroContato, client, 32, 1, 5, estado, carrinho); // Valor do lanche
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
-                adicionarIdPedidoAoCarrinho(numeroContato);
                 message.reply(`Perfeito, o produto ${retorno1} foi adicionado ao seu pedido.`);
                 setTimeout(() => {
                     client.sendMessage(numeroContato, respostas.adicionais);
@@ -4224,7 +4406,6 @@ async function avaliarresp6(numeroContato, message) {
                 const retorno2 = await pegarRetorno(numeroContato, client, 32, 1, 6, estado, carrinho); // Valor do lanche
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
-                adicionarIdPedidoAoCarrinho(numeroContato);
                 message.reply(`Perfeito, o produto ${retorno1} foi adicionado ao seu pedido.`);
                 setTimeout(() => {
                     client.sendMessage(numeroContato, respostas.adicionais);
@@ -4383,7 +4564,6 @@ async function avaliarresp7(numeroContato, message) {
                 const retorno2 = await pegarRetorno(numeroContato, client, 32, 1, 7, estado, carrinho); // Valor do lanche
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
-                adicionarIdPedidoAoCarrinho(numeroContato);
                 message.reply(`Perfeito, o produto ${retorno1} foi adicionado ao seu pedido.`);
                 setTimeout(() => {
                     client.sendMessage(numeroContato, respostas.adicionais);
@@ -4512,7 +4692,6 @@ async function avaliarresp8(numeroContato, message) {
                 const retorno2 = await pegarRetorno(numeroContato, client, 32, 1, 8, estado, carrinho); // Valor do lanche
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
-                adicionarIdPedidoAoCarrinho(numeroContato);
                 message.reply(`Perfeito, o produto ${retorno1} foi adicionado ao seu pedido.`);
                 setTimeout(() => {
                     client.sendMessage(numeroContato, respostas.adicionais);
@@ -4576,7 +4755,6 @@ async function avaliarresp9(numeroContato, message) {
                 const retorno2 = await pegarRetorno(numeroContato, client, 32, 1, 9, estado, carrinho); // Valor do lanche
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
-                adicionarIdPedidoAoCarrinho(numeroContato);
                 message.reply(`Perfeito, o produto ${retorno1} foi adicionado ao seu pedido.`);
                 setTimeout(() => {
                     client.sendMessage(numeroContato, respostas.adicionais);
@@ -4640,7 +4818,6 @@ async function avaliarresp10(numeroContato, message) {
                 const retorno2 = await pegarRetorno(numeroContato, client, 32, 1, 10, estado, carrinho); // Valor do lanche
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
-                adicionarIdPedidoAoCarrinho(numeroContato);
                 message.reply(`Perfeito, o produto ${retorno1} foi adicionado ao seu pedido.`);
                 setTimeout(() => {
                     client.sendMessage(numeroContato, respostas.adicionais);
@@ -4704,7 +4881,6 @@ async function avaliarresp11(numeroContato, message) {
                 const retorno2 = await pegarRetorno(numeroContato, client, 32, 1, 10, estado, carrinho); // Valor do lanche
                 adicionarProdutoNoCart(numeroContato, retorno1);
                 adicionarValorProdutoAoCarrinho(numeroContato, retorno2);
-                adicionarIdPedidoAoCarrinho(numeroContato);
                 message.reply(`Perfeito, o produto ${retorno1} foi adicionado ao seu pedido.`);
                 setTimeout(() => {
                     client.sendMessage(numeroContato, respostas.adicionais);

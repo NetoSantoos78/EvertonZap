@@ -879,24 +879,55 @@ async function nomeExtraEspecificoAcai(lanches, indiceExtras) {
 }
 
 //####################################
-async function opcoesAcai(lanches, indiceExtras) {
-    const indiceExtra = indiceExtras;
-    const lanche = lanches;
+async function opcoesAcai(lanche, indiceExtra) {
     try {
         const cardapio = await lerCardapio(caminhoArquivoAcai);
         if (cardapio) {
             const produto = cardapio[lanche];
             if (produto) {
-                const extrasNomes = Object.values(produto.complementos); // Obtém os nomes dos extras
-                const nomeItem = produto.produto; // Obtém o nome do item do cardápio
-                const nomeExtra = extrasNomes[indiceExtra - 1]; // Subtrai 1 para obter o índice correto
-                if (nomeExtra) {
-                    return { nomeExtra, nomeItem };
+                const complementos = produto.complementos; // Obtém a lista de complementos
+                const complementoEspecifico = complementos[indiceExtra - 1]; // Subtrai 1 para obter o índice correto
+                if (complementoEspecifico) {
+                    return complementoEspecifico;
                 } else {
-                    throw new Error(`Extra no índice '${indiceExtra}' não encontrado no lanche ${lanche}.`);
+                    throw new Error(`Complemento no índice '${indiceExtra}' não encontrado no lanche ${lanche}.`);
                 }
             } else {
                 throw new Error("Lanche não encontrado: " + lanche);
+            }
+        } else {
+            throw new Error("Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+async function valorEspecificoAcai(lanche) {
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoAcai);
+        if (cardapio) {
+            const produto = cardapio[lanche];
+            if (produto) {
+                return produto.valor; // Retorna o valor do produto
+            } else {
+                throw new Error("Produto não encontrado: " + lanche);
+            }
+        } else {
+            throw new Error("Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+async function nomeEspecificoAcai(lanche) {
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoAcai);
+        if (cardapio) {
+            const produto = cardapio[lanche];
+            if (produto) {
+                return produto.produto; // Retorna o valor do produto
+            } else {
+                throw new Error("Produto não encontrado: " + lanche);
             }
         } else {
             throw new Error("Erro ao ler o cardápio.");
@@ -1046,6 +1077,7 @@ module.exports = {
     opcoesAcai,
     caldasAcai,
     cardapioCompleto,
+    valorEspecificoAcai,
     cardapioExtras,
     valorExtraEspecifico,
     sandubaCompleto,
@@ -1085,5 +1117,6 @@ module.exports = {
     cardapioExtrasBurguer,
     tamanhoEspecicoPizzaEspecial,
     tamanhoEspecicoPizzaTradicional,
-    nomesTamanhoEspecicoPizzaTradicional
+    nomesTamanhoEspecicoPizzaTradicional,
+    nomeEspecificoAcai
 };
