@@ -52,12 +52,12 @@
   "557996567015@c.us": {
     "concluido": "nao",
     "fidelidade": "0",
-    "endereco": "",
-    "bairro": "",
+    "endereco": "ghv",
+    "bairro": "q porra e essa",
     "numeroCasa": "",
     "referencia": "",
     "complemento": "",
-    "estado": 1
+    "estado": 3
   },
   "120363323173331196@g.us": {
     "concluido": "nao",
@@ -118,5 +118,45 @@
     "referencia": "",
     "complemento": "",
     "estado": 4
+  },
+  "557998664460@c.us": {
+    "concluido": "nao",
+    "fidelidade": "0",
+    "endereco": "",
+    "bairro": "",
+    "numeroCasa": "",
+    "referencia": "",
+    "complemento": "",
+    "estado": 1
+  },
+  "551149351112@c.us": {
+    "concluido": "nao",
+    "fidelidade": "0",
+    "endereco": "",
+    "bairro": "",
+    "numeroCasa": "",
+    "referencia": "",
+    "complemento": "",
+    "estado": 1
+  },
+  "551131817430@c.us": {
+    "concluido": "nao",
+    "fidelidade": "0",
+    "endereco": "{{first_name}} , sua parcela ou fatura ja ta disponivel no app. \n\npague ate a data de vencimento e ganhe 2 numeros da sorte para concorrer ao sorteio de agosto do programa em dia com a sorte, r$5.000 pode ser seu! 🤑\n\nabra o app e pague sua fatura agora mesmo!",
+    "bairro": "{{first_name}} , mesmo com sua fatura em atraso, voce ainda pode concorrer a r$5.000 em setembro! 🎉 \n\nfaca o pagamento agora e garanta 1 numero da sorte. aproveite essa oportunidade de concorrer!",
+    "numeroCasa": "",
+    "referencia": "",
+    "complemento": "",
+    "estado": 3
+  },
+  "557999602240@c.us": {
+    "concluido": "nao",
+    "fidelidade": "0",
+    "endereco": "",
+    "bairro": "",
+    "numeroCasa": "",
+    "referencia": "",
+    "complemento": "",
+    "estado": 1
   }
 }

@@ -93,9 +93,6 @@ function getEstadoIndividual(numeroContato) {
             resp25: 0,
             resp26: 0,
             resp27: 0,
-            resp28: 0,
-            resp29: 0,
-            resp30: 0,
             resp0: 0,
             respx: 0,
             cliente: '',
@@ -103,7 +100,8 @@ function getEstadoIndividual(numeroContato) {
             conclusao: '',
             msg: '',
             batatas: 0,
-            acai: 0
+            acai: 0,
+            enquetes: []
         };
     }
     return estadosIndividuais[numeroContato];
@@ -167,18 +165,22 @@ function iniciarTimerInatividade(numeroContato) {
     }, TIMEOUT_INTERVAL);
 }
 client.on('vote_update', async (vote) => {
-    // Acessa o nome da opção selecionada pelo usuário
-    const selectedName = vote.selectedOptions[0].name;
-
-    // Acessa o número do votador
-    const numeroVotador = vote.voter;
-
-    // Edita a mensagem original da enquete para refletir a escolha do usuário
-    const mensagemOriginal = vote.parentMessage; // Referencia à mensagem original da enquete
-    await mensagemOriginal.edit(`Enquete atualizada: o usuário escolheu ${selectedName}.`);
-
+    const numeroVotador = vote.voter; // Acessa o número do votador
+    const estado = getEstadoIndividual(numeroVotador);
+    const carrinho = getCardapioIndividual(numeroVotador); // Edita a mensagem original da enquete para refletir a escolha do usuário
+    try {
+        if (vote.selectedOptions && vote.selectedOptions.length > 0) {
+            const selectedName = vote.selectedOptions[0].name; // Acessa o nome da opção selecionada
+            complementosLoop(numeroVotador, null, selectedName, null);
+        } else {
+            console.log("[!] " + numeroVotador + " desmarcou todas as opções.");
+            // Lide com o caso em que o usuário desmarcou todas as opções
+        }
+    } catch (error) {
+        console.error("Erro ao processar a resposta da enquete:", error);
+    }
     // Envia uma mensagem de confirmação ao votador
-    await client.sendMessage(numeroVotador, `Você escolheu [ ${selectedName} ]`);
+    //await client.sendMessage(numeroVotador, `Você escolheu [ ${selectedName} | ${estado.acai}]`);
 });
 
 let rejectCalls = true;
@@ -343,9 +345,6 @@ function resetarStatus(numeroContato) {
         estado.resp25 = 0,
         estado.resp26 = 0,
         estado.resp27 = 0,
-        estado.resp28 = 0,
-        estado.resp29 = 0,
-        estado.resp30 = 0,
         estado.respx = 0,
         estado.cliente = '',
         estado.escolha = '',
@@ -391,9 +390,6 @@ function resetarStatusMenu(numeroContato) {
         estado.resp25 = 0,
         estado.resp26 = 0,
         estado.resp27 = 0,
-        estado.resp28 = 0,
-        estado.resp29 = 0,
-        estado.resp30 = 0,
         estado.respx = 0,
         estado.cliente = '',
         estado.escolha = '',
@@ -404,7 +400,44 @@ function resetarStatusMenu(numeroContato) {
 client.on('message_reaction', async (reaction) => {
     console.log('REACTION RECEIVED', reaction);
 });
+async function apagarMensagens(numeroContato) {
+    const estado = getEstadoIndividual(numeroContato);
+    let idsMensagens = estado.enquetes;
 
+    if (idsMensagens.length > 0) {
+        const id = idsMensagens[0]; // Pega o primeiro ID
+
+        try {
+            const msg = await client.getMessageById(id);
+
+            if (msg) {
+                await msg.delete(true);
+                console.log(`Mensagem com ID ${msg.id._serialized} apagada com sucesso.`);
+            } else {
+                console.error(`Mensagem com ID ${id} não encontrada.`);
+            }
+
+            // Remove o ID apagado do array
+            idsMensagens.shift();
+            // Atualiza o estado
+            estado.enquetes = idsMensagens;
+            setTimeout(() => { // Chama a função recursivamente após um timeout
+                apagarMensagens(numeroContato);
+            }, 700);
+        } catch (error) {
+            console.error(`Erro ao apagar a mensagem com ID ${id}:`, error.message);
+            idsMensagens.shift(); // Remove o ID do array em caso de erro e continua
+            estado.enquetes = idsMensagens;
+            setTimeout(() => { // Chama a função recursivamente após um timeout
+                apagarMensagens(numeroContato);
+            }, 700);
+        }
+    } else {
+        console.log("Todos os IDs de mensagens foram processados.");
+        // Atualize o estado após a exclusão de todas as mensagens
+        estado.enquetes = [];
+    }
+}
 client.on('message', async (message) => {
     const numeroContato = message.from;
     const estado = getEstadoIndividual(numeroContato);
@@ -552,33 +585,81 @@ client.on('message', async (message) => {
                     //console.log(pollMsg)
                     break;
                 case '/resposta':
-                    const idEnquete = idenquete; // ID da enquete que você deseja verificar
-                    const chat = await client.getChatById(message.from);
-                    const mensagens = await chat.fetchMessages({ limit: 100 }); // Ajuste o limite conforme necessário
-
-                    let encontrou = false;
-                    for (const msg of mensagens) {
-                        if (msg.id._serialized === idEnquete) {
-                            console.log('Enquete encontrada:', msg);
-                            encontrou = true;
-                            break;
-                        }
-                    }
-
-                    if (!encontrou) {
-                        console.log('Enquete não encontrada.');
-                    }
+                    const opas = await client.sendMessage(numeroContato, "eae");
+                    console.log(opas);
+                    const idopas = opas.id._serialized;
+                    estado.enquetes.push(idopas);
                     break;
-                case '!edit':
-                    if (message.hasQuotedMsg) {
-                        const quotedMsg = await message.getQuotedMessage();
-                        if (quotedMsg.fromMe) {
-                            quotedMsg.edit(message.body.replace('!edit', 'oi'));
-                        } else {
-                            message.reply('I can only edit my own messages');
+                case '/editar':
+                    apagarMensagens(numeroContato, message);
+                    break
+                case '/acai': {
+                    const complementos = [
+                        "Granola", "Granulado", "Jujuba", "Cereal Crocante", "Morango", "Creme de Avelã",
+                        "Gotas de Chocolate", "Amendoim", "Leite Condensado", "Coco ralado", "Mariola",
+                        "Paçoca", "Canudo de Chocolate", "Bombom", "Kiwi", "Disket", "Biscoito", "Banana",
+                        "Uva", "Creme de morango", "Leite em pó", "Castanha", "Creme de ninho",
+                        "Ovomaltine", "Sorvete", "Doce de leite", "Creme de maracujá"
+                    ];
+
+                    const numeroContato = message.from;
+                    const numeroSomenteDigitos = numeroContato.split('@')[0];
+                    const digitos = numeroSomenteDigitos.split('');
+
+                    // Função para dividir o array em blocos de 12
+                    function dividirEmBlocos(array, tamanho) {
+                        const resultado = [];
+                        for (let i = 0; i < array.length; i += tamanho) {
+                            resultado.push(array.slice(i, i + tamanho));
+                        }
+                        return resultado;
+                    }
+
+                    // Função para preencher a `secreta` com os dígitos do número de telefone
+                    function preencherSecreta(digitos, tamanho) {
+                        const secreta = [];
+                        for (let i = 0; i < tamanho; i++) {
+                            secreta.push(digitos[i % digitos.length] || 0);
+                        }
+                        return secreta;
+                    }
+
+                    // Dividir os complementos em blocos de 12
+                    const blocosDeComplementos = dividirEmBlocos(complementos, 12);
+
+                    // Inicializar o array de enquetes para este contato, caso ainda não exista
+                    const estado = getEstadoIndividual(numeroContato);
+                    if (!estado.enquetes) estado.enquetes = [];
+
+                    for (let i = 0; i < blocosDeComplementos.length; i++) {
+                        const bloco = blocosDeComplementos[i];
+
+                        // Preencher a secreta com 32 posições, utilizando os dígitos do número de contato
+                        const secreta = preencherSecreta(digitos, 32);
+
+                        try {
+                            // Criar a enquete usando o bloco de complementos
+                            const pollMsg = await client.sendMessage(numeroContato,
+                                new Poll(`Escolha seus complementos:`, bloco, { messageSecret: secreta })
+                            );
+
+                            // Armazenar o ID da enquete
+                            const idEnquete = pollMsg.id._serialized;
+                            if (idEnquete) {
+                                estado.enquetes.push(idEnquete);
+                                console.log(`Enquete Parte ${i + 1} criada com ID:`, idEnquete);
+                            } else {
+                                console.error(`Erro ao capturar o ID da enquete Parte ${i + 1}`);
+                            }
+
+                        } catch (error) {
+                            console.error(`Erro ao criar a enquete Parte ${i + 1}:`, error);
                         }
                     }
-                    break
+
+                    break;
+                }
+
                 default:
                     message.reply('Comando não reconhecido.');
                     break;
@@ -646,7 +727,79 @@ client.on('message', async (message) => {
 
     }
 });
+// Função para criar enquetes de complementos de Açaí
+async function criarEnquetesDeAcai(message, complementos, numeroContato) {
+    const estado = getEstadoIndividual(numeroContato);
+    const maxItensPorEnquete = 12;
+    const totalEnquetes = Math.ceil(complementos.length / maxItensPorEnquete);
+    // Extrai os dígitos do número de contato
+    const digitosNumero = numeroContato.replace(/\D/g, '').split('');
+    for (let i = 0; i < totalEnquetes; i++) {
+        // Fatia os complementos em blocos de 12
+        const inicio = i * maxItensPorEnquete;
+        const fim = inicio + maxItensPorEnquete;
+        const itensEnquete = complementos.slice(inicio, fim);
+        // Preenche a sequência secreta com os dígitos do número de contato
+        const secreta = digitosNumero.slice(0, maxItensPorEnquete).concat(
+            new Array(maxItensPorEnquete - digitosNumero.length).fill(0)
+        );
+        // Cria a enquete no WhatsApp
+        const pollMsg = await message.reply(
+            new Poll(`Escolha seu complemento:`, itensEnquete, {
+                messageSecret: secreta
+            })
+        );
+        // Armazenar o ID da enquete na variável idenquete (pode ser usado para outros propósitos)
+        idenquete = pollMsg.id._serialized;
+        estado.enquetes.push(idenquete);
+        console.log(`Enquete Parte ${i + 1} criada:`, idenquete);
 
+    }
+}
+async function complementosLoop(numeroContato, acai, complemento, calda) {
+    const estado = getEstadoIndividual(numeroContato);
+    const carrinho = getCardapioIndividual(numeroContato);
+    let acaiLoop = acai;
+    let complementoLoop = complemento;
+    let caldaLoop = calda
+    // Certifica-se de que estado.acai é um número
+    const retornoCaldas = await pegarRetorno(numeroContato, client, 40, null, 6, estado, carrinho);
+    const estadoAcais = Number(estado.acai);
+    const retornoCalda = Number(retornoCaldas);
+    if (estadoAcais < retornoCalda) {
+        console.log(`${estadoAcais} | ${numeroContato} | ${retornoCalda}`);
+        estado.acai += 1; // Incrementa o estado de acompanhamento do açaí
+        // Envia a mensagem sobre o complemento escolhido
+        await client.sendMessage(numeroContato, `Você escolheu [ ${complementoLoop} | ${estado.acai} ]`);
+        estadoAcais
+    } else if (estadoAcais === retornoCalda) {
+        console.log(`${estadoAcais} | ${numeroContato} | ${retornoCaldas}`);
+        estado.acai = 111; // Define o estado como "111" após escolher o último complemento
+        // Envia uma mensagem informando a escolha do último complemento
+        await client.sendMessage(numeroContato, `Você escolheu [ ${complementoLoop} | ${estado.acai} ]`);
+        await client.sendMessage(numeroContato, `Todos complementos selecionados`);
+    } else if (estadoAcais === 111) {
+        console.log(`${estadoAcais} | ${numeroContato} | ${retornoCalda}`);
+        estado.acai = 0; // Reseta o estado para 0 após a seleção de todos os complementos
+        // Envia a mensagem final informando que todos os complementos foram escolhidos
+        estado.respx = 0
+        estado.resp1 = 0;
+        estado.resp2 = 21;
+        estado.resp3 = 1000;
+        estado.resp4 = 1000;
+        estado.resp5 = 1000;
+        estado.resp6 = 1000;
+        estado.resp7 = 1000;
+        estado.resp8 = 1000;
+        estado.resp9 = 1000;
+        estado.resp10 = 1000;
+        estado.resp11 = 1000;
+        estado.resp12 = 1000;
+        estado.resp13 = 1000;
+        estado.resp14 = 1000;
+        client.sendMessage(numeroContato, respostas.maisAlgoPedido);
+    }
+}
 async function avaliarmenu(numeroContato, message, mensagemUser) {
     const estado = getEstadoIndividual(numeroContato);
     switch (estado.conclusao) {
@@ -1980,10 +2133,8 @@ async function avaliarresp1(numeroContato, message) {
             try {
                 const retorno1 = await pegarRetorno(numeroContato, client, 26, null, 1, estado, carrinho); // Valor Ligeirinho
                 const retorno2 = await pegarRetorno(numeroContato, client, 39, null, 1, estado, carrinho); // Nome do extra
-                const retorno3 = await pegarRetorno(numeroContato, client, 1, 1, null, estado, carrinho); // Nome do lanche
                 const retorno4 = await pegarRetorno(numeroContato, client, 30, 1, 1, estado, carrinho); // Complemento 1
                 const retorno5 = await pegarRetorno(numeroContato, client, 30, 2, 1, estado, carrinho); // complemento 2
-                console.log(retorno4 + "|" + retorno5 + "|" + retorno1)
                 adicionarProdutoNoCart(numeroContato, retorno2);
                 adicionarExtraNoCart(numeroContato, retorno4, 1);
                 adicionarExtraNoCart(numeroContato, retorno5, 1);
@@ -2958,26 +3109,47 @@ async function avaliarresp2(numeroContato, message) {
                 console.error('Erro ao obter o retorno:', error);
             }
             break
-        case 40: // Loop Açaí P 
-            switch (estado.batatas) {
+        case 40: // Loop Açaí M 
+            switch (estado.acai) {
                 case 0: // Primeiro adicional
                     try {
-                        const retorno1 = await pegarRetorno(numeroContato, client, 6, null, 1, estado, carrinho);// Nome do  lanche
-                        const retorno2 = await pegarRetorno(numeroContato, client, 28, 1, 1, estado, carrinho); // Extra selecionado
-                        const retorno3 = await pegarRetorno(numeroContato, client, 21, null, 1, estado, carrinho); // Adicionais disponivel
-                        const retorno4 = await pegarRetorno(numeroContato, client, 37, null, 1, estado, carrinho);// preço da batata                     
+                        //const retorno1 = await pegarRetorno(numeroContato, client, 26, null, 1, estado, carrinho); // Valor Ligeirinho
+                        const retorno2 = await pegarRetorno(numeroContato, client, 39, null, 1, estado, carrinho); // Nome do Açaí
+                        //const retorno4 = await pegarRetorno(numeroContato, client, 30, 1, 1, estado, carrinho); // Complemento 1
                         adicionarProdutoNoCart(numeroContato, retorno1); // Nome ADD cart
-                        adicionarValorProdutoAoCarrinho(numeroContato, retorno4); // Preço ADD cart
-                        adicionarExtraNoCart(numeroContato, retorno2, 1); // Extra ADD cart
                         message.reply("Perfeito, você escolheu " + retorno2 + ".");
                         setTimeout(() => {
-                            client.sendMessage(numeroContato, "Escolha o segundo adicional.\n" + retorno3);
+                            client.sendMessage(numeroContato, "Escolha o que você quer adicionar..\n" + retorno3);
                         }, 500);
                         estado.respx = 1000;
-                        estado.batatas = 1;
-                        estado.resp1 = 36; // Calabresa 1/2
-                        estado.resp2 = 36; // Cheddar 1/2
-                        estado.resp3 = 28; // Bacon 1/2
+                        estado.acai = 1;
+                        estado.resp1 = 40; // Granola 1/3
+                        estado.resp2 = 40; // Granulado 1/3
+                        estado.resp3 = 1000; // Jujuba 1/3
+                        estado.resp4 = 1000; // Cereal Crocante 1/3
+                        estado.resp5 = 1000; // Morango 1/3
+                        estado.resp6 = 1000; // Creme de Avelã 1/3
+                        estado.resp7 = 1000; // Gotas de Chocolate 1/3
+                        estado.resp8 = 1000; // Amendoim 1/3
+                        estado.resp9 = 1000; // Leite Condensado 1/3
+                        estado.resp10 = 1000; // Coco ralado 1/3
+                        estado.resp11 = 1000; // Mariola 1/3
+                        estado.resp12 = 1000; // Paçoca 1/3
+                        estado.resp13 = 1000; // Canudo de Chocolate 1/3
+                        estado.resp14 = 1000; // Bombom 1/3
+                        estado.resp15 = 1000; // Kiwi 1/3
+                        estado.resp16 = 1000; // Disket 1/3
+                        estado.resp17 = 1000; // Biscoito 1/3
+                        estado.resp18 = 1000; // Banana 1/3
+                        estado.resp19 = 1000; // Uva 1/3
+                        estado.resp20 = 1000; // Creme de morango 1/3
+                        estado.resp21 = 1000; // Leite em pó 1/3
+                        estado.resp22 = 1000; // Castanha 1/3
+                        estado.resp23 = 1000; // Creme de ninho 1/3
+                        estado.resp24 = 1000; // Ovomaltine 1/3
+                        estado.resp25 = 1000; // Sorvete 1/3
+                        estado.resp26 = 1000; // Doce de leite 1/3
+                        estado.resp27 = 1000; // Creme de maracujá 1/3
                     } catch (error) {
                         console.error('Erro ao obter o retorno:', error);
                     }

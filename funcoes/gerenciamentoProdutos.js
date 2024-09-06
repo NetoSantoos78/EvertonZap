@@ -4,7 +4,7 @@ const { cardapioIndividual, cardapioCompleto, cardapioExtras, valorExtraEspecifi
     valorExtraEspecificoBatatas, valorExtraEspecificoBebidas, valorExtraEspecificoPizza2, valorExtraEspecificoPizza1,
     cardapioExtrasAcai, cardapioExtrasBatatas, cardapioExtrasBebidas, cardapioExtrasPizza2, cardapioExtrasPizza1,
     acaiCompleto, batatasCompleto, bebidasCompleto, cardapioCompletoAcai, cardapioCompletoBatatas, cardapioCompletoBebidas,
-    cardapioCompletoPizzas2, valorBebidaEspecifico, tamanhoEspecicoPizzaEspecial,nomeEspecificoAcai,valorEspecificoAcai, precoExtraEspecificoBatatas, nomesTamanhoEspecicoPizzaTradicional, tamanhoEspecicoPizzaTradicional, opcoesAcai, cardapioExtrasBurguer, caldasAcai, cardapioCompletoPizzas1, cardapioIndividualAcai, cardapioIndividualBebidas, cardapioIndividualBatatas, cardapioIndividualPizza2, } = require('../comandos/cardapio.js');
+    cardapioCompletoPizzas2, qtdopcoesAcai, valorBebidaEspecifico, tamanhoEspecicoPizzaEspecial, nomeEspecificoAcai, valorEspecificoAcai, precoExtraEspecificoBatatas, nomesTamanhoEspecicoPizzaTradicional, tamanhoEspecicoPizzaTradicional, opcoesAcai, cardapioExtrasBurguer, caldasAcai, cardapioCompletoPizzas1, cardapioIndividualAcai, cardapioIndividualBebidas, cardapioIndividualBatatas, cardapioIndividualPizza2, } = require('../comandos/cardapio.js');
 
 const respostas = {
     menu: '',
@@ -397,6 +397,13 @@ async function pegarRetorno(numeroContato, client, parametros, ids, lanches, est
         case 39: // Nome de um açaí
             try {
                 const resultado = await nomeEspecificoAcai(lanche);
+                return `${resultado}`;
+            } catch (error) {
+                return `Erro ao obter o produto: ${error.message}`;
+            }
+        case 40: // Quantidade de caldas
+            try {
+                const resultado = await qtdopcoesAcai(lanche);
                 return `${resultado}`;
             } catch (error) {
                 return `Erro ao obter o produto: ${error.message}`;

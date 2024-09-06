@@ -538,13 +538,8 @@ async function cardapioExtrasAcai(lanche) {
         if (cardapio) {
             const produto = cardapio[lanche];
             if (produto) {
-                let extrasString = '';
                 const extrasComplementos = produto.complementos;
-                Object.keys(extrasComplementos).forEach((extra, index) => {
-                    const numeroEmoji = emojisNumeros[index]; // Obter emoji do número
-                    extrasString += `${numeroEmoji} ${extra}: R$ ${extrasComplementos[extra]}\n`;
-                });
-                return extrasString;
+                return extrasComplementos;
             } else {
                 throw new Error("Índice não encontrado: " + lanche);
             }
@@ -988,6 +983,29 @@ async function caldasAcai(lanches, indiceExtras) {
         throw error;
     }
 }
+async function qtdopcoesAcai(lanches) {
+    const lanche = lanches;
+    try {
+        const cardapio = await lerCardapio(caminhoArquivoAcai);
+        if (cardapio) {
+            const produto = cardapio[lanche];
+            if (produto) {
+                const opcoes = produto.opcoes; // Obtém o valor do campo "opcoes"
+                if (opcoes) {
+                    return opcoes; // Retorna o valor de "opcoes"
+                } else {
+                    throw new Error(`Nenhuma opção disponível para o lanche ${produto.produto}.`);
+                }
+            } else {
+                throw new Error("Lanche não encontrado: " + lanche);
+            }
+        } else {
+            throw new Error("Erro ao ler o cardápio.");
+        }
+    } catch (error) {
+        throw error;
+    }
+}
 async function tamanhoEspecicoPizzaEspecial(lanches, indiceExtras) {
     const indiceExtra = indiceExtras;
     const lanche = lanches;
@@ -1069,7 +1087,9 @@ const emojisNumeros = [
     "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣",
     "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟",
     "1️⃣1️⃣", "1️⃣2️⃣", "1️⃣3️⃣", "1️⃣4️⃣", "1️⃣5️⃣",
-    "1️⃣6️⃣", "1️⃣7️⃣", "1️⃣8️⃣", "1️⃣9️⃣", "2️⃣0️⃣"
+    "1️⃣6️⃣", "1️⃣7️⃣", "1️⃣8️⃣", "1️⃣9️⃣", "2️⃣0️⃣",
+    "2️⃣1️⃣", "2️⃣2️⃣", "2️⃣3️⃣", "2️⃣4️⃣", "2️⃣5️⃣",
+    "2️⃣6️⃣", "2️⃣7️⃣", "2️⃣8️⃣", "2️⃣9️⃣", "3️⃣0️⃣"
 ];
 
 module.exports = {
@@ -1095,6 +1115,7 @@ module.exports = {
     valorExtraEspecificoBebidas,
     valorExtraEspecificoPizza2,
     valorExtraEspecificoPizza1,
+    qtdopcoesAcai,
     cardapioExtrasAcai,
     precoExtraEspecificoBatatas,
     cardapioExtrasBatatas,
